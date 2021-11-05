@@ -4,6 +4,7 @@ import com.finalprojultimate.db.DBInit;
 import com.finalprojultimate.db.dao.DAOFactory;
 import com.finalprojultimate.db.dao.connection.DirectConnectionBuilder;
 import com.finalprojultimate.db.dao.entitydao.ProductDAO;
+import com.finalprojultimate.db.dao.exception.DaoException;
 import com.finalprojultimate.db.entity.Product;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -24,7 +25,6 @@ public class MySqlProductDAOTest {
 
     @BeforeClass
     public static void startUp() throws Exception {
-        logger.info("Reset db");
         DBInit.startUp();
     }
 
@@ -36,7 +36,7 @@ public class MySqlProductDAOTest {
     }
 
     @Test
-    public void createTest() {
+    public void saveDeleteTest() throws DaoException {
         Product product = new Product.Builder()
                 .withName("Сrisps LUX 430g.")
                 .withPrice(new BigDecimal("2.1"))
@@ -44,26 +44,50 @@ public class MySqlProductDAOTest {
                 .withBarcode("4602313509807")
                 .withUnit(Product.Unit.PIECES)
                 .build();
-        productDAO.create(product);
+        productDAO.save(product);
         assertEquals(1, productDAO.findProductsByBarcode("4602313509807").size());
+        productDAO.delete(product);
+        assertEquals(0, productDAO.findProductsByBarcode("4602313509807").size());
     }
 
     @Test
-    public void getAllTest() {
-
+    public void updateTest() throws DaoException {
+        Product pBefore = productDAO.findProductsByName("sugar").get(0);
+        Product pAfter = new Product.Builder()
+                .withName(pBefore.getName())
+                .withPrice(pBefore.getPrice())
+                .withAmount(new BigDecimal("450"))
+                .withBarcode(pBefore.getBarcode())
+                .withUnit(pBefore.getUnit())
+                .build();
+        productDAO.update(pBefore, pAfter);
+        assertEquals(new BigDecimal("450.000"), productDAO.findProductsByName("sugar").get(0).getAmount());
+        productDAO.update(pAfter, pBefore);
+        assertEquals(new BigDecimal("500.500"), productDAO.findProductsByName("sugar").get(0).getAmount());
     }
 
     @Test
-    public void findProductByName() {
+    public void getByIdTest() throws DaoException {
+        assertEquals("comb ParallaX", productDAO.getById(2).getName());
+    }
+
+    @Test
+    public void getAllTest() throws DaoException {
+        List<Product> result = productDAO.getAll();
+        assertEquals(8, result.size());
+    }
+
+    @Test
+    public void findProductsByNameTest() throws DaoException {
         List<Product> result = productDAO.findProductsByName("lux");
         assertEquals(2, result.size());
     }
 
     @Test
-    public void findProductByBarcode() {
-        List<Product> result = productDAO.findProductsByBarcode("11");
-        assertEquals(8, result.size());
-        result = productDAO.findProductsByBarcode("2");
+    public void findProductsByBarcodeTest() throws DaoException {
+        List<Product> result = productDAO.findProductsByBarcode("22");
+        assertEquals(3, result.size());
+        result = productDAO.findProductsByBarcode("320499");
         assertEquals(1, result.size());
     }
 }

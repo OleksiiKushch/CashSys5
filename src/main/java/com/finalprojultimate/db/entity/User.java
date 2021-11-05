@@ -137,7 +137,7 @@ public class User {
             return this;
         }
 
-        public Builder withId(Role role) {
+        public Builder withRoleId(Role role) {
             newUser.role = role;
             return this;
         }

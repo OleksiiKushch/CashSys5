@@ -10,7 +10,7 @@ public class Receipt {
     private BigDecimal change;
     private Payment payment;
     private Status status;
-    private User user;
+    private int userId;
 
     public Receipt() {
         // default constructor
@@ -56,12 +56,12 @@ public class Receipt {
         this.status = status;
     }
 
-    public User getUser() {
-        return user;
+    public int getUserId() {
+        return userId;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserId(int user_id) {
+        this.userId = user_id;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Receipt {
                 ", change=" + change +
                 ", payment=" + payment +
                 ", status=" + status +
-                ", user=" + user +
+                ", userId=" + userId +
                 '}';
     }
 
@@ -108,8 +108,8 @@ public class Receipt {
             return this;
         }
 
-        public Builder withUser(User user) {
-            newReceipt.user = user;
+        public Builder withUserId(int userId) {
+            newReceipt.userId = userId;
             return this;
         }
 

@@ -1,5 +1,7 @@
 package com.finalprojultimate.db.dao.entitydao;
 
-public interface ReceiptDAO extends EntityDAO {
+import com.finalprojultimate.db.entity.Receipt;
+
+public interface ReceiptDAO extends EntityDAO<Receipt> {
 
 }

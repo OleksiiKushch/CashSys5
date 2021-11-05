@@ -1,5 +1,9 @@
 package com.finalprojultimate.db.dao.connection;
 
+import com.finalprojultimate.db.dao.mysql.MySqlProductDAO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.naming.Context;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -8,6 +12,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class PoolConnectionBuilder implements ConnectionBuilder {
+    private static final Logger logger = LoggerFactory.getLogger(PoolConnectionBuilder.class);
+
     private DataSource dataSource;
 
     public PoolConnectionBuilder() {
@@ -15,8 +21,7 @@ public class PoolConnectionBuilder implements ConnectionBuilder {
             Context ctx = new InitialContext();
             dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/cashSys");
         } catch(NamingException e) {
-            e.printStackTrace();
-            // log
+            logger.error(e.getMessage(), e);
         }
     }
 

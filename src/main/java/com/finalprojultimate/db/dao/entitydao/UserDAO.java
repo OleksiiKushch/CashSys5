@@ -1,5 +1,7 @@
 package com.finalprojultimate.db.dao.entitydao;
 
-public interface UserDAO extends EntityDAO {
+import com.finalprojultimate.db.entity.User;
+
+public interface UserDAO extends EntityDAO<User> {
 
 }

@@ -2,19 +2,132 @@ package com.finalprojultimate.db.dao.mysql;
 
 import com.finalprojultimate.db.dao.connection.ConnectionBuilder;
 import com.finalprojultimate.db.dao.entitydao.ReceiptDAO;
+import com.finalprojultimate.db.dao.exception.DaoException;
+import com.finalprojultimate.db.entity.Receipt;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MySqlReceiptDAO implements ReceiptDAO {
 
+    private static final Logger logger = LoggerFactory.getLogger(MySqlReceiptDAO.class);
+
+    private ConnectionBuilder connectionBuilder;
+
     @Override
     public void setConnectionBuilder(ConnectionBuilder connectionBuilder) {
-
+        this.connectionBuilder = connectionBuilder;
     }
 
     @Override
     public Connection getConnection() throws SQLException {
-        return null;
+        return connectionBuilder.getConnection();
+    }
+
+    @Override
+    public void save(Receipt receipt) throws DaoException {
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.CREATE_RECEIPT)) {
+            ps.setBigDecimal(1, receipt.getChange());
+            ps.setInt(2, receipt.getPayment().getId());
+            ps.setInt(3, receipt.getUserId());
+            ps.setInt(4, receipt.getStatus().getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new DaoException("", e); // Good explanation of error
+        }
+    }
+
+    /**
+     *
+     * @param rBefore - the receipt to be changed
+     * @param rAfter - the receipt to be exchanged for the old one
+     * update receipt from DB, search by id receipt
+     */
+    @Override
+    public void update(Receipt rBefore, Receipt rAfter) throws DaoException {
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.UPDATE_RECEIPT)) {
+            ps.setBigDecimal(1, rAfter.getChange());
+            ps.setInt(2, rAfter.getPayment().getId());
+            ps.setInt(3, rAfter.getUserId());
+            ps.setInt(4, rAfter.getStatus().getId());
+            ps.setInt(5, rBefore.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new DaoException("", e); // Good explanation of error
+        }
+    }
+
+    /**
+     *
+     * @param receipt
+     * remove receipt from DB, search by id receipt
+     */
+    @Override
+    public void delete(Receipt receipt) throws DaoException {
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.DELETE_RECEIPT_BY_ID)) {
+            ps.setInt(1, receipt.getId());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new DaoException("", e); // Good explanation of error
+        }
+    }
+
+    @Override
+    public Receipt getById(int id) throws DaoException {
+        Receipt result = null;
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.GET_RECEIPT_BY_ID)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    result = mapReceipt(rs);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new DaoException("", e); // Good explanation of error
+        }
+        return result;
+    }
+
+    @Override
+    public List<Receipt> getAll() throws DaoException {
+        List<Receipt> result = new ArrayList<>();
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.GET_ALL_RECEIPTS)) {
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(mapReceipt(rs));
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new DaoException("", e); // Good explanation of error
+        }
+        return result;
+    }
+
+    private Receipt mapReceipt(ResultSet rs) throws SQLException {
+        return new Receipt.Builder()
+                .withId(rs.getInt(MySqlConstants.ReceiptField.ID))
+                .withDateTime(rs.getTimestamp(MySqlConstants.ReceiptField.DATE_TIME).toLocalDateTime())
+                .withChange(new BigDecimal(rs.getString(MySqlConstants.ReceiptField.CHANGE)))
+                .withPayment(Receipt.Payment.getById(rs.getInt(MySqlConstants.ReceiptField.PAYMENT_ID)))
+                .withUserId(rs.getInt(MySqlConstants.ReceiptField.USER_ID))
+                .withStatus(Receipt.Status.getById(rs.getInt(MySqlConstants.ReceiptField.STATUS_ID)))
+                .build();
     }
 }
