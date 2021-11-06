@@ -3,15 +3,12 @@ package com.finalprojultimate.db.dao.mysql;
 import com.finalprojultimate.db.dao.connection.ConnectionBuilder;
 import com.finalprojultimate.db.dao.entitydao.ReceiptDAO;
 import com.finalprojultimate.db.dao.exception.DaoException;
-import com.finalprojultimate.db.entity.Receipt;
+import com.finalprojultimate.model.entity.Receipt;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,14 +29,17 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     }
 
     @Override
-    public void save(Receipt receipt) throws DaoException {
+    public void insert(Receipt receipt) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.CREATE_RECEIPT)) {
-            ps.setBigDecimal(1, receipt.getChange());
-            ps.setInt(2, receipt.getPayment().getId());
-            ps.setInt(3, receipt.getUserId());
-            ps.setInt(4, receipt.getStatus().getId());
+             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.CREATE_RECEIPT,
+                     Statement.RETURN_GENERATED_KEYS)) {
+            mapReceipt(ps, receipt);
             ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    receipt.setId(rs.getInt(1));
+                }
+            }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw new DaoException("", e); // Good explanation of error
@@ -48,19 +48,15 @@ public class MySqlReceiptDAO implements ReceiptDAO {
 
     /**
      *
-     * @param rBefore - the receipt to be changed
-     * @param rAfter - the receipt to be exchanged for the old one
+     * @param receipt
      * update receipt from DB, search by id receipt
      */
     @Override
-    public void update(Receipt rBefore, Receipt rAfter) throws DaoException {
+    public void update(Receipt receipt) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.UPDATE_RECEIPT)) {
-            ps.setBigDecimal(1, rAfter.getChange());
-            ps.setInt(2, rAfter.getPayment().getId());
-            ps.setInt(3, rAfter.getUserId());
-            ps.setInt(4, rAfter.getStatus().getId());
-            ps.setInt(5, rBefore.getId());
+            mapReceipt(ps, receipt);
+            ps.setInt(5, receipt.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -118,6 +114,14 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             throw new DaoException("", e); // Good explanation of error
         }
         return result;
+    }
+
+    private void mapReceipt(PreparedStatement ps, Receipt receipt) throws SQLException {
+        int i = 0;
+        ps.setBigDecimal(++i, receipt.getChange());
+        ps.setInt(++i, receipt.getPayment().getId());
+        ps.setInt(++i, receipt.getUserId());
+        ps.setInt(++i, receipt.getStatus().getId());
     }
 
     private Receipt mapReceipt(ResultSet rs) throws SQLException {

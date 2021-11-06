@@ -13,8 +13,6 @@ DROP TABLE IF EXISTS receipt_status ;
 DROP TABLE IF EXISTS receipt ;
 DROP TABLE IF EXISTS receipt_has_product ;
 DROP TABLE IF EXISTS `system` ;
-DROP TABLE IF EXISTS user_details ;
-DROP TABLE IF EXISTS product_details ;
 
 CREATE TABLE IF NOT EXISTS payment (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -31,6 +29,8 @@ price DECIMAL(9,2) NOT NULL,
 amount DECIMAL(9,3) NOT NULL,
 barcode VARCHAR(128) NOT NULL,
 unit_id INT NOT NULL,
+CHECK (price>=0),
+CHECK (amount>=0),
 PRIMARY KEY (id),
 UNIQUE INDEX barcode_UNIQUE (barcode) ,
 INDEX fk_product_unit1_idx (unit_id) ,
@@ -49,13 +49,16 @@ id INT AUTO_INCREMENT PRIMARY KEY,
 
 CREATE TABLE IF NOT EXISTS `user` (
 id INT NOT NULL AUTO_INCREMENT,
+email VARCHAR(320) NOT NULL,
 first_name VARCHAR(45) NOT NULL,
 middle_name VARCHAR(45) NOT NULL,
 last_name VARCHAR(45) NOT NULL,
-passhash VARCHAR(355) NOT NULL,
+passhash VARCHAR(256) NOT NULL,
 role_id INT NOT NULL,
 PRIMARY KEY (id),
+UNIQUE KEY email (email),
 INDEX fk_user_user_role1_idx (role_id) ,
+FULLTEXT INDEX IX_email_fulltext (email) ,
 CONSTRAINT fk_user_user_role1
   FOREIGN KEY (role_id)
       REFERENCES user_role (id)
@@ -73,6 +76,7 @@ date_time DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 payment_id INT NOT NULL,
 user_id INT NOT NULL,
 status_id INT NOT NULL,
+CHECK (`change`>=0),
 PRIMARY KEY (id),
 INDEX fk_receipt_payment1_idx (payment_id) ,
 INDEX fk_receipt_user1_idx (user_id) ,
@@ -97,6 +101,8 @@ receipt_id INT NOT NULL,
 product_id INT NOT NULL,
 price DECIMAL(9,2) NOT NULL,
 amount DECIMAL(9,3) NOT NULL,
+CHECK (price>=0),
+CHECK (amount>=0),
 PRIMARY KEY (receipt_id, product_id),
 INDEX fk_receipt_has_product_product1_idx (product_id) ,
 INDEX fk_receipt_has_product_receipt_idx (receipt_id) ,
@@ -112,24 +118,11 @@ CONSTRAINT fk_receipt_has_product_receipt
        ON UPDATE CASCADE);
 
 CREATE TABLE IF NOT EXISTS `system` (
-organization_tax_id_number INT PRIMARY KEY,
-name_organization VARCHAR(256) NOT NULL,
+`lock` char(1) PRIMARY KEY DEFAULT 'X',
+organization_tax_id_number INT NOT NULL,
+name_organization VARCHAR(128) NOT NULL,
 address_trade_point VARCHAR(512) NOT NULL,
 vat DECIMAL(9,2) NOT NULL,
-taxation_sys VARCHAR(45) NOT NULL);
-
-CREATE TABLE IF NOT EXISTS user_details (
-user_id INT PRIMARY KEY,
-CONSTRAINT fk_user_details_user1
-    FOREIGN KEY (user_id)
-        REFERENCES `user` (id)
-        ON DELETE NO ACTION
-        ON UPDATE NO ACTION);
-
-CREATE TABLE IF NOT EXISTS product_details (
-product_id INT PRIMARY KEY,
-CONSTRAINT fk_product_details_product1
-   FOREIGN KEY (product_id)
-       REFERENCES product (id)
-       ON DELETE NO ACTION
-       ON UPDATE NO ACTION);
+taxation_sys VARCHAR(45) NOT NULL,
+CHECK (`lock`='X'),
+CHECK (vat>=0));

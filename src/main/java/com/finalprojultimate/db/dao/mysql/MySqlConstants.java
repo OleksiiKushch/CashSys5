@@ -1,9 +1,5 @@
 package com.finalprojultimate.db.dao.mysql;
 
-import com.finalprojultimate.db.entity.Receipt;
-
-import java.util.Objects;
-
 public abstract class MySqlConstants {
 
     private MySqlConstants() {
@@ -25,6 +21,7 @@ public abstract class MySqlConstants {
     // User
     static class UserField {
         public static final String ID = "id";
+        public static final String EMAIL = "email";
         public static final String FIRST_NAME = "first_name";
         public static final String MIDDLE_NAME = "middle_name";
         public static final String LAST_NAME = "last_name";
@@ -48,39 +45,40 @@ public abstract class MySqlConstants {
     // Product
     static class ProductQuery {
         public static final String CREATE_PRODUCT = "INSERT INTO product (id, `name`, price, amount, barcode, unit_id) " +
-                "VALUES (DEFAULT, ?, ?, ?, ?, ?);";
+                "VALUES (DEFAULT, ?, ?, ?, ?, ?)";
         public static final String UPDATE_PRODUCT = "UPDATE product " +
                 "SET `name` = ?, price = ?, amount = ?, barcode = ?, unit_id = ? " +
-                "WHERE barcode = ?;";
-        public static final String DELETE_PRODUCT_BY_BARCODE = "DELETE FROM product WHERE barcode = ?;";
-        public static final String GET_PRODUCT_BY_ID = "SELECT * FROM product WHERE id = ?;";
-        public static final String GET_ALL_PRODUCTS = "SELECT * FROM product;";
-        public static final String FIND_PRODUCTS_BY_NAME = "SELECT * FROM product WHERE `name` LIKE ? ORDER BY `name`;";
-        public static final String FIND_PRODUCTS_BY_BARCODE = "SELECT * FROM product WHERE barcode LIKE ? ORDER BY barcode;";
+                "WHERE id = ?";
+        public static final String DELETE_PRODUCT_BY_BARCODE = "DELETE FROM product WHERE id = ?";
+        public static final String GET_PRODUCT_BY_ID = "SELECT * FROM product WHERE id = ?";
+        public static final String GET_ALL_PRODUCTS = "SELECT * FROM product";
+        public static final String FIND_PRODUCTS_BY_NAME = "SELECT * FROM product WHERE `name` LIKE ? ORDER BY `name`";
+        public static final String FIND_PRODUCTS_BY_BARCODE = "SELECT * FROM product WHERE barcode LIKE ? ORDER BY barcode";
     }
 
     // User
     static class UserQuery {
-        public static final String CREATE_USER = "INSERT INTO `user` (id, first_name, middle_name, last_name, passhash, role_id) " +
-                "VALUES (DEFAULT, ?, ?, ?, ?, ?);";
+        public static final String CREATE_USER = "INSERT INTO `user` (id, email, first_name, middle_name, last_name, passhash, role_id) " +
+                "VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
         public static final String UPDATE_USER = "UPDATE `user` " +
-                "SET first_name = ?, middle_name = ?, last_name = ?, passhash = ?, role_id = ? " +
-                "WHERE id = ?;";
-        public static final String DELETE_USER_BY_ID = "DELETE FROM `user` WHERE id = ?;";
-        public static final String GET_USER_BY_ID = "SELECT * FROM `user` WHERE id = ?;";
-        public static final String GET_ALL_USERS = "SELECT * FROM `user`;";
+                "SET email = ?, first_name = ?, middle_name = ?, last_name = ?, passhash = ?, role_id = ? " +
+                "WHERE id = ?";
+        public static final String DELETE_USER_BY_ID = "DELETE FROM `user` WHERE id = ?";
+        public static final String GET_USER_BY_ID = "SELECT * FROM `user` WHERE id = ?";
+        public static final String GET_ALL_USERS = "SELECT * FROM `user`";
+        public static final String GET_USER_BY_EMAIL = "SELECT * FROM `user` WHERE email = ?";
     }
 
     // Receipt
     static class ReceiptQuery {
         public static final String CREATE_RECEIPT = "INSERT INTO receipt (id, date_time, `change`, payment_id, user_id, status_id) " +
-                "VALUES (DEFAULT, now(), ?, ?, ?, ?);";
+                "VALUES (DEFAULT, now(), ?, ?, ?, ?)";
         public static final String UPDATE_RECEIPT = "UPDATE receipt " +
                 "SET `change` = ?, payment_id = ?, user_id = ?, status_id = ? " +
-                "WHERE id = ?;";
-        public static final String DELETE_RECEIPT_BY_ID = "DELETE FROM receipt WHERE id = ?;";
-        public static final String GET_RECEIPT_BY_ID = "SELECT * FROM receipt WHERE id = ?;";
-        public static final String GET_ALL_RECEIPTS = "SELECT * FROM receipt;";
+                "WHERE id = ?";
+        public static final String DELETE_RECEIPT_BY_ID = "DELETE FROM receipt WHERE id = ?";
+        public static final String GET_RECEIPT_BY_ID = "SELECT * FROM receipt WHERE id = ?";
+        public static final String GET_ALL_RECEIPTS = "SELECT * FROM receipt";
     }
 
 

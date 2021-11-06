@@ -20,20 +20,20 @@ INSERT INTO product (id, `name`, price, amount, barcode, unit_id) VALUES
 
 
 SET @role_id = (SELECT id FROM user_role WHERE `name` = 'cashier');
-INSERT INTO `user` (id, first_name, middle_name, last_name, passhash, role_id) VALUES
-    (DEFAULT, 'Tammy', 'Donald', 'Reuben', '79B180E5FF6A23229A5FCE280C0D14C84832FE019D0AD5CDA140C1BFD6B19112', @role_id),
-    (DEFAULT, 'Bob', 'Ken', 'Yang', '4E672DBA718E2552FC20E5ECFD4A0EFB47609F50EC10CB21DCA75C0800D124D5', @role_id),
-    (DEFAULT, 'Alex', 'Henry', 'Fpster', 'DB0BDF2FC0893C0848CC11795E952735A2E18D38F008E39C568961B477BD2CB7', @role_id),
-    (DEFAULT, 'Maria', 'Loiuse', 'Miller', '3F94E34DD40435CCF08E34AA158F6630ED7F11017C781F83A9BB5FF2129BBDE7', @role_id),
-    (DEFAULT, 'Jennifer', 'Mie', 'White', 'AB72FD85278EBD7EAB739ABD3A9BCD02A901B186AAD57EDB82CBA3E6BE98DCC4', @role_id);
+INSERT INTO `user` (id, email, first_name, middle_name, last_name, passhash, role_id) VALUES
+    (DEFAULT, 'tammy.reuben@cashsys.com', 'Tammy', 'Donald', 'Reuben', '79B180E5FF6A23229A5FCE280C0D14C84832FE019D0AD5CDA140C1BFD6B19112', @role_id),
+    (DEFAULT, 'bob.yang@cashsys.com', 'Bob', 'Ken', 'Yang', '4E672DBA718E2552FC20E5ECFD4A0EFB47609F50EC10CB21DCA75C0800D124D5', @role_id),
+    (DEFAULT, 'alex.fpster@cashsys.com', 'Alex', 'Henry', 'Fpster', 'DB0BDF2FC0893C0848CC11795E952735A2E18D38F008E39C568961B477BD2CB7', @role_id),
+    (DEFAULT, 'maria.miller@cashsys.com', 'Maria', 'Loiuse', 'Miller', '3F94E34DD40435CCF08E34AA158F6630ED7F11017C781F83A9BB5FF2129BBDE7', @role_id),
+    (DEFAULT, 'jennifer.white@cashsys.com', 'Jennifer', 'Mie', 'White', 'AB72FD85278EBD7EAB739ABD3A9BCD02A901B186AAD57EDB82CBA3E6BE98DCC4', @role_id);
 
 SET @role_id = (SELECT id FROM user_role WHERE `name` = 'senior cashier');
-INSERT INTO `user` (id, first_name, middle_name, last_name, passhash, role_id) VALUES
-    (DEFAULT, 'Tom', 'Ado', 'Lee', 'DA0AED7FEDE29351692B86BADC77859B4716C7195E37571D531B9108686917C4', @role_id);
+INSERT INTO `user` (id, email, first_name, middle_name, last_name, passhash, role_id) VALUES
+    (DEFAULT, 'tom.lee@cashsys.com', 'Tom', 'Ado', 'Lee', 'DA0AED7FEDE29351692B86BADC77859B4716C7195E37571D531B9108686917C4', @role_id);
 
 SET @role_id = (SELECT id FROM user_role WHERE `name` = 'commodity expert');
-INSERT INTO `user` (id, first_name, middle_name, last_name, passhash, role_id) VALUES
-    (DEFAULT, 'Jeri', 'T', 'Wood', '34EBA500E76F442BC2DB6A5C04CDD2979D11D5848BF982D8E3DFF25EF2777A26', @role_id);
+INSERT INTO `user` (id, email, first_name, middle_name, last_name, passhash, role_id) VALUES
+    (DEFAULT, 'jeri.wood@cashsys.com', 'Jeri', 'T', 'Wood', '34EBA500E76F442BC2DB6A5C04CDD2979D11D5848BF982D8E3DFF25EF2777A26', @role_id);
 
 
 SET @status_id = (SELECT id FROM receipt_status WHERE `name` = 'normal');

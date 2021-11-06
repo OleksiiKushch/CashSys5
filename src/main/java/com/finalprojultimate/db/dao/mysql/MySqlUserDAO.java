@@ -3,14 +3,11 @@ package com.finalprojultimate.db.dao.mysql;
 import com.finalprojultimate.db.dao.connection.ConnectionBuilder;
 import com.finalprojultimate.db.dao.entitydao.UserDAO;
 import com.finalprojultimate.db.dao.exception.DaoException;
-import com.finalprojultimate.db.entity.User;
+import com.finalprojultimate.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,15 +28,17 @@ public class MySqlUserDAO implements UserDAO {
     }
 
     @Override
-    public void save(User user) throws DaoException {
+    public void insert(User user) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.CREATE_USER)) {
-            ps.setString(1, user.getFirstName());
-            ps.setString(2, user.getMiddleName());
-            ps.setString(3, user.getLastName());
-            ps.setString(4, user.getPassHash());
-            ps.setInt(5, user.getRole().getId());
+             PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.CREATE_USER,
+                     Statement.RETURN_GENERATED_KEYS)) {
+            mapUser(ps, user);
             ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    user.setId(rs.getInt(1));
+                }
+            }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw new DaoException("", e); // Good explanation of error
@@ -48,20 +47,15 @@ public class MySqlUserDAO implements UserDAO {
 
     /**
      *
-     * @param uBefore - the user to be changed
-     * @param uAfter - the user to be exchanged for the old one
+     * @param user
      * update product from DB, search by id user
      */
     @Override
-    public void update(User uBefore, User uAfter) throws DaoException {
+    public void update(User user) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.UPDATE_USER)) {
-            ps.setString(1, uAfter.getFirstName());
-            ps.setString(2, uAfter.getMiddleName());
-            ps.setString(3, uAfter.getLastName());
-            ps.setString(4, uAfter.getPassHash());
-            ps.setInt(5, uAfter.getRole().getId());
-            ps.setInt(6, uBefore.getId());
+            mapUser(ps, user);
+            ps.setInt(7, user.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -121,9 +115,38 @@ public class MySqlUserDAO implements UserDAO {
         return result;
     }
 
+    @Override
+    public User getUserByEmail(String email) throws DaoException {
+        User result = null;
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.GET_USER_BY_EMAIL)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    result = mapUser(rs);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new DaoException("", e); // Good explanation of error
+        }
+        return result;
+    }
+
+    private void mapUser(PreparedStatement ps, User user) throws SQLException {
+        int i = 0;
+        ps.setString(++i, user.getFirstName());
+        ps.setString(++i, user.getFirstName());
+        ps.setString(++i, user.getMiddleName());
+        ps.setString(++i, user.getLastName());
+        ps.setString(++i, user.getPassHash());
+        ps.setInt(++i, user.getRole().getId());
+    }
+
     private User mapUser(ResultSet rs) throws SQLException {
         return new User.Builder()
                 .withId(rs.getInt(MySqlConstants.UserField.ID))
+                .withEmail(rs.getString(MySqlConstants.UserField.EMAIL))
                 .withFirstName(rs.getString(MySqlConstants.UserField.FIRST_NAME))
                 .withMiddleName(rs.getString(MySqlConstants.UserField.MIDDLE_NAME))
                 .withLastName(rs.getString(MySqlConstants.UserField.LAST_NAME))

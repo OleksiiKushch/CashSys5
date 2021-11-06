@@ -5,7 +5,7 @@ import com.finalprojultimate.db.dao.DAOFactory;
 import com.finalprojultimate.db.dao.connection.DirectConnectionBuilder;
 import com.finalprojultimate.db.dao.entitydao.UserDAO;
 import com.finalprojultimate.db.dao.exception.DaoException;
-import com.finalprojultimate.db.entity.User;
+import com.finalprojultimate.model.entity.User;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -37,15 +37,15 @@ public class MySqlUserDAOTest {
     @Test
     public void saveDeleteTest() throws DaoException {
         User user = new User.Builder()
+                .withEmail("ben.cupper@.cashsys.com")
                 .withFirstName("Ben")
                 .withMiddleName("Dilan")
                 .withLastName("Cupper")
                 .withPassHash("82A280E5FF6A23229A5FCE280C0D14C84832FE019D0AD5CDA140C1BFD6B19112")
                 .withRoleId(User.Role.CASHIER)
                 .build();
-        userDAO.save(user);
-        user = userDAO.getById(8);
-        assertEquals("Ben", user.getFirstName());
+        userDAO.insert(user);
+        assertEquals("Ben", userDAO.getById(8).getFirstName());
         userDAO.delete(user);
         assertNull(userDAO.getById(8));
     }
@@ -61,15 +61,25 @@ public class MySqlUserDAOTest {
                 .withPassHash(uBefore.getPassHash())
                 .withRoleId(uBefore.getRole())
                 .build();
-        userDAO.update(uBefore, uAfter);
+        userDAO.update(uAfter);
         assertEquals("Bobber", userDAO.getById(1).getLastName());
-        userDAO.update(uAfter, uBefore);
+        userDAO.update(uBefore);
         assertEquals("Reuben", userDAO.getById(1).getLastName());
+    }
+
+    @Test
+    public void getByIdTest() throws DaoException {
+        assertEquals("Alex", userDAO.getById(3).getFirstName());
     }
 
     @Test
     public void getAllTest() throws DaoException {
         List<User> result = userDAO.getAll();
         assertEquals(7, result.size());
+    }
+
+    @Test
+    public void getByEmailTest() throws DaoException {
+        assertEquals("Ado", userDAO.getUserByEmail("tom.lee@cashsys.com").getMiddleName());
     }
 }

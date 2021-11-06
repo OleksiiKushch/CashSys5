@@ -3,15 +3,11 @@ package com.finalprojultimate.db.dao.mysql;
 import com.finalprojultimate.db.dao.connection.ConnectionBuilder;
 import com.finalprojultimate.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.db.dao.exception.DaoException;
-import com.finalprojultimate.db.entity.Product;
-import com.finalprojultimate.db.entity.User;
+import com.finalprojultimate.model.entity.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,15 +28,17 @@ public class MySqlProductDAO implements ProductDAO {
     }
 
     @Override
-    public void save(Product product) throws DaoException {
+    public void insert(Product product) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ProductQuery.CREATE_PRODUCT)) {
-            ps.setString(1, product.getName());
-            ps.setBigDecimal(2, product.getPrice());
-            ps.setBigDecimal(3, product.getAmount());
-            ps.setString(4, product.getBarcode());
-            ps.setInt(5, product.getUnit().getId());
+             PreparedStatement ps = con.prepareStatement(MySqlConstants.ProductQuery.CREATE_PRODUCT,
+                     Statement.RETURN_GENERATED_KEYS)) {
+            mapProduct(ps, product);
             ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    product.setId(rs.getInt(1));
+                }
+            }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw new DaoException("", e); // Good explanation of error
@@ -49,20 +47,15 @@ public class MySqlProductDAO implements ProductDAO {
 
     /**
      *
-     * @param tBefore - the product to be changed
-     * @param tAfter - the product to be exchanged for the old one
+     * @param product
      * update product from DB, search by barcode product
      */
     @Override
-    public void update(Product tBefore, Product tAfter) throws DaoException {
+    public void update(Product product) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(MySqlConstants.ProductQuery.UPDATE_PRODUCT)) {
-            ps.setString(1, tAfter.getName());
-            ps.setBigDecimal(2, tAfter.getPrice());
-            ps.setBigDecimal(3, tAfter.getAmount());
-            ps.setString(4, tAfter.getBarcode());
-            ps.setInt(5, tAfter.getUnit().getId());
-            ps.setString(6, tBefore.getBarcode());
+            mapProduct(ps, product);
+            ps.setInt(6, product.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -73,13 +66,13 @@ public class MySqlProductDAO implements ProductDAO {
     /**
      *
      * @param product
-     * remove product from DB, search by barcode product
+     * remove product from DB, search by id product
      */
     @Override
     public void delete(Product product) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(MySqlConstants.ProductQuery.DELETE_PRODUCT_BY_BARCODE)) {
-            ps.setString(1, product.getBarcode());
+            ps.setInt(1, product.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -149,6 +142,15 @@ public class MySqlProductDAO implements ProductDAO {
         return result;
     }
 
+    private void mapProduct(PreparedStatement ps, Product product) throws SQLException {
+        int i = 0;
+        ps.setString(++i, product.getName());
+        ps.setBigDecimal(++i, product.getPrice());
+        ps.setBigDecimal(++i, product.getAmount());
+        ps.setString(++i, product.getBarcode());
+        ps.setInt(++i, product.getUnit().getId());
+    }
+
     private Product mapProduct(ResultSet rs) throws SQLException {
         return new Product.Builder()
                 .withId(rs.getInt(MySqlConstants.ProductField.ID))
@@ -166,7 +168,6 @@ public class MySqlProductDAO implements ProductDAO {
      * @param param - input data for searching
      * @return - escaping input from special characters
      */
-
     public static String escapeForLike(String param) {
         return param.replace("!", "!!")
                 .replace("%", "!%")

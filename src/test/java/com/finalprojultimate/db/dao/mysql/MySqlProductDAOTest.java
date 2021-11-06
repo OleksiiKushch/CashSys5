@@ -5,7 +5,7 @@ import com.finalprojultimate.db.dao.DAOFactory;
 import com.finalprojultimate.db.dao.connection.DirectConnectionBuilder;
 import com.finalprojultimate.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.db.dao.exception.DaoException;
-import com.finalprojultimate.db.entity.Product;
+import com.finalprojultimate.model.entity.Product;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -44,7 +44,7 @@ public class MySqlProductDAOTest {
                 .withBarcode("4602313509807")
                 .withUnit(Product.Unit.PIECES)
                 .build();
-        productDAO.save(product);
+        productDAO.insert(product);
         assertEquals(1, productDAO.findProductsByBarcode("4602313509807").size());
         productDAO.delete(product);
         assertEquals(0, productDAO.findProductsByBarcode("4602313509807").size());
@@ -54,15 +54,16 @@ public class MySqlProductDAOTest {
     public void updateTest() throws DaoException {
         Product pBefore = productDAO.findProductsByName("sugar").get(0);
         Product pAfter = new Product.Builder()
+                .withId(pBefore.getId())
                 .withName(pBefore.getName())
                 .withPrice(pBefore.getPrice())
-                .withAmount(new BigDecimal("450"))
+                .withAmount(new BigDecimal("450.000"))
                 .withBarcode(pBefore.getBarcode())
                 .withUnit(pBefore.getUnit())
                 .build();
-        productDAO.update(pBefore, pAfter);
+        productDAO.update(pAfter);
         assertEquals(new BigDecimal("450.000"), productDAO.findProductsByName("sugar").get(0).getAmount());
-        productDAO.update(pAfter, pBefore);
+        productDAO.update(pBefore);
         assertEquals(new BigDecimal("500.500"), productDAO.findProductsByName("sugar").get(0).getAmount());
     }
 

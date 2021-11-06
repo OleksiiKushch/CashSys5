@@ -1,7 +1,7 @@
 package com.finalprojultimate.db.dao.entitydao;
 
 import com.finalprojultimate.db.dao.exception.DaoException;
-import com.finalprojultimate.db.entity.Product;
+import com.finalprojultimate.model.entity.Product;
 
 import java.util.List;
 

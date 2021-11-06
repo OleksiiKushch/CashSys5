@@ -1,0 +1,7 @@
+com\finalprojultimate\db\dao\connection\DirectConnectionBuilder.class
+com\finalprojultimate\db\DBInit.class
+com\finalprojultimate\db\DatabaseTest.class
+com\finalprojultimate\db\dao\mysql\MySqlProductDAOTest.class
+com\finalprojultimate\db\dao\mysql\MySqlUserDAOTest.class
+com\finalprojultimate\model\entity\UserTest.class
+com\finalprojultimate\db\dao\mysql\MySqlReceiptDAOTest.class

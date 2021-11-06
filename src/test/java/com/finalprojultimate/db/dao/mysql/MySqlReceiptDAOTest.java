@@ -4,10 +4,8 @@ import com.finalprojultimate.db.DBInit;
 import com.finalprojultimate.db.dao.DAOFactory;
 import com.finalprojultimate.db.dao.connection.DirectConnectionBuilder;
 import com.finalprojultimate.db.dao.entitydao.ReceiptDAO;
-import com.finalprojultimate.db.dao.entitydao.UserDAO;
 import com.finalprojultimate.db.dao.exception.DaoException;
-import com.finalprojultimate.db.entity.Receipt;
-import com.finalprojultimate.db.entity.User;
+import com.finalprojultimate.model.entity.Receipt;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,9 +43,8 @@ public class MySqlReceiptDAOTest {
                 .withUserId(4)
                 .withStatus(Receipt.Status.NORMAL)
                 .build();
-        receiptDAO.save(receipt);
-        receipt = receiptDAO.getById(12);
-        assertEquals(4, receipt.getUserId());
+        receiptDAO.insert(receipt);
+        assertEquals(new BigDecimal("0.45"), receiptDAO.getById(12).getChange());
         receiptDAO.delete(receipt);
         assertNull(receiptDAO.getById(12));
     }
@@ -62,10 +59,15 @@ public class MySqlReceiptDAOTest {
                 .withUserId(rBefore.getUserId())
                 .withStatus(rBefore.getStatus())
                 .build();
-        receiptDAO.update(rBefore, rAfter);
+        receiptDAO.update(rAfter);
         assertEquals(new BigDecimal("12.60"), receiptDAO.getById(3).getChange());
-        receiptDAO.update(rAfter, rBefore);
+        receiptDAO.update(rBefore);
         assertEquals(new BigDecimal("0.00"), receiptDAO.getById(3).getChange());
+    }
+
+    @Test
+    public void getByIdTest() throws DaoException {
+        assertEquals(new BigDecimal("12.00"), receiptDAO.getById(2).getChange());
     }
 
     @Test
