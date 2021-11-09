@@ -1,10 +1,10 @@
 package com.finalprojultimate.controller.servlet;
 
-import com.finalprojultimate.db.dao.DAOFactory;
-import com.finalprojultimate.db.dao.connection.PoolConnectionBuilder;
-import com.finalprojultimate.db.dao.entitydao.UserDAO;
-import com.finalprojultimate.db.dao.exception.DaoException;
-import com.finalprojultimate.db.dao.mysql.MySqlDAOFactory;
+import com.finalprojultimate.model.db.dao.DAOFactory;
+import com.finalprojultimate.model.db.dao.connection.PoolConnectionBuilder;
+import com.finalprojultimate.model.db.dao.entitydao.UserDAO;
+import com.finalprojultimate.model.db.dao.exception.DaoException;
+import com.finalprojultimate.model.db.dao.mysql.MySqlDAOFactory;
 import com.finalprojultimate.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +30,7 @@ public class LoginServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("views/login.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("index.jsp");
         dispatcher.forward(request, response);
     }
 

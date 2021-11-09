@@ -1,10 +1,11 @@
 package com.finalprojultimate.controller.servlet;
 
-import com.finalprojultimate.db.dao.DAOFactory;
-import com.finalprojultimate.db.dao.connection.PoolConnectionBuilder;
-import com.finalprojultimate.db.dao.entitydao.UserDAO;
-import com.finalprojultimate.db.dao.exception.DaoException;
-import com.finalprojultimate.db.dao.mysql.MySqlDAOFactory;
+import com.finalprojultimate.model.db.dao.DAOFactory;
+import com.finalprojultimate.model.db.dao.connection.PoolConnection;
+import com.finalprojultimate.model.db.dao.connection.PoolConnectionBuilder;
+import com.finalprojultimate.model.db.dao.entitydao.UserDAO;
+import com.finalprojultimate.model.db.dao.exception.DaoException;
+import com.finalprojultimate.model.db.dao.mysql.MySqlDAOFactory;
 import com.finalprojultimate.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,17 +21,21 @@ public class RegistrationServlet extends HttpServlet {
 
     private UserDAO userDAO;
 
+    public RegistrationServlet() {
+        // default constructor
+    }
+
     @Override
     public void init() {
-        // log
         DAOFactory daoFactory = new MySqlDAOFactory();
         userDAO = daoFactory.getUserDAO();
-        userDAO.setConnectionBuilder(new PoolConnectionBuilder());
+        userDAO.setConnectionBuilder(PoolConnection.getInstance());
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        RequestDispatcher dispatcher = request.getRequestDispatcher("views/registration.jsp");
+        logger.info("doGet");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/view/jsp/registration.jsp");
         dispatcher.forward(request, response);
     }
 
@@ -40,8 +45,8 @@ public class RegistrationServlet extends HttpServlet {
         String firstName = request.getParameter("firstName");
         String middleName = request.getParameter("middleName");
         String lastName = request.getParameter("lastName");
-        String password = User.hashPassword(request.getParameter("password"));
-        String confirmationPassword = User.hashPassword(request.getParameter("confirmationPassword"));
+        String password = request.getParameter("password");
+        String confirmationPassword = request.getParameter("confirmationPassword");
         String role = request.getParameter("role");
 
         if (true) {
@@ -73,7 +78,7 @@ public class RegistrationServlet extends HttpServlet {
             logger.error(e.getMessage(), e);
         }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher("views/registration_successful.jsp");
+        RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/view/jsp/registration_successful.jsp");
         dispatcher.forward(request, response);
     }
 }

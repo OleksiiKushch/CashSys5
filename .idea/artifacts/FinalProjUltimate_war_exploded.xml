@@ -5,6 +5,7 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="FinalProjUltimate" />
+          <element id="library" level="application" name="bootstrap" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.32" />
@@ -19,6 +20,9 @@
           <element id="library" level="project" name="Maven: commons-collections:commons-collections:3.2.2" />
         </element>
       </element>
+      <element id="library" level="application" name="@popperjs/core" />
+      <element id="library" level="application" name="vue" />
+      <element id="library" level="application" name="vue-bootstrap-multiselect" />
       <element id="javaee-facet-resources" facet="FinalProjUltimate/web/Web" />
     </root>
   </artifact>
