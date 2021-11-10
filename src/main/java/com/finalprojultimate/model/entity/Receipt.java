@@ -4,8 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
-public class Receipt {
-    private int id;
+public class Receipt extends Entity {
+    private static final long serialVersionUID = 2350326613305315221L;
+
     private LocalDateTime dateTime;
     private BigDecimal change;
     private Payment payment;
@@ -14,14 +15,6 @@ public class Receipt {
 
     public Receipt() {
         // default constructor
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public LocalDateTime getDateTime() {

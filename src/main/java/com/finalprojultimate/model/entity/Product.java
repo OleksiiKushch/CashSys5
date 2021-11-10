@@ -3,8 +3,9 @@ package com.finalprojultimate.model.entity;
 import java.math.BigDecimal;
 import java.util.Objects;
 
-public class Product {
-    private int id;
+public class Product extends Entity {
+    private static final long serialVersionUID = -7715657503844300913L;
+
     private String name;
     private BigDecimal price;
     private BigDecimal amount;
@@ -13,14 +14,6 @@ public class Product {
 
     public Product() {
         // default constructor
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getName() {

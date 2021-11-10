@@ -9,13 +9,13 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
-public class User {
+public class User extends Entity{
+    private static final long serialVersionUID = 5222693753031074609L;
 
     private static final Logger logger = LoggerFactory.getLogger(User.class);
     private static final EmailValidator validator = EmailValidator.getInstance();
     public static final String hashAlgorithm = "SHA-256"; // MD5
 
-    private int id;
     private String email;
     private String firstName;
     private String middleName;
@@ -25,14 +25,6 @@ public class User {
 
     public User() {
         // default constructor
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getEmail() {

@@ -1,11 +1,11 @@
 package com.finalprojultimate.controller.servlet;
 
 import com.finalprojultimate.model.db.dao.DAOFactory;
-import com.finalprojultimate.model.db.dao.connection.PoolConnection;
 import com.finalprojultimate.model.db.dao.connection.PoolConnectionBuilder;
 import com.finalprojultimate.model.db.dao.entitydao.UserDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
 import com.finalprojultimate.model.db.dao.mysql.MySqlDAOFactory;
+import com.finalprojultimate.model.db.dao.util.DAOConstants;
 import com.finalprojultimate.model.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,6 +14,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 
 @WebServlet(name = "RegistrationServlet", value = "/registration")
 public class RegistrationServlet extends HttpServlet {
@@ -21,20 +22,23 @@ public class RegistrationServlet extends HttpServlet {
 
     private UserDAO userDAO;
 
-    public RegistrationServlet() {
-        // default constructor
-    }
-
     @Override
     public void init() {
-        DAOFactory daoFactory = new MySqlDAOFactory();
+        DAOFactory.setDaoFactoryFCN(DAOConstants.MySqlDAOFactoryFCN);
+        DAOFactory daoFactory = null;
+        try {
+            daoFactory = DAOFactory.getInstance();
+        } catch (NoSuchMethodException | ClassNotFoundException | InvocationTargetException |
+                InstantiationException | IllegalAccessException e) {
+            logger.error(e.getMessage(), e);
+        }
+        assert daoFactory != null;
         userDAO = daoFactory.getUserDAO();
-        userDAO.setConnectionBuilder(PoolConnection.getInstance());
+        userDAO.setConnectionBuilder(PoolConnectionBuilder.getInstance());
     }
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        logger.info("doGet");
         RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/view/jsp/registration.jsp");
         dispatcher.forward(request, response);
     }

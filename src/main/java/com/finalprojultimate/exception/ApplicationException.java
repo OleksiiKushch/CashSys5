@@ -54,12 +54,61 @@ public class ApplicationException extends RuntimeException {
         return classThrowsException;
     }
 
-    public void addMessage(String message) {
+    public ApplicationException addMessage(String message) {
         this.message.append(message);
+        return this;
     }
 
-    public void addLogMessage(String logMessage) {
+    public ApplicationException addLogMessage(String logMessage) {
         this.logMessage.append(logMessage);
+        return this;
+    }
+
+    public static class Builder {
+        private final ApplicationException newApplicationException;
+
+        public Builder() {
+            newApplicationException = new ApplicationException();
+        }
+
+        public Builder withMessage() {
+            newApplicationException.message = new StringBuffer();
+            return this;
+        }
+
+        public Builder withMessage(StringBuffer message) {
+            newApplicationException.message = message;
+            return this;
+        }
+
+        public Builder addMessage(String message) {
+            newApplicationException.message.append(message);
+            return this;
+        }
+
+        public Builder withLogMessage() {
+            newApplicationException.logMessage = new StringBuffer();
+            return this;
+        }
+
+        public Builder withLogMessage(StringBuffer logMessage) {
+            newApplicationException.logMessage = logMessage;
+            return this;
+        }
+
+        public Builder addLogMessage(String logMessage) {
+            newApplicationException.logMessage.append(logMessage);
+            return this;
+        }
+
+        public Builder withClassThrowsException(Class<?> classThrowsException) {
+            newApplicationException.classThrowsException = classThrowsException;
+            return this;
+        }
+
+        public ApplicationException build() {
+            return newApplicationException;
+        }
     }
 
 }

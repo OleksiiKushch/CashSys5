@@ -13,20 +13,26 @@ import java.sql.SQLException;
 public class PoolConnectionBuilder implements ConnectionBuilder {
     private static final Logger logger = LoggerFactory.getLogger(PoolConnectionBuilder.class);
 
-    private DataSource dataSource;
+    private static DataSource dataSource;
 
-    public PoolConnectionBuilder() {
-        try {
-            Context ctx = new InitialContext();
-            dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/cashSys");
-        } catch(NamingException e) {
-            logger.error(e.getMessage(), e);
+    private PoolConnectionBuilder() {
+        // private constructor
+    }
+
+    public static synchronized PoolConnectionBuilder getInstance() {
+        if (dataSource == null) {
+            try {
+                Context ctx = new InitialContext();
+                dataSource = (DataSource) ctx.lookup("java:comp/env/jdbc/cashSys");
+            } catch(NamingException e) {
+                logger.error(e.getMessage(), e);
+            }
         }
+        return new PoolConnectionBuilder();
     }
 
     @Override
     public Connection getConnection() throws SQLException {
         return dataSource.getConnection();
     }
-
 }

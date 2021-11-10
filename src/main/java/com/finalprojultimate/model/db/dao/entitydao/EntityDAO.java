@@ -16,11 +16,10 @@ public interface EntityDAO<T> {
     void delete(T t) throws DaoException;
     T getById(int id) throws DaoException;
     List<T> getAll() throws DaoException;
-    default DaoException generateException(String message, String logMessage, Class<?> classThatThrows) {
-        return new DaoException.Builder()
-                .withMessage().addMessage(message)
-                .withLogMessage().addLogMessage(logMessage)
-                .withClassThrowsException(classThatThrows)
-                .build();
-    };
+    default ApplicationException generateException(String message, String logMessage, Class<?> classThatThrows) {
+        return new DaoException()
+                .addMessage(message)
+                .addLogMessage(logMessage)
+                .setClassThrowsException(classThatThrows);
+    }
 }
