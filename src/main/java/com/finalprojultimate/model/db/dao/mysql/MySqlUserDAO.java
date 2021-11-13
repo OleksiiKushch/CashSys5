@@ -3,9 +3,9 @@ package com.finalprojultimate.model.db.dao.mysql;
 import com.finalprojultimate.model.db.dao.connection.ConnectionBuilder;
 import com.finalprojultimate.model.db.dao.entitydao.UserDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
-import com.finalprojultimate.model.entity.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.finalprojultimate.model.entity.user.Role;
+import com.finalprojultimate.model.entity.user.User;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -13,7 +13,7 @@ import java.util.List;
 
 public class MySqlUserDAO implements UserDAO {
 
-    private static final Logger logger = LoggerFactory.getLogger(MySqlUserDAO.class);
+    private static final Logger logger = Logger.getLogger(MySqlUserDAO.class);
 
     private ConnectionBuilder connectionBuilder;
 
@@ -30,7 +30,7 @@ public class MySqlUserDAO implements UserDAO {
     @Override
     public void insert(User user) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.CREATE_USER,
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.CREATE_USER,
                      Statement.RETURN_GENERATED_KEYS)) {
             mapUser(ps, user);
             ps.executeUpdate();
@@ -53,7 +53,7 @@ public class MySqlUserDAO implements UserDAO {
     @Override
     public void update(User user) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.UPDATE_USER)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.UPDATE_USER)) {
             mapUser(ps, user);
             ps.setInt(7, user.getId());
             ps.executeUpdate();
@@ -71,7 +71,7 @@ public class MySqlUserDAO implements UserDAO {
     @Override
     public void delete(User user) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.DELETE_USER_BY_ID)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.DELETE_USER_BY_ID)) {
             ps.setInt(1, user.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -84,7 +84,7 @@ public class MySqlUserDAO implements UserDAO {
     public User getById(int id) throws DaoException {
         User result = null;
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.GET_USER_BY_ID)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.GET_USER_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -102,7 +102,7 @@ public class MySqlUserDAO implements UserDAO {
     public List<User> getAll() throws DaoException {
         List<User> result = new ArrayList<>();
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.GET_ALL_USERS)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.GET_ALL_USERS)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     result.add(mapUser(rs));
@@ -119,7 +119,7 @@ public class MySqlUserDAO implements UserDAO {
     public User getUserByEmail(String email) throws DaoException {
         User result = null;
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.UserQuery.GET_USER_BY_EMAIL)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.GET_USER_BY_EMAIL)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -145,13 +145,13 @@ public class MySqlUserDAO implements UserDAO {
 
     private User mapUser(ResultSet rs) throws SQLException {
         return new User.Builder()
-                .withId(rs.getInt(MySqlConstants.UserField.ID))
-                .withEmail(rs.getString(MySqlConstants.UserField.EMAIL))
-                .withFirstName(rs.getString(MySqlConstants.UserField.FIRST_NAME))
-                .withMiddleName(rs.getString(MySqlConstants.UserField.MIDDLE_NAME))
-                .withLastName(rs.getString(MySqlConstants.UserField.LAST_NAME))
-                .withPassHash(rs.getString(MySqlConstants.UserField.PASS_HASH))
-                .withRoleId(User.Role.getById(rs.getInt(MySqlConstants.UserField.ROLE_ID)))
+                .withId(rs.getInt(MySqlConstant.UserField.ID))
+                .withEmail(rs.getString(MySqlConstant.UserField.EMAIL))
+                .withFirstName(rs.getString(MySqlConstant.UserField.FIRST_NAME))
+                .withMiddleName(rs.getString(MySqlConstant.UserField.MIDDLE_NAME))
+                .withLastName(rs.getString(MySqlConstant.UserField.LAST_NAME))
+                .withPassHash(rs.getString(MySqlConstant.UserField.PASS_HASH))
+                .withRoleId(Role.getById(rs.getInt(MySqlConstant.UserField.ROLE_ID)))
                 .build();
     }
 }

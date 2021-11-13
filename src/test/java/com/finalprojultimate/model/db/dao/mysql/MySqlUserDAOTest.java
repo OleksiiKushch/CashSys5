@@ -5,20 +5,17 @@ import com.finalprojultimate.model.db.dao.DAOFactory;
 import com.finalprojultimate.model.db.DirectConnectionBuilder;
 import com.finalprojultimate.model.db.dao.entitydao.UserDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
-import com.finalprojultimate.model.entity.User;
+import com.finalprojultimate.model.entity.user.Role;
+import com.finalprojultimate.model.entity.user.User;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 import static org.junit.Assert.*;
 
 public class MySqlUserDAOTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(MySqlUserDAOTest.class);
 
     UserDAO userDAO;
 
@@ -42,7 +39,7 @@ public class MySqlUserDAOTest {
                 .withMiddleName("Dilan")
                 .withLastName("Cupper")
                 .withPassHash("82A280E5FF6A23229A5FCE280C0D14C84832FE019D0AD5CDA140C1BFD6B19112")
-                .withRoleId(User.Role.CASHIER)
+                .withRoleId(Role.CASHIER)
                 .build();
         userDAO.insert(user);
         assertEquals("Ben", userDAO.getById(8).getFirstName());

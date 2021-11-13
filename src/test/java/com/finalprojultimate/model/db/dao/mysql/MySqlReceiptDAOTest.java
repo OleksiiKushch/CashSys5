@@ -5,12 +5,12 @@ import com.finalprojultimate.model.db.dao.DAOFactory;
 import com.finalprojultimate.model.db.DirectConnectionBuilder;
 import com.finalprojultimate.model.db.dao.entitydao.ReceiptDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
-import com.finalprojultimate.model.entity.Receipt;
+import com.finalprojultimate.model.entity.receipt.Payment;
+import com.finalprojultimate.model.entity.receipt.Receipt;
+import com.finalprojultimate.model.entity.receipt.Status;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,8 +18,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class MySqlReceiptDAOTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(MySqlReceiptDAOTest.class);
 
     ReceiptDAO receiptDAO;
 
@@ -39,9 +37,9 @@ public class MySqlReceiptDAOTest {
     public void saveDeleteTest() throws DaoException {
         Receipt receipt = new Receipt.Builder()
                 .withChange(new BigDecimal("0.45"))
-                .withPayment(Receipt.Payment.CASH)
+                .withPayment(Payment.CASH)
                 .withUserId(4)
-                .withStatus(Receipt.Status.NORMAL)
+                .withStatus(Status.NORMAL)
                 .build();
         receiptDAO.insert(receipt);
         assertEquals(new BigDecimal("0.45"), receiptDAO.getById(12).getChange());

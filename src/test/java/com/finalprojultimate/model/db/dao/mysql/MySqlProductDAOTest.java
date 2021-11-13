@@ -5,12 +5,11 @@ import com.finalprojultimate.model.db.dao.DAOFactory;
 import com.finalprojultimate.model.db.DirectConnectionBuilder;
 import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
-import com.finalprojultimate.model.entity.Product;
+import com.finalprojultimate.model.entity.product.Product;
+import com.finalprojultimate.model.entity.product.Unit;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -18,8 +17,6 @@ import java.util.List;
 import static org.junit.Assert.*;
 
 public class MySqlProductDAOTest {
-
-    private static final Logger logger = LoggerFactory.getLogger(MySqlProductDAOTest.class);
 
     ProductDAO productDAO;
 
@@ -42,7 +39,7 @@ public class MySqlProductDAOTest {
                 .withPrice(new BigDecimal("2.1"))
                 .withAmount(new BigDecimal("75"))
                 .withBarcode("4602313509807")
-                .withUnit(Product.Unit.PIECES)
+                .withUnit(Unit.PIECES)
                 .build();
         productDAO.insert(product);
         assertEquals(1, productDAO.findProductsByBarcode("4602313509807").size());

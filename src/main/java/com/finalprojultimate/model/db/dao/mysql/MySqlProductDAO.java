@@ -1,12 +1,11 @@
 package com.finalprojultimate.model.db.dao.mysql;
 
-import com.finalprojultimate.exception.ApplicationException;
 import com.finalprojultimate.model.db.dao.connection.ConnectionBuilder;
 import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
-import com.finalprojultimate.model.entity.Product;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.finalprojultimate.model.entity.product.Product;
+import com.finalprojultimate.model.entity.product.Unit;
+import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -14,7 +13,7 @@ import java.util.List;
 
 public class MySqlProductDAO implements ProductDAO {
 
-    private static final Logger logger = LoggerFactory.getLogger(MySqlProductDAO.class);
+    private static final Logger logger = Logger.getLogger(MySqlProductDAO.class);
 
     private ConnectionBuilder connectionBuilder;
 
@@ -31,7 +30,7 @@ public class MySqlProductDAO implements ProductDAO {
     @Override
     public void insert(Product product) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ProductQuery.CREATE_PRODUCT,
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ProductQuery.CREATE_PRODUCT,
                      Statement.RETURN_GENERATED_KEYS)) {
             mapProduct(ps, product);
             ps.executeUpdate();
@@ -54,7 +53,7 @@ public class MySqlProductDAO implements ProductDAO {
     @Override
     public void update(Product product) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ProductQuery.UPDATE_PRODUCT)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ProductQuery.UPDATE_PRODUCT)) {
             mapProduct(ps, product);
             ps.setInt(6, product.getId());
             ps.executeUpdate();
@@ -72,7 +71,7 @@ public class MySqlProductDAO implements ProductDAO {
     @Override
     public void delete(Product product) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ProductQuery.DELETE_PRODUCT_BY_BARCODE)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ProductQuery.DELETE_PRODUCT_BY_BARCODE)) {
             ps.setInt(1, product.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -85,7 +84,7 @@ public class MySqlProductDAO implements ProductDAO {
     public Product getById(int id) throws DaoException {
         Product result = null;
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ProductQuery.GET_PRODUCT_BY_ID)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ProductQuery.GET_PRODUCT_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -103,7 +102,7 @@ public class MySqlProductDAO implements ProductDAO {
     public List<Product> getAll() throws DaoException {
         List<Product> result = new ArrayList<>();
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ProductQuery.GET_ALL_PRODUCTS)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ProductQuery.GET_ALL_PRODUCTS)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     result.add(mapProduct(rs));
@@ -118,12 +117,12 @@ public class MySqlProductDAO implements ProductDAO {
 
     @Override
     public List<Product> findProductsByName(String pattern) throws DaoException {
-        return findProductsByQuery(MySqlConstants.ProductQuery.FIND_PRODUCTS_BY_NAME, pattern);
+        return findProductsByQuery(MySqlConstant.ProductQuery.FIND_PRODUCTS_BY_NAME, pattern);
     }
 
     @Override
     public List<Product> findProductsByBarcode(String pattern) throws DaoException {
-        return findProductsByQuery(MySqlConstants.ProductQuery.FIND_PRODUCTS_BY_BARCODE, pattern);
+        return findProductsByQuery(MySqlConstant.ProductQuery.FIND_PRODUCTS_BY_BARCODE, pattern);
     }
 
     private List<Product> findProductsByQuery(String query, String pattern) throws DaoException {
@@ -154,12 +153,12 @@ public class MySqlProductDAO implements ProductDAO {
 
     private Product mapProduct(ResultSet rs) throws SQLException {
         return new Product.Builder()
-                .withId(rs.getInt(MySqlConstants.ProductField.ID))
-                .withName(rs.getString(MySqlConstants.ProductField.NAME))
-                .withPrice(rs.getBigDecimal(MySqlConstants.ProductField.PRICE))
-                .withAmount(rs.getBigDecimal(MySqlConstants.ProductField.AMOUNT))
-                .withBarcode(rs.getString(MySqlConstants.ProductField.BARCODE))
-                .withUnit(Product.Unit.getById(rs.getInt(MySqlConstants.ProductField.UNIT_ID)))
+                .withId(rs.getInt(MySqlConstant.ProductField.ID))
+                .withName(rs.getString(MySqlConstant.ProductField.NAME))
+                .withPrice(rs.getBigDecimal(MySqlConstant.ProductField.PRICE))
+                .withAmount(rs.getBigDecimal(MySqlConstant.ProductField.AMOUNT))
+                .withBarcode(rs.getString(MySqlConstant.ProductField.BARCODE))
+                .withUnit(Unit.getById(rs.getInt(MySqlConstant.ProductField.UNIT_ID)))
                 .build();
     }
 

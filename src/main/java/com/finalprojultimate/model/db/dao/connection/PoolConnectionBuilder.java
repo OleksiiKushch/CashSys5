@@ -1,7 +1,6 @@
 package com.finalprojultimate.model.db.dao.connection;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
@@ -11,7 +10,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class PoolConnectionBuilder implements ConnectionBuilder {
-    private static final Logger logger = LoggerFactory.getLogger(PoolConnectionBuilder.class);
+
+    private static final Logger logger = Logger.getLogger(PoolConnectionBuilder.class);
 
     private static DataSource dataSource;
 

@@ -16,7 +16,8 @@
 
         <div class="card my-3">
             <div class="card-body">
-                <form class="was-validated" action="<%= request.getContextPath() %>/registration" method="post">
+                <form class="was-validated" action="<%= request.getContextPath() %>/FrontController?command=/registration"
+                      method="post">
 
                     <div class="mb-3">
                         <label for="inputEmail" class="form-label">E-mail address:</label>
@@ -45,13 +46,15 @@
                     <div class="mb-3">
                         <label for="inputPassword" class="form-label">Password:</label>
                         <input type="password" class="form-control" id="inputPassword" name="password"
-                               placeholder="Enter password" required>
+                               placeholder="Enter password"
+                               minlength="4" maxlength="16" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="inputConfirmationPassword" class="form-label">Confirm password:</label>
                         <input type="password" class="form-control" id="inputConfirmationPassword" name="confirmationPassword"
-                               placeholder="Enter password (again)" required>
+                               placeholder="Enter password (again)"
+                               minlength="4" maxlength="16" required>
                     </div>
 
                     <fieldset class="form-group">
@@ -87,8 +90,10 @@
 
                     <div class="mb-1">
                         <label for="alreadyAccount" class="form-label">Have already an account?</label>
-                        <a href="login" class="fw-bold text-body" id="alreadyAccount">
-                            <u>Login here</u></a>
+                        <a href="${pageContext.request.contextPath}/FrontController?command=/login"
+                           class="fw-bold text-body" id="alreadyAccount">
+                            <u>Login here</u>
+                        </a>
                     </div>
 
                 </form>

@@ -3,9 +3,10 @@ package com.finalprojultimate.model.db.dao.mysql;
 import com.finalprojultimate.model.db.dao.connection.ConnectionBuilder;
 import com.finalprojultimate.model.db.dao.entitydao.ReceiptDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
-import com.finalprojultimate.model.entity.Receipt;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.finalprojultimate.model.entity.receipt.Payment;
+import com.finalprojultimate.model.entity.receipt.Receipt;
+import com.finalprojultimate.model.entity.receipt.Status;
+import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.*;
@@ -14,7 +15,7 @@ import java.util.List;
 
 public class MySqlReceiptDAO implements ReceiptDAO {
 
-    private static final Logger logger = LoggerFactory.getLogger(MySqlReceiptDAO.class);
+    private static final Logger logger = Logger.getLogger(MySqlReceiptDAO.class);
 
     private ConnectionBuilder connectionBuilder;
 
@@ -31,7 +32,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     @Override
     public void insert(Receipt receipt) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.CREATE_RECEIPT,
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ReceiptQuery.CREATE_RECEIPT,
                      Statement.RETURN_GENERATED_KEYS)) {
             mapReceipt(ps, receipt);
             ps.executeUpdate();
@@ -54,7 +55,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     @Override
     public void update(Receipt receipt) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.UPDATE_RECEIPT)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ReceiptQuery.UPDATE_RECEIPT)) {
             mapReceipt(ps, receipt);
             ps.setInt(5, receipt.getId());
             ps.executeUpdate();
@@ -72,7 +73,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     @Override
     public void delete(Receipt receipt) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.DELETE_RECEIPT_BY_ID)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ReceiptQuery.DELETE_RECEIPT_BY_ID)) {
             ps.setInt(1, receipt.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -85,7 +86,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     public Receipt getById(int id) throws DaoException {
         Receipt result = null;
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.GET_RECEIPT_BY_ID)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ReceiptQuery.GET_RECEIPT_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -103,7 +104,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     public List<Receipt> getAll() throws DaoException {
         List<Receipt> result = new ArrayList<>();
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstants.ReceiptQuery.GET_ALL_RECEIPTS)) {
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ReceiptQuery.GET_ALL_RECEIPTS)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     result.add(mapReceipt(rs));
@@ -126,12 +127,12 @@ public class MySqlReceiptDAO implements ReceiptDAO {
 
     private Receipt mapReceipt(ResultSet rs) throws SQLException {
         return new Receipt.Builder()
-                .withId(rs.getInt(MySqlConstants.ReceiptField.ID))
-                .withDateTime(rs.getTimestamp(MySqlConstants.ReceiptField.DATE_TIME).toLocalDateTime())
-                .withChange(new BigDecimal(rs.getString(MySqlConstants.ReceiptField.CHANGE)))
-                .withPayment(Receipt.Payment.getById(rs.getInt(MySqlConstants.ReceiptField.PAYMENT_ID)))
-                .withUserId(rs.getInt(MySqlConstants.ReceiptField.USER_ID))
-                .withStatus(Receipt.Status.getById(rs.getInt(MySqlConstants.ReceiptField.STATUS_ID)))
+                .withId(rs.getInt(MySqlConstant.ReceiptField.ID))
+                .withDateTime(rs.getTimestamp(MySqlConstant.ReceiptField.DATE_TIME).toLocalDateTime())
+                .withChange(new BigDecimal(rs.getString(MySqlConstant.ReceiptField.CHANGE)))
+                .withPayment(Payment.getById(rs.getInt(MySqlConstant.ReceiptField.PAYMENT_ID)))
+                .withUserId(rs.getInt(MySqlConstant.ReceiptField.USER_ID))
+                .withStatus(Status.getById(rs.getInt(MySqlConstant.ReceiptField.STATUS_ID)))
                 .build();
     }
 }
