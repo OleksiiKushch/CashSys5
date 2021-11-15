@@ -21,13 +21,19 @@
 
         <c:if test="${sessionScope.logged_user.role == Role.SENIOR_CASHIER}">
             <ul class="nav navbar-nav">
-                <li><a href="">Receipt catalog</a></li>
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/receipt_catalog">
+                    Receipt catalog</a></li>
             </ul>
         </c:if>
 
         <c:if test="${sessionScope.logged_user.role == Role.COMMODITY_EXPERT}">
             <ul class="nav navbar-nav">
-                <li><a href="${pageContext.request.contextPath}/FrontController?command=/product_catalog">Product catalog</a></li>
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/product_catalog">
+                    Product catalog</a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/create_new_product">
+                    New Product</a></li>
             </ul>
         </c:if>
 

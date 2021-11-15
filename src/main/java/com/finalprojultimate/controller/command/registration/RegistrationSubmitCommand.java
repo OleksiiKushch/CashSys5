@@ -25,7 +25,7 @@ public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
     private static final Logger logger = Logger.getLogger(RegistrationSubmitCommand.class);
     private static final String USER_SIGNED_UP = "User %s registered successfully!";
 
-    private final UserService personService = UserServiceImpl.getInstance();
+    private final UserService userService = UserServiceImpl.getInstance();
 
     private final Validator<User> validator = new RegistrationValidator();
 
@@ -37,7 +37,7 @@ public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
     protected String performExecute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         User user = getDataFromRequest(request);
-        logger.info(user.toString());
+
         // writeSpecificDataToRequest(request, user);
 
         if(!validator.isValid(user)){
@@ -47,7 +47,7 @@ public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
 
         user.setPassHash(encryptUserPassword(user.getPassHash()));
 
-        personService.registration(user);
+        userService.registration(user);
 
         logger.info(String.format(USER_SIGNED_UP, user.getEmail()));
         response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_REGISTRATION);
@@ -76,7 +76,6 @@ public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
                 .withMiddleName(middleName)
                 .withLastName(lastName)
                 .withPassHash(password)
-                // .withRoleId(User.Role.getByName(role))
                 .withRoleId(Role.getByName(role))
                 .build();
     }

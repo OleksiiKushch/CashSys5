@@ -16,6 +16,12 @@ public abstract class Page {
     public static final String SUCCESSFUL_REGISTRATION_PAGE = PATH + "/successful_registration" + JSP;
 
     public static final String PRODUCT_CATALOG_PAGE = PATH + "/product_catalog" + JSP;
+    public static final String EDIT_PRODUCT_PAGE = PATH + "/edit_product" + JSP;
+    public static final String SUCCESSFUL_UPDATE_PRODUCT_PAGE = PATH + "/successful_update_product" + JSP;
+    public static final String SUCCESSFUL_DELETE_PRODUCT_PAGE = PATH + "/successful_delete_product" + JSP;
+    public static final String CREATE_NEW_PRODUCT_PAGE = PATH + "/create_new_product" + JSP;
+    public static final String SUCCESSFUL_CREATE_NEW_PRODUCT_PAGE = PATH + "/successful_create_new_product" + JSP;
+    public static final String RECEIPT_CATALOG_PAGE = PATH + "/receipt_catalog" + JSP;
 
     public static final String INTERNAL_SERVER_ERROR_PAGE = PATH + "/error/internal_server_error" + JSP;
     public static final String PAGE_NOT_FOUND_ERROR_PAGE = PATH + "/error/page_not_found" + JSP;

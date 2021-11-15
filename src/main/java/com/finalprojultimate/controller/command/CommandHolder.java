@@ -1,13 +1,11 @@
 package com.finalprojultimate.controller.command;
 
-import com.finalprojultimate.controller.command.get.GetLogoutCommand;
-import com.finalprojultimate.controller.command.get.GetMainCommand;
-import com.finalprojultimate.controller.command.get.GetProductCatalogCommand;
-import com.finalprojultimate.controller.command.login.LoginCommand;
-import com.finalprojultimate.controller.command.login.LoginSubmitCommand;
-import com.finalprojultimate.controller.command.registration.RegistrationCommand;
-import com.finalprojultimate.controller.command.registration.RegistrationSubmitCommand;
-import com.finalprojultimate.controller.command.registration.SuccessfulRegistrationCommand;
+import com.finalprojultimate.controller.command.get.*;
+import com.finalprojultimate.controller.command.login.*;
+import com.finalprojultimate.controller.command.post.PostCreateNewProductCommand;
+import com.finalprojultimate.controller.command.post.PostDeleteProductCommand;
+import com.finalprojultimate.controller.command.post.PostEditProductCommand;
+import com.finalprojultimate.controller.command.registration.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,22 +31,18 @@ public class CommandHolder {
         commands.put(GET + REGISTRATION, new RegistrationCommand());
         commands.put(GET + SUCCESSFUL_REGISTRATION, new SuccessfulRegistrationCommand());
         commands.put(GET + PRODUCT_CATALOG, new GetProductCatalogCommand());
-//        commands.put(GET + USER_INFO_USERNAME, new GetUserInfo());
-//        commands.put(GET + SUBJECTS, new GetSubjectsCommand());
-//        commands.put(GET + CONCRETE_SUBJECT, new GetTestsCommand());
-//        commands.put(GET + CONCRETE_STUDENT_TEST, new GetStudentConcreteTestCommand());
-//        commands.put(GET + TEST_RESULTS, new GetTestResultCommand());
-//        commands.put(GET + CONCRETE_TUTOR_TEST, new GetTutorConcreteTestCommand());
-//        commands.put(GET + STUDENTS_LIST, new GetStudentsCommand());
-//        commands.put(GET + STUDENT_TESTS_LIST, new GetStudentTestsCommand());
+        commands.put(GET + EDIT_PRODUCT, new GetEditProductCommand());
+        commands.put(GET + SUCCESSFUL_UPDATE_PRODUCT, new GetSuccessfulUpdateProductCommand());
+        commands.put(GET + SUCCESSFUL_DELETE_PRODUCT, new GetSuccessfulDeleteProduct());
+        commands.put(GET + CREATE_NEW_PRODUCT, new GetCreateNewProductCommand());
+        commands.put(GET + SUCCESSFUL_CREATE_NEW_PRODUCT, new GetSuccessfulCreateNewProductCommand());
+        commands.put(GET + RECEIPT_CATALOG, new GetReceiptCatalogCommand());
+
         commands.put(POST + LOGIN, new LoginSubmitCommand());
         commands.put(POST + REGISTRATION, new RegistrationSubmitCommand());
-//        commands.put(POST + ADD_SUBJECT, new PostAddSubjectCommand());
-//        commands.put(POST + CONCRETE_SUBJECT, new PostAddTestCommand());
-//        commands.put(POST + SAVE_TEST_RECORD, new PostSavePersonTestRecord());
-//        commands.put(POST + CONCRETE_STUDENT_TEST, new PostAddAnswerCommand());
-//        commands.put(POST + ADD_TUTOR_TASK, new PostAddTaskCommand());
-//        commands.put(POST + UPDATE_TUTOR_TASK, new PostUpdateTaskCommand());
+        commands.put(POST + CREATE_NEW_PRODUCT, new PostCreateNewProductCommand());
+        commands.put(POST + EDIT_PRODUCT, new PostEditProductCommand());
+        commands.put(POST + DELETE_PRODUCT, new PostDeleteProductCommand());
     }
 
     public Command getCommandByKey(String commandKey) {

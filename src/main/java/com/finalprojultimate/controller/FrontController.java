@@ -45,7 +45,7 @@ public class FrontController extends HttpServlet {
             throws ServletException, IOException {
         Command command = getCommandFromRequest(request);
         logger.info("command: " + command.getClass().getSimpleName());
-        String viewPage = command.execute(request,response);
+        String viewPage = command.execute(request, response);
         logger.info(viewPage);
         if(!isRedirected(viewPage)) {
             request.getRequestDispatcher(viewPage)
@@ -66,7 +66,6 @@ public class FrontController extends HttpServlet {
     }
 
     private boolean isRedirected(String viewPage){
-        logger.info("isRedirected");
         return viewPage.equals(Path.REDIRECTED);
     }
 }

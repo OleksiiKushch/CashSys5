@@ -5,6 +5,7 @@ import com.finalprojultimate.controller.validation.LoginValidator;
 import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.controller.writer.RequestAttributeWriter;
 import com.finalprojultimate.model.entity.user.User;
+import com.finalprojultimate.model.services.UserService;
 import com.finalprojultimate.model.services.impl.UserServiceImpl;
 import com.finalprojultimate.model.services.util.LoginData;
 import org.apache.log4j.Logger;
@@ -24,7 +25,7 @@ public class LoginSubmitCommand extends AbstractCommandWrapper<LoginData> {
     private static final Logger logger = Logger.getLogger(LoginSubmitCommand.class);
     private static final String USER_LOGGED_IN = "User %s logged in!";
 
-    private final UserServiceImpl userService = UserServiceImpl.getInstance();
+    private final UserService userService = UserServiceImpl.getInstance();
 
     private final Validator<LoginData> loginValidator = new LoginValidator();
     private RequestAttributeWriter attributeWriter;

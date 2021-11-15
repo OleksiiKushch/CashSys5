@@ -37,9 +37,6 @@ public class RegistrationValidator implements Validator<User> {
         isNotEmptyRole = user.getRole() != null;
         LoginData loginData = new LoginData(user.getEmail(), user.getPassHash());
 
-        logger.info(isNotEmptyFirstName);
-        logger.info(isValidFirstName);
-
         return loginDataValidator.isValid(loginData) &&
                 isNotEmptyFirstName && isValidFirstName &&
                 isNotEmptyMiddleName && isValidMiddleName &&

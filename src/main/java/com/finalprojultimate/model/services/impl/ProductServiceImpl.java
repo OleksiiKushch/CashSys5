@@ -3,7 +3,6 @@ package com.finalprojultimate.model.services.impl;
 import com.finalprojultimate.model.db.dao.DAOFactory;
 import com.finalprojultimate.model.db.dao.connection.PoolConnectionBuilder;
 import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
-import com.finalprojultimate.model.db.dao.entitydao.UserDAO;
 import com.finalprojultimate.model.db.dao.util.DAOConstants;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.services.ProductService;
@@ -22,7 +21,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public static ProductServiceImpl getInstance() {
-        return ProductServiceImpl.Holder.INSTANCE;
+        return Holder.INSTANCE;
     }
 
     public ProductServiceImpl() {
@@ -42,5 +41,25 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<Product> getAll() {
         return productDAO.getAll();
+    }
+
+    @Override
+    public void create(Product product) {
+        productDAO.insert(product);
+    }
+
+    @Override
+    public Product getById(int id) {
+        return productDAO.getById(id);
+    }
+
+    @Override
+    public void update(Product product) {
+        productDAO.update(product);
+    }
+
+    @Override
+    public void delete(Product product) {
+        productDAO.delete(product);
     }
 }
