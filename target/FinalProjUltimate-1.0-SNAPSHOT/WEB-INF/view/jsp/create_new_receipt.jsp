@@ -131,16 +131,16 @@
                     <div class="mb-3">
                         <label for="inputPaid" class="form-label">Paid:</label>
                         <input type="number" min="0" step=".01" id="inputPaid" name="paid" :disabled="disabled == 0" v-model="paid"
-                               class="form-control" placeholder="Enter paid" required > <!-- disabled -->
+                               class="form-control" placeholder="Enter paid" required >
                     </div>
 
                 </div>
                 <div class="card-footer">
-                    <h6>Change: {{ (paid - ${sum}).toFixed(2) }}</h6>
+                    <h6>Change: {{ (paid - ${sum}).toFixed(2) }} </h6>
                 </div>
             </div>
             <div class="p-2 mx-2">
-                <button type="submit" class="mb-5 btn btn-primary btn-lg float-right" :disabled="validChange == 0">Create</button>
+                <button type="submit" class="mb-5 btn btn-primary btn-lg float-right" :disabled="validChange == (paid - ${sum}) < 0">Create</button>
             </div>
         </form>
 
@@ -149,35 +149,13 @@
 
     <%@ include file="/WEB-INF/view/jsp/template/index_footer.jsp" %>
 
-<%--    <script>--%>
-<%--        const inputPaid = document.getElementById('inputPaid');--%>
-<%--        const rad = document.paymentForm.payment;--%>
-<%--        let prev = null;--%>
-<%--        const electronicType = document.getElementById('radio1');--%>
-<%--        const cashType = document.getElementById('radio2');--%>
-<%--        for(let i = 0; i < rad.length; i++) {--%>
-<%--            rad[i].onclick = function() {--%>
-<%--                if(this !== prev) {--%>
-<%--                    prev = this;--%>
-<%--                    console.log(prev);--%>
-<%--                    if (prev === electronicType) {--%>
-<%--                        inputPaid.setAttribute('disabled', 'disabled');--%>
-<%--                    }--%>
-<%--                    if (prev === cashType) {--%>
-<%--                        inputPaid.removeAttribute('disabled');--%>
-<%--                    }--%>
-<%--                }--%>
-<%--            };--%>
-<%--        }--%>
-<%--    </script>--%>
-
     <script>
         let paymentFormListener = new Vue({
             el: '#paymentForm',
             data: {
                 disabled: 0,
                 paid: ${sum},
-                validChange: 1
+                validChange: true
             },
             methods: {
                 disabledIn() {
