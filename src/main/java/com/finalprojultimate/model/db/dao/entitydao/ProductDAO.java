@@ -8,4 +8,6 @@ import java.util.List;
 public interface ProductDAO extends EntityDAO<Product> {
     List<Product> findProductsByName(String pattern) throws DaoException;
     List<Product> findProductsByBarcode(String pattern) throws DaoException;
+    List<Product> findProducts(int offset, int limit) throws DaoException;
+    int getCountOfProducts() throws DaoException;
 }

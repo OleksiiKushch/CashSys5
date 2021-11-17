@@ -2,6 +2,7 @@ package com.finalprojultimate.controller.command;
 
 import com.finalprojultimate.controller.command.get.*;
 import com.finalprojultimate.controller.command.login.*;
+import com.finalprojultimate.controller.command.get.GetAddProductToCartCommand;
 import com.finalprojultimate.controller.command.post.PostCreateNewProductCommand;
 import com.finalprojultimate.controller.command.post.PostDeleteProductCommand;
 import com.finalprojultimate.controller.command.post.PostEditProductCommand;
@@ -37,12 +38,20 @@ public class CommandHolder {
         commands.put(GET + CREATE_NEW_PRODUCT, new GetCreateNewProductCommand());
         commands.put(GET + SUCCESSFUL_CREATE_NEW_PRODUCT, new GetSuccessfulCreateNewProductCommand());
         commands.put(GET + RECEIPT_CATALOG, new GetReceiptCatalogCommand());
+        commands.put(GET + FIND_PRODUCTS_BY_PARAMETER, new GetFindProductsByParameterCommand());
+        commands.put(GET + NEW_RECEIPT, new GetNewReceiptCommand());
+        commands.put(GET + CREATE_NEW_RECEIPT, new GetCreateNewReceiptCommand());
+        commands.put(GET + CART_OF_PRODUCTS, new GetCartOfProductsCommand());
+        commands.put(GET + ADD_PRODUCT_TO_CART, new GetAddProductToCartCommand());
+        commands.put(GET + EDIT_PRODUCT_AMOUNT_FROM_CART, new GetEditProductFromCartCommand());
+        commands.put(GET + DELETE_PRODUCT_FROM_CART, new GetDeleteProductFromCartCommand());
 
         commands.put(POST + LOGIN, new LoginSubmitCommand());
         commands.put(POST + REGISTRATION, new RegistrationSubmitCommand());
         commands.put(POST + CREATE_NEW_PRODUCT, new PostCreateNewProductCommand());
         commands.put(POST + EDIT_PRODUCT, new PostEditProductCommand());
         commands.put(POST + DELETE_PRODUCT, new PostDeleteProductCommand());
+
     }
 
     public Command getCommandByKey(String commandKey) {

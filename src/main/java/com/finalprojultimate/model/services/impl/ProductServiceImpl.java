@@ -62,4 +62,24 @@ public class ProductServiceImpl implements ProductService {
     public void delete(Product product) {
         productDAO.delete(product);
     }
+
+    @Override
+    public List<Product> getForPagination(int offset, int limit) {
+        return productDAO.findProducts(offset, limit);
+    }
+
+    @Override
+    public int getCount() {
+        return productDAO.getCountOfProducts();
+    }
+
+    @Override
+    public List<Product> findProductsByBarcode(String pattern) {
+        return productDAO.findProductsByBarcode(pattern);
+    }
+
+    @Override
+    public List<Product> findProductsByName(String pattern) {
+        return productDAO.findProductsByName(pattern);
+    }
 }

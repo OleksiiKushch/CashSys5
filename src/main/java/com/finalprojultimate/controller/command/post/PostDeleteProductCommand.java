@@ -59,7 +59,7 @@ public class PostDeleteProductCommand extends AbstractCommandWrapper<Product> {
 
     @Override
     protected void writeSpecificDataToRequest(HttpServletRequest request, Product data) {
-        // request.setAttribute(PREVIOUS_PRODUCT, product);
+//        request.setAttribute(PREVIOUS_PRODUCT, product);
     }
 
 //    private void extractAndWriteErrorMessagesToRequest(HttpServletRequest request) {}

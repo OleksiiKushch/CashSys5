@@ -54,6 +54,8 @@ public abstract class MySqlConstant {
         public static final String GET_ALL_PRODUCTS = "SELECT * FROM product";
         public static final String FIND_PRODUCTS_BY_NAME = "SELECT * FROM product WHERE `name` LIKE ? ORDER BY `name`";
         public static final String FIND_PRODUCTS_BY_BARCODE = "SELECT * FROM product WHERE barcode LIKE ? ORDER BY barcode";
+        public static final String FIND_PRODUCTS_WITH_PAGINATION = "SELECT * FROM product LIMIT ? OFFSET ?";
+        public static final String GET_COUNT_OF_PRODUCTS = "SELECT COUNT(*) FROM product";
     }
 
     // User

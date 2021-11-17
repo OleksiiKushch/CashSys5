@@ -16,6 +16,9 @@
             <p class="lead">If you want to create a new product click the button "Create new product".</p>
             <a class="btn btn-lg btn-primary" href="${pageContext.request.contextPath}/FrontController?command=/create_new_product"
                role="button">Create new product</a>
+            <a class="btn btn-lg btn-primary mx-3"
+               href="${pageContext.request.contextPath}/FrontController?command=/product_catalog&page=1&page_size=8"
+               role="button">To product catalog</a>
         </div>
     </div>
 

@@ -125,6 +125,39 @@ public class MySqlProductDAO implements ProductDAO {
         return findProductsByQuery(MySqlConstant.ProductQuery.FIND_PRODUCTS_BY_BARCODE, pattern);
     }
 
+    @Override
+    public List<Product> findProducts(int offset, int limit) throws DaoException {
+        List<Product> result = new ArrayList<>();
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(MySqlConstant.ProductQuery.FIND_PRODUCTS_WITH_PAGINATION)) {
+            ps.setInt(1, limit);
+            ps.setInt(2, offset);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(mapProduct(rs));
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException("", "", getClass()); // Good explanation of error
+        }
+        return result;
+    }
+
+    @Override
+    public int getCountOfProducts() throws DaoException {
+        int result = 0;
+        try (Connection con = getConnection(); Statement stmt = con.createStatement();
+             ResultSet rs = stmt.executeQuery(MySqlConstant.ProductQuery.GET_COUNT_OF_PRODUCTS)) {
+            if (rs.next()) {
+                result = rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException("", "", getClass()); // Good explanation of error
+        }
+        return result;
+    }
+
     private List<Product> findProductsByQuery(String query, String pattern) throws DaoException {
         List<Product> result = new ArrayList<>();
         try (Connection con = getConnection();

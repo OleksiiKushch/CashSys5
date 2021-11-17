@@ -22,6 +22,8 @@ public abstract class Page {
     public static final String CREATE_NEW_PRODUCT_PAGE = PATH + "/create_new_product" + JSP;
     public static final String SUCCESSFUL_CREATE_NEW_PRODUCT_PAGE = PATH + "/successful_create_new_product" + JSP;
     public static final String RECEIPT_CATALOG_PAGE = PATH + "/receipt_catalog" + JSP;
+    public static final String CREATE_NEW_RECEIPT_PAGE = PATH + "/create_new_receipt" + JSP;
+    public static final String CART_OF_PRODUCTS_PAGE = PATH + "/cart_of_products" + JSP;
 
     public static final String INTERNAL_SERVER_ERROR_PAGE = PATH + "/error/internal_server_error" + JSP;
     public static final String PAGE_NOT_FOUND_ERROR_PAGE = PATH + "/error/page_not_found" + JSP;

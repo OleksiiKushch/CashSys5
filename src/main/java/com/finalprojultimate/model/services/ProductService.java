@@ -10,4 +10,8 @@ public interface ProductService {
     Product getById(int id);
     void update(Product product);
     void delete(Product product);
+    List<Product> getForPagination(int offset, int limit);
+    int getCount();
+    List<Product> findProductsByBarcode(String pattern);
+    List<Product> findProductsByName(String pattern);
 }

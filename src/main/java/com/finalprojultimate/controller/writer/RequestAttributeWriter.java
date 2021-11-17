@@ -3,9 +3,9 @@ package com.finalprojultimate.controller.writer;
 import javax.servlet.http.HttpServletRequest;
 
 public class RequestAttributeWriter {
-    private MessageWriter<RequestAttributeData, HttpServletRequest> requestWriter;
-    private MessageWriter<RequestAttributeData, HttpServletRequest> sessionWriter;
-    private HttpServletRequest request;
+    private final MessageWriter<RequestAttributeData, HttpServletRequest> requestWriter;
+    private final MessageWriter<RequestAttributeData, HttpServletRequest> sessionWriter;
+    private final HttpServletRequest request;
 
     @FunctionalInterface
     public interface MessageWriter<M, W> {

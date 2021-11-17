@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -56,6 +57,7 @@ public class PostCreateNewProductCommand extends AbstractCommandWrapper<Product>
     @Override
     protected Product getDataFromRequest(HttpServletRequest request) {
         String name = request.getParameter(PRODUCT_NAME);
+        logger.info("name: " + name);
         String price = request.getParameter(PRICE);
         String amount = request.getParameter(AMOUNT);
         String unit = request.getParameter(UNIT);

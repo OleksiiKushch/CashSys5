@@ -15,7 +15,8 @@
 
         <c:if test="${sessionScope.logged_user.role == Role.CASHIER}">
             <ul class="nav navbar-nav">
-                <li><a href="">New receipt</a></li>
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/new_receipt">
+                    New Receipt</a></li>
             </ul>
         </c:if>
 
@@ -28,7 +29,7 @@
 
         <c:if test="${sessionScope.logged_user.role == Role.COMMODITY_EXPERT}">
             <ul class="nav navbar-nav">
-                <li><a href="${pageContext.request.contextPath}/FrontController?command=/product_catalog">
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/product_catalog&page=1&page_size=8">
                     Product catalog</a></li>
             </ul>
             <ul class="nav navbar-nav">

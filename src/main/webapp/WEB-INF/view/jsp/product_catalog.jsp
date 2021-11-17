@@ -17,6 +17,75 @@
 
     <div class="container-fluid">
         <h1 class="mt-4">Product catalog:</h1>
+
+        <nav>
+<%--            <ul class="pagination justify-content-end">--%>
+<%--                <li class="page-item">--%>
+<%--                    <form action="<%= request.getContextPath() %>/FrontController" method="get">--%>
+<%--                        <input name="command" value="/product_catalog" type="hidden">--%>
+<%--                        <label for="selectPage" class="form-label">Select page number:</label>--%>
+<%--                        <select class="form-select" name="page" id="selectPage">--%>
+<%--                            <c:forEach begin="1" end="${page_count}" var="p">--%>
+<%--                                <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>--%>
+<%--                            </c:forEach>--%>
+<%--                        </select>--%>
+<%--                        <input name="page_size" value="${page_size}" type="hidden">--%>
+<%--                        <button type="submit" class="btn btn-primary btn-sm">Go</button>--%>
+<%--                    </form>--%>
+<%--                </li>--%>
+<%--            </ul>--%>
+            <ul class="pagination justify-content-end">
+
+                <c:choose>
+                    <c:when test="${page - 1 > 0}">
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="<%= request.getContextPath() %>/FrontController?command=/product_catalog&page=${page-1}&page_size=${page_size}">
+                                Previous</a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+
+                <c:forEach var="p" begin="${min_possible_page}" end="${max_possible_page}">
+                    <c:choose>
+                        <c:when test="${page == p}">
+                            <li class="page-item disabled">
+                                <a class="page-link">Page ${p} of ${page_count}</a>
+                            </li>
+                        </c:when>
+                        <c:otherwise>
+                            <li class="page-item">
+                                <a class="page-link"
+                                   href="<%= request.getContextPath() %>/FrontController?command=/product_catalog&page=${p}&page_size=${page_size}">
+                                        ${p}</a>
+                            </li>
+                        </c:otherwise>
+                    </c:choose>
+                </c:forEach>
+
+                <c:choose>
+                    <c:when test="${page + 1 <= page_count}">
+                        <li class="page-item">
+                            <a class="page-link"
+                               href="<%= request.getContextPath() %>/FrontController?command=/product_catalog&page=${page+1}&page_size=${page_size}">
+                                Next</a>
+                        </li>
+                    </c:when>
+                    <c:otherwise>
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#" tabindex="-1">Next</a>
+                        </li>
+                    </c:otherwise>
+                </c:choose>
+
+            </ul>
+        </nav>
+
         <table class="table table-striped border rounded">
             <thead class="thead-light">
             <tr>
@@ -28,7 +97,7 @@
             </tr>
             </thead>
             <tbody>
-                <c:forEach var="product" items="${requestScope.product_catalog}">
+                <c:forEach var="product" items="${requestScope.paginate_products}">
                     <tr>
                         <th class="col-md-1" scope="row">${product.id}</th>
                         <td>${product.name}</td>

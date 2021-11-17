@@ -14,7 +14,8 @@
         <div class="jumbotron mt-3">
             <h1>Product successfully deleted!</h1>
             <p class="lead"></p>
-            <a class="btn btn-lg btn-primary" href="${pageContext.request.contextPath}/FrontController?command=/product_catalog"
+            <a class="btn btn-lg btn-primary"
+               href="${pageContext.request.contextPath}/FrontController?command=/product_catalog&page=1&page_size=8"
                role="button">To product catalog</a>
         </div>
     </div>

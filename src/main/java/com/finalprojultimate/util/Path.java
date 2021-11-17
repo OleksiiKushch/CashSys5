@@ -24,5 +24,12 @@ public abstract class Path {
     public static final String CREATE_NEW_PRODUCT = "/create_new_product";
     public static final String SUCCESSFUL_CREATE_NEW_PRODUCT = "/successful_create_new_product";
     public static final String RECEIPT_CATALOG = "/receipt_catalog";
+    public static final String FIND_PRODUCTS_BY_PARAMETER = "/find_products_by_parameter";
+    public static final String NEW_RECEIPT = "/new_receipt";
+    public static final String CREATE_NEW_RECEIPT = "/create_new_receipt";
+    public static final String ADD_PRODUCT_TO_CART = "/add_product_to_cart";
+    public static final String EDIT_PRODUCT_AMOUNT_FROM_CART = "/edit_product_amount_from_cart";
+    public static final String DELETE_PRODUCT_FROM_CART = "/delete_product_from_cart";
+    public static final String CART_OF_PRODUCTS = "/cart_of_products";
 
 }
