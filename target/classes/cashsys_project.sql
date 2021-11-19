@@ -12,7 +12,7 @@ DROP TABLE IF EXISTS `user` ;
 DROP TABLE IF EXISTS receipt_status ;
 DROP TABLE IF EXISTS receipt ;
 DROP TABLE IF EXISTS receipt_has_product ;
-DROP TABLE IF EXISTS `system` ;
+DROP TABLE IF EXISTS receipt_details;
 
 CREATE TABLE IF NOT EXISTS payment (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -109,20 +109,22 @@ INDEX fk_receipt_has_product_receipt_idx (receipt_id) ,
 CONSTRAINT fk_receipt_has_product_product1
    FOREIGN KEY (product_id)
        REFERENCES product (id)
-       ON DELETE CASCADE
+       ON DELETE RESTRICT
        ON UPDATE CASCADE,
 CONSTRAINT fk_receipt_has_product_receipt
    FOREIGN KEY (receipt_id)
        REFERENCES receipt (id)
-       ON DELETE CASCADE
+       ON DELETE RESTRICT
        ON UPDATE CASCADE);
 
-CREATE TABLE IF NOT EXISTS `system` (
-`lock` char(1) PRIMARY KEY DEFAULT 'X',
-organization_tax_id_number INT NOT NULL,
-name_organization VARCHAR(128) NOT NULL,
-address_trade_point VARCHAR(512) NOT NULL,
-vat DECIMAL(9,2) NOT NULL,
-taxation_sys VARCHAR(45) NOT NULL,
-CHECK (`lock`='X'),
-CHECK (vat>=0));
+CREATE TABLE IF NOT EXISTS receipt_details (
+receipt_id  INT PRIMARY KEY,
+organization_tax_id_number INT,
+name_organization VARCHAR(128),
+address_trade_point VARCHAR(512),
+vat DECIMAL(9,2),
+taxation_sys VARCHAR(45),
+CHECK (vat>=0),
+CONSTRAINT fk_receipt_details_receipt1
+   FOREIGN KEY (receipt_id)
+       REFERENCES receipt (id));

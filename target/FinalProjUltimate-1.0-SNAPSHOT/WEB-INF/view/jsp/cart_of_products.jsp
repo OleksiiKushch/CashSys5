@@ -9,6 +9,8 @@
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/js/jquery.slim.min.js"></script>
 
     <script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/js/bootstrap.bundle.min.js"></script>
+
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/js/vue.js"></script>
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -22,6 +24,8 @@
         <tr>
             <th scope="col">id</th>
             <th scope="col">Name</th>
+            <th scope="col">Sum</th>
+            <th scope="col">Price</th>
             <th scope="col">Amount</th>
             <th scope="col">Barcode</th>
             <th scope="col">Action</th>
@@ -32,10 +36,12 @@
             <tr>
                 <th class="col-md-1" scope="row">${product.id}</th>
                 <td>${product.name}</td>
+                <td class="col-md-1">${product.price * product.amount}</td>
+                <td class="col-md-1">${product.price}</td>
                 <td class="col-md-2">${product.getAmount()} ${product.unit.name}</td>
                 <td class="col-md-1">${product.barcode}</td>
                 <td class="col-md-1">
-                    <a href="" class="editLink" data-id="${product.id}" data-toggle="modal" data-target="#editModal">
+                    <a href="" class="editLink" data-amount="${product.amount}" data-id="${product.id}" data-toggle="modal" data-target="#editModal">
                         edit</a>
                     &nbsp &nbsp
                     <a href="" class="deleteLink" data-id="${product.id}" data-toggle="modal" data-target="#deleteModal">
@@ -46,6 +52,7 @@
         </tbody>
     </table>
     <div class="p-2 mx-2">
+        <h4 class="float-left" id="sum">Sum: {{ (${cart.getSum()}).toFixed(2) }} </h4>
         <a href="${pageContext.request.contextPath}/FrontController?command=/create_new_receipt"
                 type="submit" class="mb-5 btn btn-primary float-right">
             Come back to receipt creation form
@@ -79,7 +86,7 @@
                         </div>
                         <label for="inputAmount"></label>
                         <input type="number" min="0.001" step=".001" class="form-control"
-                               id="inputAmount" name="amount" value="1" required>
+                               id="inputAmount" name="amount" value="" required>
                     </div>
                 </form>
             </div>
@@ -118,9 +125,11 @@
 <script type="text/javascript">
     $(".editLink").click(function () {
         let id = $(this).attr("data-id");
+        let amount = $(this).attr("data-amount");
         let str = "Form for edit the amount of product with id: " + id + " in the cart";
         $("#modalBodyEditForm").html(str);
         $("#editFormProductId").attr("value", id);
+        $("#inputAmount").attr("value", amount);
     });
 </script>
 
@@ -131,6 +140,12 @@
         $("#modalBodyDeleteForm").html(str);
         $("#deleteFormProductId").attr("value", id);
     });
+</script>
+
+<script>
+    let sumListener = new Vue({
+        el: '#sum'
+    })
 </script>
 
 </body>

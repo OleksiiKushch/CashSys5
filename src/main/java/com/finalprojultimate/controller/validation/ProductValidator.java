@@ -19,8 +19,10 @@ public class ProductValidator implements Validator<Product> {
     private boolean isValidProductName;
     private boolean isNotEmptyPrice;
     private boolean isValidPrice;
+    private boolean isUnsignedProductPrice;
     private boolean isNotEmptyAmount;
     private boolean isValidAmount;
+    private boolean isUnsignedProductAmount;
     private boolean isNotEmptyUnit;
     private boolean isNotEmptyBarcode;
     private boolean isValidBarcode;
@@ -37,15 +39,17 @@ public class ProductValidator implements Validator<Product> {
         isValidProductName = isValidProductName(product.getName());
         isNotEmptyPrice = !nullChecker.isEmpty(product.getPrice().toString());
         isValidPrice = isValidPrice(product.getPrice());
+        isUnsignedProductPrice = isUnsignedBigDecimal(product.getPrice());
         isNotEmptyAmount = !nullChecker.isEmpty(product.getAmount().toString());
         isValidAmount = isValidAmount(product.getAmount());
+        isUnsignedProductAmount = isUnsignedBigDecimal(product.getAmount());
         isNotEmptyUnit = product.getUnit() != null;
         isNotEmptyBarcode = !nullChecker.isEmpty(product.getBarcode());
         isValidBarcode = isValidBarcode(product.getBarcode());
 
         return isNotEmptyProductName && isValidProductName &&
-                isNotEmptyPrice && isValidPrice &&
-                isNotEmptyAmount && isValidAmount &&
+                isNotEmptyPrice && isValidPrice && isUnsignedProductPrice &&
+                isNotEmptyAmount && isValidAmount && isUnsignedProductAmount &&
                 isNotEmptyBarcode && isValidBarcode &&
                 isNotEmptyUnit;
     }
@@ -85,7 +89,9 @@ public class ProductValidator implements Validator<Product> {
 
         result.add(extractor.extractIfPositive(!isValidProductName, ERROR_WRONG_PRODUCT_NAME));
         result.add(extractor.extractIfPositive(!isValidPrice, ERROR_WRONG_PRICE));
+        result.add(extractor.extractIfPositive(!isUnsignedProductPrice, ERROR_WRONG_PRICE));
         result.add(extractor.extractIfPositive(!isValidAmount, ERROR_WRONG_AMOUNT));
+        result.add(extractor.extractIfPositive(!isUnsignedProductAmount, ERROR_WRONG_AMOUNT));
         result.add(extractor.extractIfPositive(!isValidBarcode, ERROR_WRONG_BARCODE));
 
         return result.stream().filter(Objects::nonNull).collect(Collectors.toList());

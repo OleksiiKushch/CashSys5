@@ -60,7 +60,8 @@
                     <thead class="thead-light">
                         <tr>
                             <th scope="col" class="col-md-1">id</th>
-                            <th scope="col" class="col-md-5">Name</th>
+                            <th scope="col" class="col-md-4">Name</th>
+                            <th scope="col" class="col-md-1">Price</th>
                             <th scope="col" class="col-md-2">Amount</th>
                             <th scope="col" class="col-md-2">Barcode</th>
                             <th scope="col" class="col-md-2">Action</th>
@@ -70,7 +71,8 @@
                         <c:forEach var="product" items="${requestScope.products_found}">
                             <tr>
                                 <th class="col-md-1" scope="row">${product.id}</th>
-                                <td class="col-md-5">${product.name}</td>
+                                <td class="col-md-4">${product.name}</td>
+                                <td class="col-md-1">${product.price}</td>
                                 <td class="col-md-2">${product.getAmount()} ${product.unit.name}</td>
                                 <td class="col-md-2">${product.barcode}</td>
                                 <td class="col-md-2">
@@ -131,7 +133,7 @@
                     <div class="mb-3">
                         <label for="inputPaid" class="form-label">Paid:</label>
                         <input type="number" min="0" step=".01" id="inputPaid" name="paid" :disabled="disabled == 0" v-model="paid"
-                               class="form-control" placeholder="Enter paid" required >
+                               value="" class="form-control" placeholder="Enter paid" required >
                     </div>
 
                 </div>
@@ -140,7 +142,10 @@
                 </div>
             </div>
             <div class="p-2 mx-2">
-                <button type="submit" class="mb-5 btn btn-primary btn-lg float-right" :disabled="validChange == (paid - ${sum}) < 0">Create</button>
+                <button type="submit" class="mb-5 btn btn-primary btn-lg float-right"
+                        :disabled="${sessionScope.cart.container.isEmpty()} || paid - ${sum} < 0">
+                    Create
+                </button>
             </div>
         </form>
 
@@ -154,8 +159,7 @@
             el: '#paymentForm',
             data: {
                 disabled: 0,
-                paid: ${sum},
-                validChange: true
+                paid: ${sum}
             },
             methods: {
                 disabledIn() {

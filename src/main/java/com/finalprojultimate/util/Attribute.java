@@ -24,11 +24,14 @@ public abstract class Attribute {
 
     public static final String PRODUCT = "product";
     public static final String PRODUCTS = "products";
+    public static final String USER_SERVICE = "user_service";
     public static final String PRODUCT_CATALOG = "product_catalog";
+    public static final String RECEIPT_CATALOG = "receipt_catalog";
     public static final String PAGINATE_PRODUCTS = "paginate_products";
+    public static final String PAGINATE_RECEIPTS = "paginate_receipts";
     public static final String PRODUCTS_FOUND = "products_found";
 
-    public static final String RECEIPT_CATALOG = "receipt_catalog";
+
 
     public static final String ERROR_MESSAGE = "error_message";
     public static final String ERROR_VALIDATION_MESSAGE = "error_validation_message";

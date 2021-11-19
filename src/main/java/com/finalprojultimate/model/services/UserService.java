@@ -5,5 +5,6 @@ import com.finalprojultimate.model.services.util.LoginData;
 
 public interface UserService {
     User login(LoginData loginData);
-    void registration(User user);
+    void create(User user); // registration
+    String getFormattedNameById(int id);
 }

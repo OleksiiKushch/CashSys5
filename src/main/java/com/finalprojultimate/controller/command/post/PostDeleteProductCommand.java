@@ -1,10 +1,7 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.ProductValidator;
-import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.model.entity.product.Product;
-import com.finalprojultimate.model.entity.product.Unit;
 import com.finalprojultimate.model.services.ProductService;
 import com.finalprojultimate.model.services.impl.ProductServiceImpl;
 import org.apache.log4j.Logger;
@@ -13,15 +10,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.math.BigDecimal;
-import java.util.List;
 
-import static com.finalprojultimate.util.Attribute.ERROR_MESSAGE;
-import static com.finalprojultimate.util.Attribute.ERROR_VALIDATION_MESSAGE;
-import static com.finalprojultimate.util.Page.EDIT_PRODUCT_PAGE;
-import static com.finalprojultimate.util.Page.PRODUCT_CATALOG_PAGE;
+import static com.finalprojultimate.util.Page.*;
 import static com.finalprojultimate.util.Parameter.*;
-import static com.finalprojultimate.util.Parameter.BARCODE;
 import static com.finalprojultimate.util.Path.*;
 
 public class PostDeleteProductCommand extends AbstractCommandWrapper<Product> {
@@ -31,8 +22,8 @@ public class PostDeleteProductCommand extends AbstractCommandWrapper<Product> {
     private final ProductService productService = ProductServiceImpl.getInstance();
 
     public PostDeleteProductCommand() {
-        super(PRODUCT_CATALOG_PAGE);
-    }
+        super(INTERNAL_SERVER_ERROR_PAGE);
+    } // TODO
 
     @Override
     protected String performExecute(HttpServletRequest request, HttpServletResponse response)

@@ -22,7 +22,7 @@
 
         <c:if test="${sessionScope.logged_user.role == Role.SENIOR_CASHIER}">
             <ul class="nav navbar-nav">
-                <li><a href="${pageContext.request.contextPath}/FrontController?command=/receipt_catalog">
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/receipt_catalog&page=1&page_size=8">
                     Receipt catalog</a></li>
             </ul>
         </c:if>

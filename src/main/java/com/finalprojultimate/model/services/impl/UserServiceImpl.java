@@ -59,7 +59,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void registration(User user) {
+    public void create(User user) {
         userDAO.insert(user);
+    }
+
+    @Override
+    public String getFormattedNameById(int id) {
+        return userDAO.getById(id).getFormattedName();
     }
 }

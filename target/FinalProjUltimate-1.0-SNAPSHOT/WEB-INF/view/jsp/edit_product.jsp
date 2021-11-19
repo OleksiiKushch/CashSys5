@@ -80,6 +80,14 @@
 
             </div>
         </div>
+
+        <div class="p-2 mx-2">
+            <a href="${pageContext.request.contextPath}/FrontController?command=/product_catalog&page=1&page_size=8"
+               type="submit" class="mb-5 btn btn-primary float-right">
+                Come back to product catalog
+            </a>
+        </div>
+
     </div>
 
     <%@ include file="/WEB-INF/view/jsp/template/index_footer.jsp" %>

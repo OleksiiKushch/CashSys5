@@ -47,7 +47,7 @@ public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
 
         user.setPassHash(encryptUserPassword(user.getPassHash()));
 
-        userService.registration(user);
+        userService.create(user);
 
         logger.info(String.format(USER_SIGNED_UP, user.getEmail()));
         response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_REGISTRATION);

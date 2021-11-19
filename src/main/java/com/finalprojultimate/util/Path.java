@@ -31,5 +31,6 @@ public abstract class Path {
     public static final String EDIT_PRODUCT_AMOUNT_FROM_CART = "/edit_product_amount_from_cart";
     public static final String DELETE_PRODUCT_FROM_CART = "/delete_product_from_cart";
     public static final String CART_OF_PRODUCTS = "/cart_of_products";
+    public static final String SUCCESSFUL_CREATE_NEW_RECEIPT = "/successful_create_new_receipt";
 
 }

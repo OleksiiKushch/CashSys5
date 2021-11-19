@@ -19,21 +19,21 @@
         <h1 class="mt-4">Product catalog:</h1>
 
         <nav>
-<%--            <ul class="pagination justify-content-end">--%>
-<%--                <li class="page-item">--%>
-<%--                    <form action="<%= request.getContextPath() %>/FrontController" method="get">--%>
-<%--                        <input name="command" value="/product_catalog" type="hidden">--%>
-<%--                        <label for="selectPage" class="form-label">Select page number:</label>--%>
-<%--                        <select class="form-select" name="page" id="selectPage">--%>
-<%--                            <c:forEach begin="1" end="${page_count}" var="p">--%>
-<%--                                <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>--%>
-<%--                            </c:forEach>--%>
-<%--                        </select>--%>
-<%--                        <input name="page_size" value="${page_size}" type="hidden">--%>
-<%--                        <button type="submit" class="btn btn-primary btn-sm">Go</button>--%>
-<%--                    </form>--%>
-<%--                </li>--%>
-<%--            </ul>--%>
+            <ul class="pagination justify-content-end">
+                <li class="page-item">
+                    <form action="<%= request.getContextPath() %>/FrontController" method="get">
+                        <input name="command" value="/product_catalog" type="hidden">
+                        <label for="selectPage" class="form-label">Select page number:</label>
+                        <select class="form-select" name="page" id="selectPage">
+                            <c:forEach begin="1" end="${page_count}" var="p">
+                                <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>
+                            </c:forEach>
+                        </select>
+                        <input name="page_size" value="${page_size}" type="hidden">
+                        <button type="submit" class="btn btn-primary btn-sm">Go</button>
+                    </form>
+                </li>
+            </ul>
             <ul class="pagination justify-content-end">
 
                 <c:choose>
@@ -91,6 +91,7 @@
             <tr>
                 <th scope="col">id</th>
                 <th scope="col">Name</th>
+                <th scope="col">Price</th>
                 <th scope="col">Amount</th>
                 <th scope="col">Barcode</th>
                 <th scope="col">Action</th>
@@ -101,6 +102,7 @@
                     <tr>
                         <th class="col-md-1" scope="row">${product.id}</th>
                         <td>${product.name}</td>
+                        <td class="col-md-1">${product.price}</td>
                         <td class="col-md-2">${product.getAmount()} ${product.unit.name}</td>
                         <td class="col-md-1">${product.barcode}</td>
                         <td class="col-md-1">

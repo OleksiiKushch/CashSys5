@@ -7,6 +7,7 @@ public abstract class Parameter {
     }
 
     // user
+    public static final String USER_ID = "user_id";
     public static final String EMAIL = "email";
     public static final String FIRST_NAME = "firstName";
     public static final String MIDDLE_NAME = "middleName";
@@ -22,5 +23,10 @@ public abstract class Parameter {
     public static final String AMOUNT = "amount";
     public static final String UNIT = "unit";
     public static final String BARCODE = "barcode";
+
+    // product
+    public static final String RECEIPT_ID = "receipt_id";
+    public static final String PAYMENT = "payment";
+    public static final String PAID = "paid";
 
 }

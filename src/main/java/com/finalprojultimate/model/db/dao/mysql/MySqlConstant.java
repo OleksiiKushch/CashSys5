@@ -56,6 +56,9 @@ public abstract class MySqlConstant {
         public static final String FIND_PRODUCTS_BY_BARCODE = "SELECT * FROM product WHERE barcode LIKE ? ORDER BY barcode";
         public static final String FIND_PRODUCTS_WITH_PAGINATION = "SELECT * FROM product LIMIT ? OFFSET ?";
         public static final String GET_COUNT_OF_PRODUCTS = "SELECT COUNT(*) FROM product";
+
+        public static final String GET_AMOUNT_PRODUCT_IN_STOCK_BY_ID = "SELECT amount FROM product WHERE id = ?";
+        public static final String UPDATE_AMOUNT_PRODUCT_IN_STOCK_BY_ID = "UPDATE product SET amount = ? WHERE id = ?";
     }
 
     // User
@@ -81,6 +84,11 @@ public abstract class MySqlConstant {
         public static final String DELETE_RECEIPT_BY_ID = "DELETE FROM receipt WHERE id = ?";
         public static final String GET_RECEIPT_BY_ID = "SELECT * FROM receipt WHERE id = ?";
         public static final String GET_ALL_RECEIPTS = "SELECT * FROM receipt";
+        public static final String FIND_RECEIPTS_WITH_PAGINATION = "SELECT * FROM receipt LIMIT ? OFFSET ?";
+        public static final String GET_COUNT_OF_RECEIPTS = "SELECT COUNT(*) FROM receipt";
+        public static final String INSERT_RECEIPT_HAS_PRODUCT = "INSERT INTO receipt_has_product (receipt_id, product_id, price, amount) " +
+                "VALUES (?, ?, ?, ?)";
+
     }
 
 

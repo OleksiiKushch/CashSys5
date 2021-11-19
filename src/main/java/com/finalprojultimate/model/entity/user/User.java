@@ -72,6 +72,10 @@ public class User extends Entity {
         return validator.isValid(input);
     }
 
+    public String getFormattedName() {
+        return lastName + " " + firstName.charAt(0) + "." + middleName.charAt(0) + ".";
+    }
+
     @Override
     public String toString() {
         return "User{" +

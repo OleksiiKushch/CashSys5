@@ -15,6 +15,7 @@ public abstract class CommandRegexAndPatterns {
     public static final String AMOUNT_REGEX = "\\d+\\.*\\d{0,3}";
     public static final String BARCODE_REGEX = "[\\S]{0,128}"; // TODO modifier this
 
+
     public static final Pattern NAME_PATTERN = Pattern.compile(NAME_REGEX);
     public static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);
     public static final Pattern PRODUCT_NAME_PATTERN = Pattern.compile(PRODUCT_NAME_REGEX);
