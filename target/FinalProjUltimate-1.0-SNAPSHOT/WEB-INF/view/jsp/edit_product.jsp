@@ -1,10 +1,13 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page import="com.finalprojultimate.model.entity.product.Unit" %>
 <html>
 <head>
     <title>CashSys.edit.product</title>
 
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style/css/bootstrap.min.css">
+
+    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/js/vue.js"></script>
 
 </head>
 <body class="d-flex flex-column min-vh-100">
@@ -29,37 +32,37 @@
 
                         <div class="mb-3">
                             <label for="inputPrice" class="form-label">Price:</label>
-                            <input type="number" min="0" step=".01" class="form-control" id="inputPrice" name="price"
+                            <input type="number" min="0" step=".01" class="form-control is-invalid" id="inputPrice" name="price"
                                    placeholder="Enter price" value="${requestScope.product.price}" required>
                         </div>
 
                         <div class="mb-3">
                             <label for="inputAmount" class="form-label">Amount:</label>
-                            <input type="number" min="0" step=".001" class="form-control" id="inputAmount" name="amount"
+                            <input type="number" min="0" step=".001" class="form-control is-invalid" id="inputAmount" name="amount"
                                    placeholder="Enter amount" value="${requestScope.product.amount}" required>
                         </div>
 
                         <fieldset class="form-group">
                             <div class="row">
                                 <label class="col-form-label col-sm-2 pt-0">Unit:</label>
-                                <div class="col-sm-10">
+                                <div class="col-sm-10" id="radioForm">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="unit" id="radio1"
-                                               value="pieces" required>
+                                               value="pieces" required :checked="${requestScope.product.unit == Unit.PIECES}">
                                         <label class="form-check-label" for="radio1">
                                             pieces
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="unit" id="radio2"
-                                               value="kilogram" required>
+                                               value="kilogram" required :checked="${requestScope.product.unit == Unit.KILOGRAM}">
                                         <label class="form-check-label" for="radio2">
                                             kilogram
                                         </label>
                                     </div>
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="unit" id="radio3"
-                                               value="litre" required>
+                                               value="litre" required :checked="${requestScope.product.unit == Unit.LITRE}">
                                         <label class="form-check-label" for="radio3">
                                             litre
                                         </label>
@@ -91,6 +94,12 @@
     </div>
 
     <%@ include file="/WEB-INF/view/jsp/template/index_footer.jsp" %>
+
+    <script>
+        let radioFormListener = new Vue({
+            el: '#radioForm'
+        });
+    </script>
 
 </body>
 </html>

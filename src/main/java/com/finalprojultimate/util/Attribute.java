@@ -30,7 +30,7 @@ public abstract class Attribute {
     public static final String PAGINATE_PRODUCTS = "paginate_products";
     public static final String PAGINATE_RECEIPTS = "paginate_receipts";
     public static final String PRODUCTS_FOUND = "products_found";
-
+    public static final String GLOBAL_RECEIPT_PROPERTIES = "global_receipt_properties";
 
 
     public static final String ERROR_MESSAGE = "error_message";

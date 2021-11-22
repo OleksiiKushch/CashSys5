@@ -69,13 +69,11 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
 
         String strPaid = request.getParameter(PAID);
         BigDecimal paid;
-        logger.info("paid1: " + strPaid);
         if (strPaid == null) {
             paid = sum;
         } else {
             paid = new BigDecimal(request.getParameter(PAID));
         }
-        logger.info("paid2: " + paid);
 
         BigDecimal change = getChange(paid, sum);
         String payment = request.getParameter(PAYMENT);

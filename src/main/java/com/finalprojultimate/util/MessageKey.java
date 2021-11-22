@@ -39,6 +39,16 @@ public abstract class MessageKey {
 
     // receipt
     public static final String ERROR_WRONG_RECEIPT_CHANGE = "error.wrong.receipt.change.validation";
+    public static final String ERROR_EMPTY_ORGANIZATION_TAX_ID_NUMBER = "error.empty.organization.tax.id.number.validation";
+    public static final String ERROR_EMPTY_NAME_ORGANIZATION = "error.empty.name.organization.validation";
+    public static final String ERROR_EMPTY_ADDRESS_TRADE_POINT = "error.empty.address.trade.point.validation";
+    public static final String ERROR_EMPTY_VAT = "error.empty.vat.validation";
+    public static final String ERROR_EMPTY_TAXATION_SYS = "error.empty.taxation.sys.validation";
+    public static final String ERROR_WRONG_ORGANIZATION_TAX_ID_NUMBER = "error.wrong.organization.tax.id.number.validation";
+    public static final String ERROR_WRONG_NAME_ORGANIZATION = "error.wrong.name.organization.validation";
+    public static final String ERROR_WRONG_ADDRESS_TRADE_POINT = "error.wrong.address.trade.point.validation";
+    public static final String ERROR_WRONG_VAT = "error.wrong.vat.validation";
+    public static final String ERROR_WRONG_TAXATION_SYS = "error.wrong.taxation.sys.validation";
 
     // general
     public static final String ERROR_UNKNOWN_EXCEPTION = "error.unknown.exception";

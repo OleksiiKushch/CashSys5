@@ -1,5 +1,7 @@
 package com.finalprojultimate.model.db.dao.mysql;
 
+import java.math.BigInteger;
+
 public abstract class MySqlConstant {
 
     private MySqlConstant() {
@@ -37,6 +39,13 @@ public abstract class MySqlConstant {
         public static final String PAYMENT_ID = "payment_id";
         public static final String USER_ID = "user_id";
         public static final String STATUS_ID = "status_id";
+
+        public static final String RECEIPT_ID = "receipt_id";
+        public static final String ORGANIZATION_TAX_ID_NUMBER = "organization_tax_id_number";
+        public static final String NAME_ORGANIZATION = "name_organization";
+        public static final String ADDRESS_TRADE_POINT = "address_trade_point";
+        public static final String VAT = "vat";
+        public static final String TAXATION_SYS = "taxation_sys";
     }
 
 
@@ -88,7 +97,12 @@ public abstract class MySqlConstant {
         public static final String GET_COUNT_OF_RECEIPTS = "SELECT COUNT(*) FROM receipt";
         public static final String INSERT_RECEIPT_HAS_PRODUCT = "INSERT INTO receipt_has_product (receipt_id, product_id, price, amount) " +
                 "VALUES (?, ?, ?, ?)";
-
+        public static final String GET_GLOBAL_RECEIPT_PROPERTIES = "SELECT * FROM global_receipt_properties";
+        public static final String SET_GLOBAL_RECEIPT_PROPERTIES = "CALL set_global_receipt_properties(?, ?, ?, ?, ?)";
+        public static final String SET_RECEIPT_DETAILS = "INSERT INTO receipt_details (receipt_id, organization_tax_id_number, " +
+                "name_organization, address_trade_point, vat, taxation_sys) VALUES (?, ?, ?, ?, ?, ?)";
+        // TRUNCATE is faster than DELETE since it does not generate rollback information and does not fire any delete triggers
+        public static final String RESET_GLOBAL_RECEIPT_PROPERTIES = "TRUNCATE global_receipt_properties";
     }
 
 

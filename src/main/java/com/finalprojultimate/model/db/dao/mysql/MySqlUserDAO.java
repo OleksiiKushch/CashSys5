@@ -11,6 +11,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.UserQuery.*;
+
 public class MySqlUserDAO implements UserDAO {
 
     private static final Logger logger = Logger.getLogger(MySqlUserDAO.class);
@@ -30,7 +32,7 @@ public class MySqlUserDAO implements UserDAO {
     @Override
     public void insert(User user) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.CREATE_USER,
+             PreparedStatement ps = con.prepareStatement(CREATE_USER,
                      Statement.RETURN_GENERATED_KEYS)) {
             mapUser(ps, user);
             ps.executeUpdate();
@@ -53,7 +55,7 @@ public class MySqlUserDAO implements UserDAO {
     @Override
     public void update(User user) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.UPDATE_USER)) {
+             PreparedStatement ps = con.prepareStatement(UPDATE_USER)) {
             mapUser(ps, user);
             ps.setInt(7, user.getId());
             ps.executeUpdate();
@@ -71,7 +73,7 @@ public class MySqlUserDAO implements UserDAO {
     @Override
     public void delete(User user) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.DELETE_USER_BY_ID)) {
+             PreparedStatement ps = con.prepareStatement(DELETE_USER_BY_ID)) {
             ps.setInt(1, user.getId());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -84,7 +86,7 @@ public class MySqlUserDAO implements UserDAO {
     public User getById(int id) throws DaoException {
         User result = null;
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.GET_USER_BY_ID)) {
+             PreparedStatement ps = con.prepareStatement(GET_USER_BY_ID)) {
             ps.setInt(1, id);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -102,7 +104,7 @@ public class MySqlUserDAO implements UserDAO {
     public List<User> getAll() throws DaoException {
         List<User> result = new ArrayList<>();
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.GET_ALL_USERS)) {
+             PreparedStatement ps = con.prepareStatement(GET_ALL_USERS)) {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     result.add(mapUser(rs));
@@ -119,7 +121,7 @@ public class MySqlUserDAO implements UserDAO {
     public User getUserByEmail(String email) throws DaoException {
         User result = null;
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(MySqlConstant.UserQuery.GET_USER_BY_EMAIL)) {
+             PreparedStatement ps = con.prepareStatement(GET_USER_BY_EMAIL)) {
             ps.setString(1, email);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {

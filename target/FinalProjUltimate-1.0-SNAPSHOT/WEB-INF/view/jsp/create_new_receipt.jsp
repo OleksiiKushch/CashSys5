@@ -86,7 +86,7 @@
                                                     add</button>
                                             </div>
                                             <label for="inputAmount"></label>
-                                            <input type="number" min="0.001" step=".001" class="form-control"
+                                            <input type="number" min="0.001" step=".001" class="form-control is-valid"
                                                    id="inputAmount" name="amount" value="1" required>
                                         </div>
                                     </form>

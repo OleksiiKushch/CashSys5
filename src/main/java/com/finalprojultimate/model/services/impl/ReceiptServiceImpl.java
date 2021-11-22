@@ -6,6 +6,7 @@ import com.finalprojultimate.model.db.dao.entitydao.ReceiptDAO;
 import com.finalprojultimate.model.db.dao.util.DAOConstants;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.receipt.Receipt;
+import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
 import com.finalprojultimate.model.services.ReceiptService;
 import com.finalprojultimate.model.services.util.Cart;
 import org.apache.log4j.Logger;
@@ -50,7 +51,6 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public void create(Receipt receipt, Cart cart) {
         Collection<Product> products = cart.getContainer().values();
-        logger.info("products: " + products);
         receiptDAO.create(receipt.getUserId(), receipt.getChange(), receipt.getPayment().getId(), new ArrayList<>(products));
     }
 
@@ -64,5 +64,19 @@ public class ReceiptServiceImpl implements ReceiptService {
         return receiptDAO.getCountOfReceipts();
     }
 
+    @Override
+    public ReceiptDetails getGlobalReceiptProperties() {
+        return receiptDAO.getGlobalReceiptProperties();
+    }
+
+    @Override
+    public void setGlobalReceiptProperties(ReceiptDetails receiptProperties) {
+        receiptDAO.setGlobalReceiptProperties(receiptProperties);
+    }
+
+    @Override
+    public void resetGlobalReceiptProperties() {
+        receiptDAO.resetGlobalReceiptProperties();
+    }
 
 }

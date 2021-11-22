@@ -24,9 +24,14 @@ public abstract class Parameter {
     public static final String UNIT = "unit";
     public static final String BARCODE = "barcode";
 
-    // product
+    // receipt
     public static final String RECEIPT_ID = "receipt_id";
     public static final String PAYMENT = "payment";
     public static final String PAID = "paid";
+    public static final String ORGANIZATION_TAX_ID_NUMBER = "organizationTaxIdNumber";
+    public static final String NAME_ORGANIZATION = "nameOrganization";
+    public static final String ADDRESS_TRADE_POINT = "addressTradePoint";
+    public static final String VAT = "vat";
+    public static final String TAXATION_SYS = "taxationSys";
 
 }

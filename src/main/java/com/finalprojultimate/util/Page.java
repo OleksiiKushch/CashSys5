@@ -25,6 +25,9 @@ public abstract class Page {
     public static final String CREATE_NEW_RECEIPT_PAGE = PATH + "/create_new_receipt" + JSP;
     public static final String CART_OF_PRODUCTS_PAGE = PATH + "/cart_of_products" + JSP;
     public static final String SUCCESSFUL_CREATE_NEW_RECEIPT_PAGE = PATH + "/successful_create_new_receipt" + JSP;
+    public static final String SET_GLOBAL_RECEIPT_PROPERTIES_PAGE = PATH + "/set_global_receipt_properties" + JSP;
+    public static final String SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES_PAGE = PATH + "/successful_set_global_receipt_properties" + JSP;
+    public static final String SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES_PAGE = PATH + "/successful_reset_global_receipt_properties" + JSP;
 
     public static final String INTERNAL_SERVER_ERROR_PAGE = PATH + "/error/internal_server_error" + JSP;
     public static final String PAGE_NOT_FOUND_ERROR_PAGE = PATH + "/error/page_not_found" + JSP;

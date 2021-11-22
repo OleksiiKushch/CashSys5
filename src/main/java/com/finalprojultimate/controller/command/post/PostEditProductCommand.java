@@ -73,9 +73,7 @@ public class PostEditProductCommand extends AbstractCommandWrapper<Product> {
     }
 
     @Override
-    protected void writeSpecificDataToRequest(HttpServletRequest request, Product data) {
-        // request.setAttribute(PREVIOUS_PRODUCT, product);
-    }
+    protected void writeSpecificDataToRequest(HttpServletRequest request, Product data) {}
 
     private void extractAndWriteErrorMessagesToRequest(HttpServletRequest request) {
         List<String> errorMessages = validator.getErrorMessages();

@@ -55,15 +55,15 @@ public class ProductValidator implements Validator<Product> {
     }
 
     private boolean isValidProductName(String name) {
-        return PRODUCT_NAME_PATTERN.matcher(name).matches();
+        return LONG_NAME_PATTERN.matcher(name).matches();
     }
 
     private boolean isValidPrice(BigDecimal price) {
-        return PRICE_PATTERN.matcher(price.toString()).matches();
+        return DECIMAL_WITH_TWO_DIGITS_AFTER_POINT_PATTERN.matcher(price.toString()).matches();
     }
 
     private boolean isValidAmount(BigDecimal amount) {
-        return AMOUNT_PATTERN.matcher(amount.toString()).matches();
+        return DECIMAL_WITH_THREE_DIGITS_AFTER_POINT_PATTERN.matcher(amount.toString()).matches();
     }
 
     private boolean isValidBarcode(String barcode) {

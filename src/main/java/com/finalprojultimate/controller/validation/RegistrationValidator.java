@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static com.finalprojultimate.controller.CommandRegexAndPatterns.NAME_PATTERN;
+import static com.finalprojultimate.controller.CommandRegexAndPatterns.SHORT_NAME_PATTERN;
 import static com.finalprojultimate.util.MessageKey.*;
 
 public class RegistrationValidator implements Validator<User> {
@@ -45,7 +45,7 @@ public class RegistrationValidator implements Validator<User> {
     }
 
     private boolean isValidName(String name) {
-        return NAME_PATTERN.matcher(name).matches();
+        return SHORT_NAME_PATTERN.matcher(name).matches();
     }
 
     @Override

@@ -28,7 +28,7 @@ public class ReceiptValidator implements Validator<Receipt> {
     }
 
     private boolean isValidReceiptChange(BigDecimal change) {
-        return PRICE_PATTERN.matcher(change.toString()).matches();
+        return DECIMAL_WITH_TWO_DIGITS_AFTER_POINT_PATTERN.matcher(change.toString()).matches();
     }
 
     @Override

@@ -3,10 +3,7 @@ package com.finalprojultimate.controller.command;
 import com.finalprojultimate.controller.command.get.*;
 import com.finalprojultimate.controller.command.login.*;
 import com.finalprojultimate.controller.command.get.GetAddProductToCartCommand;
-import com.finalprojultimate.controller.command.post.PostCreateNewProductCommand;
-import com.finalprojultimate.controller.command.post.PostCreateNewReceiptCommand;
-import com.finalprojultimate.controller.command.post.PostDeleteProductCommand;
-import com.finalprojultimate.controller.command.post.PostEditProductCommand;
+import com.finalprojultimate.controller.command.post.*;
 import com.finalprojultimate.controller.command.registration.*;
 
 import java.util.HashMap;
@@ -47,6 +44,9 @@ public class CommandHolder {
         commands.put(GET + EDIT_PRODUCT_AMOUNT_FROM_CART, new GetEditProductFromCartCommand());
         commands.put(GET + DELETE_PRODUCT_FROM_CART, new GetDeleteProductFromCartCommand());
         commands.put(GET + SUCCESSFUL_CREATE_NEW_RECEIPT, new GetSuccessfulCreateNewReceiptCommand());
+        commands.put(GET + SET_GLOBAL_RECEIPT_PROPERTIES, new GetSetGlobalReceiptPropertiesCommand());
+        commands.put(GET + SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES, new GetSuccessfulSetGlobalReceiptPropertiesCommand());
+        commands.put(GET + SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES, new GetSuccessfulResetGlobalReceiptPropertiesCommand());
 
         commands.put(POST + LOGIN, new LoginSubmitCommand());
         commands.put(POST + REGISTRATION, new RegistrationSubmitCommand());
@@ -54,6 +54,8 @@ public class CommandHolder {
         commands.put(POST + EDIT_PRODUCT, new PostEditProductCommand());
         commands.put(POST + DELETE_PRODUCT, new PostDeleteProductCommand());
         commands.put(POST + CREATE_NEW_RECEIPT, new PostCreateNewReceiptCommand());
+        commands.put(POST + SET_GLOBAL_RECEIPT_PROPERTIES, new PostSetGlobalReceiptPropertiesCommand());
+        commands.put(POST + RESET_GLOBAL_RECEIPT_PROPERTIES, new PostResetGlobalReceiptPropertiesCommand());
 
     }
 

@@ -32,5 +32,8 @@ public abstract class Path {
     public static final String DELETE_PRODUCT_FROM_CART = "/delete_product_from_cart";
     public static final String CART_OF_PRODUCTS = "/cart_of_products";
     public static final String SUCCESSFUL_CREATE_NEW_RECEIPT = "/successful_create_new_receipt";
-
+    public static final String SET_GLOBAL_RECEIPT_PROPERTIES = "/set_global_receipt_properties";
+    public static final String SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES = "/successful_set_global_receipt_properties";
+    public static final String RESET_GLOBAL_RECEIPT_PROPERTIES = "/reset_global_receipt_properties";
+    public static final String SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES = "/successful_reset_global_receipt_properties";
 }

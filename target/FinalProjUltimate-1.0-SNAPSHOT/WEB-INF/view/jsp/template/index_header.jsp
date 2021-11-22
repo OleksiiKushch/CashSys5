@@ -16,11 +16,15 @@
         <c:if test="${sessionScope.logged_user.role == Role.CASHIER}">
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/FrontController?command=/new_receipt">
-                    New Receipt</a></li>
+                    Create new Receipt</a></li>
             </ul>
         </c:if>
 
         <c:if test="${sessionScope.logged_user.role == Role.SENIOR_CASHIER}">
+            <ul class="nav navbar-nav">
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/set_global_receipt_properties">
+                    Set global receipt properties</a></li>
+            </ul>
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/FrontController?command=/receipt_catalog&page=1&page_size=8">
                     Receipt catalog</a></li>
@@ -34,7 +38,7 @@
             </ul>
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/FrontController?command=/create_new_product">
-                    New Product</a></li>
+                    Create new Product</a></li>
             </ul>
         </c:if>
 

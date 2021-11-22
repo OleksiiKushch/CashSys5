@@ -12,7 +12,8 @@ DROP TABLE IF EXISTS `user` ;
 DROP TABLE IF EXISTS receipt_status ;
 DROP TABLE IF EXISTS receipt ;
 DROP TABLE IF EXISTS receipt_has_product ;
-DROP TABLE IF EXISTS receipt_details;
+DROP TABLE IF EXISTS receipt_details ;
+DROP TABLE IF EXISTS global_receipt_properties ;
 
 CREATE TABLE IF NOT EXISTS payment (
 id INT AUTO_INCREMENT PRIMARY KEY,
@@ -119,12 +120,44 @@ CONSTRAINT fk_receipt_has_product_receipt
 
 CREATE TABLE IF NOT EXISTS receipt_details (
 receipt_id  INT PRIMARY KEY,
-organization_tax_id_number INT,
+organization_tax_id_number BIGINT UNSIGNED,
 name_organization VARCHAR(128),
 address_trade_point VARCHAR(512),
 vat DECIMAL(9,2),
-taxation_sys VARCHAR(45),
+taxation_sys VARCHAR(128),
 CHECK (vat>=0),
 CONSTRAINT fk_receipt_details_receipt1
    FOREIGN KEY (receipt_id)
        REFERENCES receipt (id));
+
+CREATE TABLE IF NOT EXISTS global_receipt_properties (
+`lock` char(1) PRIMARY KEY DEFAULT 'X',
+organization_tax_id_number BIGINT UNSIGNED NOT NULL,
+name_organization VARCHAR(128) NOT NULL,
+address_trade_point VARCHAR(512) NOT NULL,
+vat DECIMAL(9,2) NOT NULL,
+taxation_sys VARCHAR(128) NOT NULL,
+CHECK (vat>=0),
+CHECK (`lock`='X'));
+
+DROP PROCEDURE IF EXISTS set_global_receipt_properties;
+
+CREATE PROCEDURE set_global_receipt_properties(
+    IN organization_tax_id_number BIGINT UNSIGNED,
+    IN name_organization VARCHAR(128),
+    IN address_trade_point VARCHAR(512),
+    IN vat DECIMAL(9,2),
+    IN taxation_sys VARCHAR(128))
+BEGIN
+    IF (select count(*) from global_receipt_properties) = 0 then
+        INSERT INTO global_receipt_properties (organization_tax_id_number, name_organization, address_trade_point, vat, taxation_sys)
+        VALUES (organization_tax_id_number, name_organization, address_trade_point, vat, taxation_sys);
+    ELSE
+        UPDATE global_receipt_properties
+        SET organization_tax_id_number = organization_tax_id_number,
+            name_organization = name_organization,
+            address_trade_point = address_trade_point,
+            vat = vat,
+            taxation_sys = taxation_sys;
+    END IF;
+END ;

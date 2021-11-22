@@ -74,3 +74,6 @@ INSERT INTO receipt_has_product (receipt_id, product_id, price, amount) VALUES
     (9, 8, 1.1, 5), (9, 1, 2.5, 1), (9, 3, 0.8, 2),
     (10, 4, 1, 1), (10, 3, 0.8, 3),
     (11, 1, 2.3, 1), (11, 2, 4.9, 1), (11, 5, 1.3, 2);
+
+INSERT INTO global_receipt_properties (organization_tax_id_number, name_organization, address_trade_point, vat, taxation_sys) VALUES
+    (7802870820, 'ТОВ "Епіцентр К"', 'м.Харків, вул.Героїв Праці, 9А', 20.00, 'ОСН');

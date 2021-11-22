@@ -26,7 +26,7 @@
 
                 <div class="mb-3">
                     <label for="inputPassword" class="form-label">Password:</label>
-                    <input type="password" class="form-control" id="inputPassword" name="password"
+                    <input type="password" class="form-control is-valid" id="inputPassword" name="password"
                            placeholder="Enter password"
                            minlength="4" maxlength="16" required>
                 </div>

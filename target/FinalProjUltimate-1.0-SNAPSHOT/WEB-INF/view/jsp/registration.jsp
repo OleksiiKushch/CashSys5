@@ -33,26 +33,26 @@
 
                     <div class="mb-3">
                         <label for="inputMiddleName" class="form-label">Middle name:</label>
-                        <input type="text" class="form-control" id="inputMiddleName" name="middleName"
+                        <input type="text" class="form-control is-valid" id="inputMiddleName" name="middleName"
                                placeholder="Enter middle name" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="inputLastName" class="form-label">Last name:</label>
-                        <input type="text" class="form-control" id="inputLastName" name="lastName"
+                        <input type="text" class="form-control is-valid" id="inputLastName" name="lastName"
                                placeholder="Enter last name" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="inputPassword" class="form-label">Password:</label>
-                        <input type="password" class="form-control" id="inputPassword" name="password"
+                        <input type="password" class="form-control is-valid" id="inputPassword" name="password"
                                placeholder="Enter password"
                                minlength="4" maxlength="16" required>
                     </div>
 
                     <div class="mb-3">
                         <label for="inputConfirmationPassword" class="form-label">Confirm password:</label>
-                        <input type="password" class="form-control" id="inputConfirmationPassword" name="confirmationPassword"
+                        <input type="password" class="form-control is-valid" id="inputConfirmationPassword" name="confirmationPassword"
                                placeholder="Enter password (again)"
                                minlength="4" maxlength="16" required>
                     </div>
