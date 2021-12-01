@@ -8,11 +8,13 @@ import com.finalprojultimate.model.services.ProductService;
 import com.finalprojultimate.model.services.impl.ProductServiceImpl;
 import com.finalprojultimate.util.Attribute;
 import com.finalprojultimate.util.Page;
+import com.finalprojultimate.util.Parameter;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -31,7 +33,21 @@ public class GetProductCatalogCommand implements Command {
         int page = Integer.parseInt(paramPage);
         int pageSize = Integer.parseInt(paramPageSize);
 
-        List<Product> paginateProducts = productService.getForPagination(pageSize * (page - 1), pageSize);
+        String paramSort = request.getParameter(Attribute.SORT_BY);
+        HttpSession session = request.getSession();
+        if (paramSort == null) {
+            paramSort = (String) session.getAttribute(Attribute.SORT_BY);
+        } else {
+            session.setAttribute(Attribute.SORT_BY, paramSort);
+        }
+
+        List<Product> paginateProducts = null;
+        if (paramSort == null) {
+            paginateProducts = productService.getForPagination(pageSize * (page - 1), pageSize);
+        } else {
+            paginateProducts = productService.getForPaginationSortByParameter(paramSort, pageSize * (page - 1), pageSize);
+        }
+
         int size = productService.getCount();
 
         int minPagePossible = Math.max(page - shift, 1);

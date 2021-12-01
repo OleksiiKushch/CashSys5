@@ -13,9 +13,9 @@ import java.util.List;
 public class DBInit {
     public static void startUp() throws URISyntaxException, IOException, SQLException {
         URL url1 = DatabaseTest.class.getClassLoader()
-                .getResource("cashsys_project.sql");
+                .getResource("cashsys_project_test.sql");
         URL url2 = DatabaseTest.class.getClassLoader()
-                .getResource("cashsys_data.sql");
+                .getResource("cashsys_data_test.sql");
         URL url3 = DatabaseTest.class.getClassLoader()
                 .getResource("cashsys_test_data.sql");
 

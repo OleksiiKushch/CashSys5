@@ -43,6 +43,7 @@ public class GetReceiptCatalogCommand implements Command {
 
         request.setAttribute(Attribute.PAGINATE_RECEIPTS, paginateReceipts);
         request.setAttribute(Attribute.USER_SERVICE, userService);
+        request.setAttribute(Attribute.RECEIPT_SERVICE, receiptService);
         request.setAttribute(Attribute.PAGE_COUNT, pageCount);
         request.setAttribute(Attribute.PAGE, page);
         request.setAttribute(Attribute.PAGE_SIZE, pageSize);

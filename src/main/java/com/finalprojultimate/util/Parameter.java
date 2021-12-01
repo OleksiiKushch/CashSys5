@@ -34,4 +34,7 @@ public abstract class Parameter {
     public static final String VAT = "vat";
     public static final String TAXATION_SYS = "taxationSys";
 
+
+    public static final String NAME = "name";
+    public static final String REJECT_RECEIPT_ID = "rejectReceiptId";
 }

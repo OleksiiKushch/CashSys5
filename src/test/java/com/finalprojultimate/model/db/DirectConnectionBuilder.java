@@ -10,7 +10,7 @@ public class DirectConnectionBuilder implements ConnectionBuilder {
 
     @Override
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/cashsysdb?allowMultiQueries=true",
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/cashsysdbtest?allowMultiQueries=true",
                 "root", "toor");
     }
 }

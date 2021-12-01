@@ -92,6 +92,8 @@
                 <th scope="col">id</th>
                 <th scope="col">(id) Cashier</th>
                 <th scope="col">Date time</th>
+                <th scope="col">Sum</th>
+                <th scope="col">Change</th>
                 <th scope="col">Type payment</th>
                 <th scope="col">Status</th>
                 <th scope="col">Action</th>
@@ -103,14 +105,14 @@
                     <th class="col-md-1" scope="row">${receipt.id}</th>
                     <td>(${receipt.userId}) ${user_service.getFormattedNameById(receipt.userId)}</td>
                     <td class="col-md-2">${receipt.dateTime}</td>
+                    <td class="col-md-1">${receipt_service.getSumReceiptById(receipt.id).setScale(2)}</td>
+                    <td class="col-md-1">${receipt.change}</td>
                     <td class="col-md-1">${receipt.payment.name}</td>
                     <td class="col-md-1">${receipt.status.name}</td>
-                    <td class="col-md-2">
-                        <a href="#?receiptId=${receipt.id}">see details</a>
+                    <td class="col-md-1">
+                        <a href="${pageContext.request.contextPath}/FrontController?command=/see_receipt_details&receipt_id=${receipt.id}">
+                            see details</a>
                         &nbsp &nbsp
-                        <a href="#?receiptId=${receipt.id}">edit</a>
-                        &nbsp &nbsp
-                        <a href="#?receiptId=${receipt.id}">delete</a>
                     </td>
                 </tr>
             </c:forEach>

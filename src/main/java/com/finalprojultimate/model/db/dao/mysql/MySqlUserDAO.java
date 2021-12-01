@@ -9,8 +9,11 @@ import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
+import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.ReceiptQuery.GET_PRODUCTS_BY_RECEIPT_ID;
 import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.UserQuery.*;
 
 public class MySqlUserDAO implements UserDAO {
@@ -131,6 +134,34 @@ public class MySqlUserDAO implements UserDAO {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw generateException("", "", getClass()); // Good explanation of error
+        }
+        return result;
+    }
+
+    @Override
+    public LinkedHashMap<Integer, Integer> findBestCashiersByCountReceipt(int limit) throws DaoException {
+        LinkedHashMap<Integer, Integer> result = new LinkedHashMap<>();
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(FIND_BEST_CASHIERS_BY_COUNT_RECEIPT)) {
+            ps.setInt(1, limit);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Integer cashierId = rs.getInt(MySqlConstant.UserField.ID);
+                    Integer count = rs.getInt(MySqlConstant.UserField.COUNT);
+                    result.put(cashierId, count);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException("", "", getClass()); // Good explanation of error
+        }
+        return result;
+    }
+
+    @Override
+    public List<User> findUsersByIds(Set<Integer> ids) {
+        List<User> result = new ArrayList<>();
+        for (Integer id : ids) {
+            result.add(getById(id));
         }
         return result;
     }

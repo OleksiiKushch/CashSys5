@@ -128,10 +128,19 @@ public class MySqlProductDAO implements ProductDAO {
     }
 
     @Override
-    public List<Product> findProducts(int offset, int limit) throws DaoException {
+    public List<Product> findProductsWithPaginationSortByNone(int offset, int limit) throws DaoException {
+        return findProductsWithPaginationSortByQuery(FIND_PRODUCTS_SORT_BY_NONE, offset, limit);
+    }
+
+    @Override
+    public List<Product> findProductsWithPaginationSortByName(int offset, int limit) throws DaoException {
+        return findProductsWithPaginationSortByQuery(FIND_PRODUCTS_SORT_BY_NAME, offset, limit);
+    }
+
+    private List<Product> findProductsWithPaginationSortByQuery(String query, int offset, int limit) throws DaoException {
         List<Product> result = new ArrayList<>();
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(FIND_PRODUCTS_WITH_PAGINATION)) {
+             PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, limit);
             ps.setInt(2, offset);
             ResultSet rs = ps.executeQuery();
@@ -147,17 +156,7 @@ public class MySqlProductDAO implements ProductDAO {
 
     @Override
     public int getCountOfProducts() throws DaoException {
-        int result = 0;
-        try (Connection con = getConnection(); Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(GET_COUNT_OF_PRODUCTS)) {
-            if (rs.next()) {
-                result = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
-        }
-        return result;
+        return getCountByQuery(GET_COUNT_OF_PRODUCTS);
     }
 
     private List<Product> findProductsByQuery(String query, String pattern) throws DaoException {
@@ -186,7 +185,10 @@ public class MySqlProductDAO implements ProductDAO {
         ps.setInt(++i, product.getUnit().getId());
     }
 
-    private Product mapProduct(ResultSet rs) throws SQLException {
+    /**
+     * used this in the class MySqlReceiptDAO
+     */
+    public static Product mapProduct(ResultSet rs) throws SQLException {
         return new Product.Builder()
                 .withId(rs.getInt(MySqlConstant.ProductField.ID))
                 .withName(rs.getString(MySqlConstant.ProductField.NAME))

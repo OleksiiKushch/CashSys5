@@ -11,6 +11,7 @@ public interface ProductService {
     void update(Product product);
     void delete(Product product);
     List<Product> getForPagination(int offset, int limit);
+    List<Product> getForPaginationSortByParameter(String sortParameter, int offset, int limit);
     int getCount();
     List<Product> findProductsByBarcode(String pattern);
     List<Product> findProductsByName(String pattern);

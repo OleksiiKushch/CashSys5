@@ -12,6 +12,7 @@ import com.finalprojultimate.model.services.util.Cart;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -49,9 +50,22 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
+    public Receipt getById(int id) {
+        return receiptDAO.getById(id);
+    }
+
+    @Override
     public void create(Receipt receipt, Cart cart) {
         Collection<Product> products = cart.getContainer().values();
         receiptDAO.create(receipt.getUserId(), receipt.getChange(), receipt.getPayment().getId(), new ArrayList<>(products));
+    }
+
+    @Override
+    public void createReject(int rootReceiptId, Receipt newReceipt, List<Product> products, List<BigDecimal> amounts) {
+        for (int i = 0; i < products.size(); i++) {
+            products.get(i).setAmount(amounts.get(i));
+        }
+        receiptDAO.createReject(rootReceiptId, newReceipt.getUserId(), products);
     }
 
     @Override
@@ -77,6 +91,21 @@ public class ReceiptServiceImpl implements ReceiptService {
     @Override
     public void resetGlobalReceiptProperties() {
         receiptDAO.resetGlobalReceiptProperties();
+    }
+
+    @Override
+    public BigDecimal getSumReceiptById(int id) {
+        return receiptDAO.getSumReceiptById(id);
+    }
+
+    @Override
+    public List<Product> getProductsByReceiptId(int id) {
+        return receiptDAO.getProductsByReceiptId(id);
+    }
+
+    @Override
+    public ReceiptDetails getReceiptDetails(int id) {
+        return receiptDAO.getReceiptDetailsById(id);
     }
 
 }

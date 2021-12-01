@@ -18,7 +18,38 @@
     <div class="container-fluid">
         <h1 class="mt-4">Product catalog:</h1>
 
-        <nav>
+        <nav class="navbar">
+            <ul class="pagination justify-content-end">
+                <li class="page-item">
+                    <form action="<%= request.getContextPath() %>/FrontController" method="get">
+                        <input name="command" value="/product_catalog" type="hidden">
+                        <input name="page" value="1" type="hidden">
+                        <input name="page_size" value="8" type="hidden">
+                        <label for="selectSortParameter" class="form-label">Sort by:</label>
+                        <select id="selectSortParameter" name="sort_by">
+                            <option value="none" selected>None</option>
+                            <option value="name">Name</option>
+                        </select>
+                        <button type="submit" class="btn btn-primary btn-sm">Go</button>
+                    </form>
+                </li>
+
+            </ul>
+<%--            <ul class="pagination justify-content-end">--%>
+<%--                <li class="page-item">--%>
+<%--                    <form action="<%= request.getContextPath() %>/FrontController" method="get">--%>
+<%--                        <input name="command" value="/product_catalog" type="hidden">--%>
+<%--                        <label for="setSizePage" class="form-label">Set size page:</label>--%>
+<%--                        <select class="form-select" name="page_size" id="setSizePage">--%>
+<%--                            <option value="6">6</option>--%>
+<%--                            <option value="8" selected>8</option>--%>
+<%--                            <option value="12">12</option>--%>
+<%--                            <option value="20">20</option>--%>
+<%--                        </select>--%>
+<%--                        <button type="submit" class="btn btn-primary btn-sm">Go</button>--%>
+<%--                    </form>--%>
+<%--                </li>--%>
+<%--            </ul>--%>
             <ul class="pagination justify-content-end">
                 <li class="page-item">
                     <form action="<%= request.getContextPath() %>/FrontController" method="get">

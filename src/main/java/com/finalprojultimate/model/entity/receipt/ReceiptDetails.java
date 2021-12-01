@@ -7,6 +7,7 @@ public class ReceiptDetails implements Serializable {
     private static final long serialVersionUID = -36002671907753256L;
 
     private int receiptId;
+    private int rootReceiptId;
     private long organizationTaxIdNumber;
     private String nameOrganization;
     private String addressTradePoint;
@@ -23,6 +24,14 @@ public class ReceiptDetails implements Serializable {
 
     public void setReceiptId(int receiptId) {
         this.receiptId = receiptId;
+    }
+
+    public int getRootReceiptId() {
+        return rootReceiptId;
+    }
+
+    public void setRootReceiptId(int rootReceiptId) {
+        this.rootReceiptId = rootReceiptId;
     }
 
     public long getOrganizationTaxIdNumber() {
@@ -85,6 +94,11 @@ public class ReceiptDetails implements Serializable {
 
         public Builder withReceiptId(int receiptId) {
             newReceiptProperties.receiptId = receiptId;
+            return this;
+        }
+
+        public Builder withRootReceiptId(int rootReceiptId) {
+            newReceiptProperties.rootReceiptId = rootReceiptId;
             return this;
         }
 

@@ -11,7 +11,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 
@@ -79,5 +82,25 @@ public class MySqlUserDAOTest {
     @Test
     public void getByEmailTest() throws DaoException {
         assertEquals("Ado", userDAO.getUserByEmail("tom.lee@cashsys.com").getMiddleName());
+    }
+
+    @Test
+    public void findBestCashiersByCountReceipt() {
+        int limit = 3;
+        LinkedHashMap<Integer, Integer> result = userDAO.findBestCashiersByCountReceipt(limit);
+        assertEquals("{1=4, 2=3, 4=1}", result.toString());
+    }
+
+    @Test
+    public void findUsersByIds() {
+        Set<Integer> test = new HashSet<>();
+        test.add(1);
+        test.add(2);
+        List<User> result = userDAO.findUsersByIds(test);
+        assertEquals("[User{id=1, email='tammy.reuben@cashsys.com', firstName='Tammy', middleName='Donald', lastName='Reuben', " +
+                "passHash='79B180E5FF6A23229A5FCE280C0D14C84832FE019D0AD5CDA140C1BFD6B19112', role=Role{id=1, name='cashier'}}, " +
+                "User{id=2, email='bob.yang@cashsys.com', firstName='Bob', middleName='Ken', lastName='Yang', " +
+                "passHash='4E672DBA718E2552FC20E5ECFD4A0EFB47609F50EC10CB21DCA75C0800D124D5', role=Role{id=1, name='cashier'}}]",
+                result.toString());
     }
 }

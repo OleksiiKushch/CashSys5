@@ -36,4 +36,9 @@ public abstract class Path {
     public static final String SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES = "/successful_set_global_receipt_properties";
     public static final String RESET_GLOBAL_RECEIPT_PROPERTIES = "/reset_global_receipt_properties";
     public static final String SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES = "/successful_reset_global_receipt_properties";
+    public static final String SEE_RECEIPT_DETAILS = "/see_receipt_details";
+    public static final String CREATE_REJECT_RECEIPT = "/create_reject_receipt";
+    public static final String SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT = "/successful_create_new_reject_receipt";
+    public static final String GENERATE_REPORT = "/generate_report";
+    public static final String BEST_CASHIER_FOR_THE_MONTH = "/best_cashier_for_the_last_month";
 }

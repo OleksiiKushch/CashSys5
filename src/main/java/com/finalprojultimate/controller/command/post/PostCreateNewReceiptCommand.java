@@ -28,7 +28,7 @@ import static com.finalprojultimate.util.Path.*;
 
 public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt> {
     private static final Logger logger = Logger.getLogger(PostCreateNewReceiptCommand.class);
-    private static final String RECEIPT_CREATE = "New receipt with id: %d create successfully!";
+    private static final String RECEIPT_CREATE = "New receipt create successfully!";
 
     private final ReceiptService receiptService = ReceiptServiceImpl.getInstance();
 
@@ -53,7 +53,7 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
         // transaction
         receiptService.create(receipt, (Cart) request.getSession().getAttribute(CART));
 
-        logger.info(String.format(RECEIPT_CREATE, receipt.getId()));
+        logger.info(RECEIPT_CREATE);
         response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_CREATE_NEW_RECEIPT);
         return REDIRECTED;
     }

@@ -11,6 +11,8 @@ import org.apache.log4j.Logger;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
+import static com.finalprojultimate.util.Parameter.*;
+
 public class ProductServiceImpl implements ProductService {
     private static final Logger logger = Logger.getLogger(ProductServiceImpl.class);
 
@@ -65,7 +67,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> getForPagination(int offset, int limit) {
-        return productDAO.findProducts(offset, limit);
+        return productDAO.findProductsWithPaginationSortByNone(offset, limit);
+    }
+
+    @Override
+    public List<Product> getForPaginationSortByParameter(String sortParameter, int offset, int limit) {
+        if (sortParameter.equals(NAME)) {
+            return productDAO.findProductsWithPaginationSortByName(offset, limit);
+        } else {
+            return getForPagination(offset, limit);
+        }
     }
 
     @Override

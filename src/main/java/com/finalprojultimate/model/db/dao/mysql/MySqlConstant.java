@@ -29,6 +29,8 @@ public abstract class MySqlConstant {
         public static final String LAST_NAME = "last_name";
         public static final String PASS_HASH = "passhash";
         public static final String ROLE_ID = "role_id";
+
+        public static final String COUNT = "count";
     }
 
     // Receipt
@@ -41,6 +43,7 @@ public abstract class MySqlConstant {
         public static final String STATUS_ID = "status_id";
 
         public static final String RECEIPT_ID = "receipt_id";
+        public static final String ROOT_RECEIPT_ID = "root_receipt_id";
         public static final String ORGANIZATION_TAX_ID_NUMBER = "organization_tax_id_number";
         public static final String NAME_ORGANIZATION = "name_organization";
         public static final String ADDRESS_TRADE_POINT = "address_trade_point";
@@ -63,7 +66,8 @@ public abstract class MySqlConstant {
         public static final String GET_ALL_PRODUCTS = "SELECT * FROM product";
         public static final String FIND_PRODUCTS_BY_NAME = "SELECT * FROM product WHERE `name` LIKE ? ORDER BY `name`";
         public static final String FIND_PRODUCTS_BY_BARCODE = "SELECT * FROM product WHERE barcode LIKE ? ORDER BY barcode";
-        public static final String FIND_PRODUCTS_WITH_PAGINATION = "SELECT * FROM product LIMIT ? OFFSET ?";
+        public static final String FIND_PRODUCTS_SORT_BY_NONE = "SELECT * FROM product LIMIT ? OFFSET ?";
+        public static final String FIND_PRODUCTS_SORT_BY_NAME = "SELECT * FROM product ORDER BY `name` LIMIT ? OFFSET ?";
         public static final String GET_COUNT_OF_PRODUCTS = "SELECT COUNT(*) FROM product";
 
         public static final String GET_AMOUNT_PRODUCT_IN_STOCK_BY_ID = "SELECT amount FROM product WHERE id = ?";
@@ -81,6 +85,13 @@ public abstract class MySqlConstant {
         public static final String GET_USER_BY_ID = "SELECT * FROM `user` WHERE id = ?";
         public static final String GET_ALL_USERS = "SELECT * FROM `user`";
         public static final String GET_USER_BY_EMAIL = "SELECT * FROM `user` WHERE email = ?";
+        public static final String FIND_BEST_CASHIERS_BY_COUNT_RECEIPT = "SELECT `user`.id, count(*) AS count  FROM `user` " +
+                "JOIN user_role ON `user`.role_id = user_role.id " +
+                "JOIN receipt ON `user`.id = receipt.user_id " +
+                "WHERE user_role.`name` = 'cashier' AND receipt.date_time >= DATE_SUB(NOW(), INTERVAL 1 MONTH) " +
+                "GROUP BY `user`.id " +
+                "ORDER BY count DESC  " +
+                "LIMIT ?";
     }
 
     // Receipt
@@ -99,10 +110,15 @@ public abstract class MySqlConstant {
                 "VALUES (?, ?, ?, ?)";
         public static final String GET_GLOBAL_RECEIPT_PROPERTIES = "SELECT * FROM global_receipt_properties";
         public static final String SET_GLOBAL_RECEIPT_PROPERTIES = "CALL set_global_receipt_properties(?, ?, ?, ?, ?)";
-        public static final String SET_RECEIPT_DETAILS = "INSERT INTO receipt_details (receipt_id, organization_tax_id_number, " +
-                "name_organization, address_trade_point, vat, taxation_sys) VALUES (?, ?, ?, ?, ?, ?)";
+        public static final String SET_RECEIPT_DETAILS = "INSERT INTO receipt_details (receipt_id, root_receipt_id, organization_tax_id_number, " +
+                "name_organization, address_trade_point, vat, taxation_sys) VALUES (?, ?, ?, ?, ?, ?, ?)";
         // TRUNCATE is faster than DELETE since it does not generate rollback information and does not fire any delete triggers
         public static final String RESET_GLOBAL_RECEIPT_PROPERTIES = "TRUNCATE global_receipt_properties";
+        public static final String GET_SUM_RECEIPT_BY_ID = "SELECT SUM(price * amount) FROM receipt_has_product WHERE receipt_id = ?";
+        public static final String GET_PRODUCTS_BY_RECEIPT_ID = "SELECT p.id, p.`name`, rhp.price, rhp.amount, p.barcode, p.unit_id " +
+                "FROM product AS p JOIN receipt_has_product AS rhp ON p.id = product_id WHERE receipt_id = ?";
+        public static final String GET_RECEIPT_DETAILS_BY_ID = "SELECT * FROM receipt_details WHERE receipt_id = ?";
+        public static final String PROCESSING_REJECT_RECEIPT= "CALL processing_reject_receipt(?, ?, ?)";
     }
 
 

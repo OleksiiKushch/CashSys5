@@ -15,6 +15,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class MySqlProductDAOTest {
 
@@ -87,5 +88,31 @@ public class MySqlProductDAOTest {
         assertEquals(3, result.size());
         result = productDAO.findProductsByBarcode("320499");
         assertEquals(1, result.size());
+    }
+
+    @Test
+    public void getCountOfProducts() {
+        int result = productDAO.getCountOfProducts();
+        assertEquals(8, result);
+    }
+
+    @Test
+    public void findProductsWithPaginationSortByNone() {
+        List<Product> result = productDAO.findProductsWithPaginationSortByNone(2, 3);
+        assertEquals(
+                "[Product{id=3, name='pencil LUXON', price=0.80, amount=271.000, unit=Unit{id=1, name='pieces'}, barcode='4611366728476'}, " +
+                "Product{id=4, name='Pepsi Cola 1l', price=1.00, amount=110.000, unit=Unit{id=1, name='pieces'}, barcode='4634271223504'}, " +
+                "Product{id=5, name='Coca Cola 1.5l', price=1.40, amount=64.000, unit=Unit{id=1, name='pieces'}, barcode='3204992254639'}]",
+                result.toString());
+    }
+
+    @Test
+    public void findProductsWithPaginationSortByName() {
+        List<Product> result = productDAO.findProductsWithPaginationSortByName(2, 3);
+        assertEquals(
+                "[Product{id=8, name='Fanta Jingle', price=1.10, amount=140.800, unit=Unit{id=3, name='litre'}, barcode='4411164778032'}, " +
+                        "Product{id=7, name='ordinary sugar', price=1.10, amount=500.500, unit=Unit{id=2, name='kilogram'}, barcode='4657488712948'}, " +
+                        "Product{id=6, name='pen JoJ', price=3.80, amount=189.000, unit=Unit{id=1, name='pieces'}, barcode='0601762649669'}]",
+                result.toString());
     }
 }

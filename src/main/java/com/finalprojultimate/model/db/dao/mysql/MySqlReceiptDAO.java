@@ -119,7 +119,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     }
 
     /**
-     * Transaction that includes three main requests
+     * Transaction that includes four main requests
      *  - creation of a new receipt
      *  - set receipt details
      *  - checking the availability of products in the stock and a corresponding reduction in their amount in the stock
@@ -149,12 +149,52 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             con.commit();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            assert con != null;
             rollback(con);
             throw generateException("", "", getClass()); // Good explanation of error
         } finally {
-            assert con != null;
-            setAutoCommit(con);
+            close(con);
+        }
+    }
+
+    /**
+     * Transaction that includes four main requests
+     *  - creation of a new reject receipt
+     *  - copy and set receipt details (copy from root receipt (receipt that is being rejecting))
+     *  - processing amount of products in the root receipt (update amount products in the root receipt)
+     *  - insert the table receipt_has_product according to the list of products that is being rejecting
+     *
+     * @param rootReceiptId - receipt id that is being rejecting
+     * @param userId - id of the user (senior cashier) who request
+     * @param products - list of products in the receipt that is being rejecting
+     * @throws DaoException - specific dao exception
+     */
+    @Override
+    public void createReject(int rootReceiptId, int userId, List<Product> products) throws DaoException {
+        Connection con = null;
+        try {
+            con = getConnection();
+            con.setAutoCommit(false);
+
+            int idCreatedRejectReceipt = createNewRejectReceipt(con, userId);
+
+            ReceiptDetails receiptDetails = getReceiptDetailsById(rootReceiptId);
+            if (receiptDetails != null) {
+                receiptDetails.setRootReceiptId(rootReceiptId);
+                setReceiptDetails(con, idCreatedRejectReceipt, receiptDetails);
+            }
+
+            for (Product product : products) {
+                processingRejectReceipt(con, rootReceiptId, product.getId(), product.getAmount());
+            }
+
+            insertReceiptHasProduct(con, idCreatedRejectReceipt, products);
+
+            con.commit();
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            rollback(con);
+            throw generateException("", "", getClass()); // Good explanation of error
+        } finally {
             close(con);
         }
     }
@@ -166,9 +206,10 @@ public class MySqlReceiptDAO implements ReceiptDAO {
              PreparedStatement ps = con.prepareStatement(FIND_RECEIPTS_WITH_PAGINATION)) {
             ps.setInt(1, limit);
             ps.setInt(2, offset);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.add(mapReceipt(rs));
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(mapReceipt(rs));
+                }
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
@@ -179,17 +220,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
 
     @Override
     public int getCountOfReceipts() throws DaoException {
-        int result = 0;
-        try (Connection con = getConnection(); Statement stmt = con.createStatement();
-             ResultSet rs = stmt.executeQuery(GET_COUNT_OF_RECEIPTS)) {
-            if (rs.next()) {
-                result = rs.getInt(1);
-            }
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
-        }
-        return result;
+        return getCountByQuery(GET_COUNT_OF_RECEIPTS);
     }
 
     @Override
@@ -229,6 +260,57 @@ public class MySqlReceiptDAO implements ReceiptDAO {
         }
     }
 
+    @Override
+    public BigDecimal getSumReceiptById(int id) {
+        BigDecimal result = new BigDecimal("0");
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(GET_SUM_RECEIPT_BY_ID)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    result = rs.getBigDecimal(1);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException("", "", getClass()); // Good explanation of error
+        }
+        return result;
+    }
+
+    @Override
+    public List<Product> getProductsByReceiptId(int id) {
+        List<Product> result = new ArrayList<>();
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(GET_PRODUCTS_BY_RECEIPT_ID)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(MySqlProductDAO.mapProduct(rs));
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException("", "", getClass()); // Good explanation of error
+        }
+        return result;
+    }
+
+    @Override
+    public ReceiptDetails getReceiptDetailsById(int id) {
+        ReceiptDetails result = null;
+        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(GET_RECEIPT_DETAILS_BY_ID)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    result = mapReceiptDetails(rs);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException("", "", getClass()); // Good explanation of error
+        }
+        return result;
+    }
+
     private void mapReceipt(PreparedStatement ps, Receipt receipt) throws SQLException {
         int i = 0;
         ps.setBigDecimal(++i, receipt.getChange());
@@ -243,6 +325,14 @@ public class MySqlReceiptDAO implements ReceiptDAO {
         ps.setInt(++i, paymentId);
         ps.setInt(++i, userId);
         ps.setInt(++i, Status.NORMAL.getId());
+    }
+
+    private void mapRejectReceipt(PreparedStatement ps, int userId) throws SQLException {
+        int i = 0;
+        ps.setBigDecimal(++i, new BigDecimal("0"));
+        ps.setInt(++i, Payment.ELECTRONIC.getId());
+        ps.setInt(++i, userId);
+        ps.setInt(++i, Status.REJECTED.getId());
     }
 
     private void mapReceiptHasProduct(PreparedStatement ps, int receiptId, int productId, BigDecimal price, BigDecimal amount)
@@ -266,6 +356,17 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     }
 
     private ReceiptDetails mapGlobalReceiptProperties(ResultSet rs) throws SQLException {
+        return mapReceiptProperties(rs);
+    }
+
+    private ReceiptDetails mapReceiptDetails(ResultSet rs) throws SQLException {
+        ReceiptDetails result = mapReceiptProperties(rs);
+        result.setReceiptId(rs.getInt(MySqlConstant.ReceiptField.RECEIPT_ID));
+        result.setRootReceiptId(rs.getInt(MySqlConstant.ReceiptField.ROOT_RECEIPT_ID));
+        return result;
+    }
+
+    private ReceiptDetails mapReceiptProperties(ResultSet rs) throws SQLException {
         return new ReceiptDetails.Builder()
                 .withOrganizationTaxIdNumber(rs.getLong(MySqlConstant.ReceiptField.ORGANIZATION_TAX_ID_NUMBER))
                 .withNameOrganization(rs.getString(MySqlConstant.ReceiptField.NAME_ORGANIZATION))
@@ -283,6 +384,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     private void mapReceiptDetails(PreparedStatement ps, int idCreatedReceipt, ReceiptDetails receiptDetails) throws SQLException {
         int i = 0;
         ps.setInt(++i, idCreatedReceipt);
+        ps.setInt(++i, receiptDetails.getRootReceiptId());
         mapReceiptProperties(ps, receiptDetails, i);
     }
 
@@ -313,10 +415,38 @@ public class MySqlReceiptDAO implements ReceiptDAO {
         return idCreatedReceipt;
     }
 
+    private int createNewRejectReceipt(Connection con, int userId)
+            throws SQLException {
+        int idCreatedReceipt = -1;
+        try (PreparedStatement ps = con.prepareStatement(CREATE_RECEIPT,
+                Statement.RETURN_GENERATED_KEYS)) {
+            mapRejectReceipt(ps, userId);
+            ps.executeUpdate();
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    idCreatedReceipt = rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new SQLException();
+        }
+        return idCreatedReceipt;
+    }
+
     private void setReceiptDetails(Connection con, int idCreatedReceipt) throws SQLException {
         try (PreparedStatement ps = con.prepareStatement(SET_RECEIPT_DETAILS)) {
             ReceiptDetails receiptDetails = getGlobalReceiptProperties();
-            logger.info(receiptDetails.toString());
+            mapReceiptDetails(ps, idCreatedReceipt, receiptDetails);
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw new SQLException();
+        }
+    }
+
+    private void setReceiptDetails(Connection con, int idCreatedReceipt, ReceiptDetails receiptDetails) throws SQLException {
+        try (PreparedStatement ps = con.prepareStatement(SET_RECEIPT_DETAILS)) {
             mapReceiptDetails(ps, idCreatedReceipt, receiptDetails);
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -341,6 +471,19 @@ public class MySqlReceiptDAO implements ReceiptDAO {
                     throw new SQLException();
                 }
             }
+        }
+    }
+
+    private void processingRejectReceipt(Connection con, int rootReceiptId, int productId, BigDecimal amount) {
+        try (CallableStatement cs = con.prepareCall(PROCESSING_REJECT_RECEIPT)) {
+            int i = 0;
+            cs.setInt(++i, rootReceiptId);
+            cs.setInt(++i, productId);
+            cs.setBigDecimal(++i, amount);
+            cs.executeUpdate();
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException("", "", getClass()); // Good explanation of error
         }
     }
 

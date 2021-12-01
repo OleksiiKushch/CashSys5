@@ -13,6 +13,9 @@ import com.finalprojultimate.util.MessageKey;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Set;
 
 public class UserServiceImpl implements UserService {
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
@@ -66,5 +69,15 @@ public class UserServiceImpl implements UserService {
     @Override
     public String getFormattedNameById(int id) {
         return userDAO.getById(id).getFormattedName();
+    }
+
+    @Override
+    public LinkedHashMap<Integer, Integer> getBestCashiersByCountReceipt(int limit) {
+        return userDAO.findBestCashiersByCountReceipt(limit);
+    }
+
+    @Override
+    public List<User> getUsersByIds(Set<Integer> ids) {
+        return userDAO.findUsersByIds(ids);
     }
 }

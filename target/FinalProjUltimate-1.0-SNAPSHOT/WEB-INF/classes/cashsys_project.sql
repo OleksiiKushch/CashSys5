@@ -120,6 +120,7 @@ CONSTRAINT fk_receipt_has_product_receipt
 
 CREATE TABLE IF NOT EXISTS receipt_details (
 receipt_id  INT PRIMARY KEY,
+root_receipt_id INT UNSIGNED,
 organization_tax_id_number BIGINT UNSIGNED,
 name_organization VARCHAR(128),
 address_trade_point VARCHAR(512),
@@ -140,7 +141,9 @@ taxation_sys VARCHAR(128) NOT NULL,
 CHECK (vat>=0),
 CHECK (`lock`='X'));
 
+
 DROP PROCEDURE IF EXISTS set_global_receipt_properties;
+DROP PROCEDURE IF EXISTS processing_reject_receipt;
 
 CREATE PROCEDURE set_global_receipt_properties(
     IN organization_tax_id_number BIGINT UNSIGNED,
@@ -159,5 +162,19 @@ BEGIN
             address_trade_point = address_trade_point,
             vat = vat,
             taxation_sys = taxation_sys;
+    END IF;
+END ;
+
+CREATE PROCEDURE processing_reject_receipt(
+    IN r_id INT UNSIGNED,
+    IN p_id INT UNSIGNED,
+    IN amountReject DECIMAL(9,3))
+BEGIN
+    IF (select amount from receipt_has_product where receipt_id = r_id and product_id = p_id) - amountReject = 0 then
+        DELETE FROM receipt_has_product WHERE receipt_id = r_id and product_id = p_id;
+    ELSE
+        UPDATE receipt_has_product
+        SET amount = amount - amountReject
+        WHERE receipt_id = r_id and product_id = p_id;
     END IF;
 END ;

@@ -29,6 +29,10 @@
                 <li><a href="${pageContext.request.contextPath}/FrontController?command=/receipt_catalog&page=1&page_size=8">
                     Receipt catalog</a></li>
             </ul>
+            <ul class="nav navbar-nav">
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/generate_report">
+                    Generate report</a></li>
+            </ul>
         </c:if>
 
         <c:if test="${sessionScope.logged_user.role == Role.COMMODITY_EXPERT}">

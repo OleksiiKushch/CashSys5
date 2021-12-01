@@ -1,4 +1,4 @@
-USE cashsysdb ;
+USE cashsysdbtest ;
 
 
 SET @unit_id = (SELECT id FROM unit WHERE `name` = 'piece');

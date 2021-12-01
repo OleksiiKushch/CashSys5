@@ -47,6 +47,10 @@ public class CommandHolder {
         commands.put(GET + SET_GLOBAL_RECEIPT_PROPERTIES, new GetSetGlobalReceiptPropertiesCommand());
         commands.put(GET + SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES, new GetSuccessfulSetGlobalReceiptPropertiesCommand());
         commands.put(GET + SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES, new GetSuccessfulResetGlobalReceiptPropertiesCommand());
+        commands.put(GET + SEE_RECEIPT_DETAILS, new GetSeeReceiptDetailsCommand());
+        commands.put(GET + SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT, new GetSuccessfulCreateNewRejectReceiptCommand());
+        commands.put(GET + GENERATE_REPORT, new GetGenerateReportCommand());
+        commands.put(GET + BEST_CASHIER_FOR_THE_MONTH, new GetBestCashierForTheLastMonthCommand());
 
         commands.put(POST + LOGIN, new LoginSubmitCommand());
         commands.put(POST + REGISTRATION, new RegistrationSubmitCommand());
@@ -56,6 +60,7 @@ public class CommandHolder {
         commands.put(POST + CREATE_NEW_RECEIPT, new PostCreateNewReceiptCommand());
         commands.put(POST + SET_GLOBAL_RECEIPT_PROPERTIES, new PostSetGlobalReceiptPropertiesCommand());
         commands.put(POST + RESET_GLOBAL_RECEIPT_PROPERTIES, new PostResetGlobalReceiptPropertiesCommand());
+        commands.put(POST + CREATE_REJECT_RECEIPT, new PostCreateRejectReceiptCommand());
 
     }
 

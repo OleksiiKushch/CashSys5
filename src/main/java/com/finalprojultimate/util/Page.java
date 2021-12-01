@@ -28,6 +28,10 @@ public abstract class Page {
     public static final String SET_GLOBAL_RECEIPT_PROPERTIES_PAGE = PATH + "/set_global_receipt_properties" + JSP;
     public static final String SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES_PAGE = PATH + "/successful_set_global_receipt_properties" + JSP;
     public static final String SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES_PAGE = PATH + "/successful_reset_global_receipt_properties" + JSP;
+    public static final String SEE_RECEIPT_DETAILS_PAGE = PATH + "/see_receipt_details" + JSP;
+    public static final String SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT_PAGE = PATH + "/successful_create_new_reject_receipt" + JSP;
+    public static final String GENERATE_REPORT_PAGE = PATH + "/generate_report" + JSP;
+    public static final String BEST_CASHIER_FOR_THE_LAST_MONTH = PATH + "/best_cashier_for_the_last_month" + JSP;
 
     public static final String INTERNAL_SERVER_ERROR_PAGE = PATH + "/error/internal_server_error" + JSP;
     public static final String PAGE_NOT_FOUND_ERROR_PAGE = PATH + "/error/page_not_found" + JSP;
