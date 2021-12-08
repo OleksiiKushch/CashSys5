@@ -31,7 +31,7 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     public ReceiptServiceImpl() {
-        DAOFactory.setDaoFactoryFCN(DAOConstants.MySqlDAOFactoryFCN);
+        DAOFactory.setDaoFactoryFCN(DAOConstants.MY_SQL_DAO_FACTORY_FCN);
         DAOFactory daoFactory = null;
         try {
             daoFactory = DAOFactory.getInstance();
@@ -39,7 +39,6 @@ public class ReceiptServiceImpl implements ReceiptService {
                 InstantiationException | IllegalAccessException e) {
             logger.error(e.getMessage(), e);
         }
-        assert daoFactory != null;
         receiptDAO = daoFactory.getReceiptDAO();
         receiptDAO.setConnectionBuilder(PoolConnectionBuilder.getInstance());
     }

@@ -126,7 +126,7 @@ public class User extends Entity {
             return this;
         }
 
-        public Builder withRoleId(Role role) {
+        public Builder withRole(Role role) {
             newUser.role = role;
             return this;
         }

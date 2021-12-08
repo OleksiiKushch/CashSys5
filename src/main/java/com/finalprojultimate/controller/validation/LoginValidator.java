@@ -47,9 +47,11 @@ public class LoginValidator implements Validator<LoginData> {
 
     private List<String> getErrorMessages(boolean isEmailValid, String errorWrongEmail,
                                     boolean isPasswordValid, String errorWrongPassword) {
+
         List<String> result = new ArrayList<>();
         result.add(extractor.extractIfPositive(!isEmailValid, errorWrongEmail));
         result.add(extractor.extractIfPositive(!isPasswordValid, errorWrongPassword));
+
         return result.stream().filter(Objects::nonNull).collect(Collectors.toList());
     }
 }

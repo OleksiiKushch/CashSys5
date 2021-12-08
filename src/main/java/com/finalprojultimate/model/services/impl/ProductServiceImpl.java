@@ -27,7 +27,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public ProductServiceImpl() {
-        DAOFactory.setDaoFactoryFCN(DAOConstants.MySqlDAOFactoryFCN);
+        DAOFactory.setDaoFactoryFCN(DAOConstants.MY_SQL_DAO_FACTORY_FCN);
         DAOFactory daoFactory = null;
         try {
             daoFactory = DAOFactory.getInstance();
@@ -35,7 +35,6 @@ public class ProductServiceImpl implements ProductService {
                 InstantiationException | IllegalAccessException e) {
             logger.error(e.getMessage(), e);
         }
-        assert daoFactory != null;
         productDAO = daoFactory.getProductDAO();
         productDAO.setConnectionBuilder(PoolConnectionBuilder.getInstance());
     }
@@ -70,6 +69,14 @@ public class ProductServiceImpl implements ProductService {
         return productDAO.findProductsWithPaginationSortByNone(offset, limit);
     }
 
+    /**
+     * return products from the database in the range [(offset - 1) * limit; offset * limit] pre-sorted by parameter or not (none)
+     *
+     * @param sortParameter parameter sorting [none, name]
+     * @param offset number of page at pagination
+     * @param limit number of return products (size List)
+     * @return list of products
+     */
     @Override
     public List<Product> getForPaginationSortByParameter(String sortParameter, int offset, int limit) {
         if (sortParameter.equals(NAME)) {

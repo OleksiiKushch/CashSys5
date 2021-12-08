@@ -34,7 +34,7 @@ public class MySqlProductDAOTest {
     }
 
     @Test
-    public void saveDeleteTest() throws DaoException {
+    public void insertAndDeleteTest() throws DaoException {
         Product product = new Product.Builder()
                 .withName("Сrisps LUX 430g.")
                 .withPrice(new BigDecimal("2.1"))

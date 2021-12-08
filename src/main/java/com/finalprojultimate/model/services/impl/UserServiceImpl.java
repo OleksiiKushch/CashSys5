@@ -35,7 +35,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public UserServiceImpl() {
-        DAOFactory.setDaoFactoryFCN(DAOConstants.MySqlDAOFactoryFCN);
+        DAOFactory.setDaoFactoryFCN(DAOConstants.MY_SQL_DAO_FACTORY_FCN);
         DAOFactory daoFactory = null;
         try {
             daoFactory = DAOFactory.getInstance();
@@ -43,7 +43,6 @@ public class UserServiceImpl implements UserService {
                 InstantiationException | IllegalAccessException e) {
             logger.error(e.getMessage(), e);
         }
-        assert daoFactory != null;
         userDAO = daoFactory.getUserDAO();
         userDAO.setConnectionBuilder(PoolConnectionBuilder.getInstance());
     }
@@ -63,6 +62,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void create(User user) {
+        user.setPassHash(encryptUserPassword(user.getPassHash()));
         userDAO.insert(user);
     }
 
@@ -71,6 +71,12 @@ public class UserServiceImpl implements UserService {
         return userDAO.getById(id).getFormattedName();
     }
 
+    /**
+     * return users (cashiers) from the database, sorted by their count of receipt, respectively
+     *
+     * @param limit number of return users (cashiers) (size LinkedHashMap)
+     * @return LinkedHashMap (id user, count receipt)
+     */
     @Override
     public LinkedHashMap<Integer, Integer> getBestCashiersByCountReceipt(int limit) {
         return userDAO.findBestCashiersByCountReceipt(limit);
@@ -79,5 +85,10 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getUsersByIds(Set<Integer> ids) {
         return userDAO.findUsersByIds(ids);
+    }
+
+    private String encryptUserPassword(String password) {
+        BCryptEncryptor encryptor = new BCryptEncryptor();
+        return encryptor.encryptPassword(password);
     }
 }

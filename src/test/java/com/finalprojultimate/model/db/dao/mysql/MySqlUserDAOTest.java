@@ -42,7 +42,7 @@ public class MySqlUserDAOTest {
                 .withMiddleName("Dilan")
                 .withLastName("Cupper")
                 .withPassHash("82A280E5FF6A23229A5FCE280C0D14C84832FE019D0AD5CDA140C1BFD6B19112")
-                .withRoleId(Role.CASHIER)
+                .withRole(Role.CASHIER)
                 .build();
         userDAO.insert(user);
         assertEquals("Ben", userDAO.getById(8).getFirstName());
@@ -60,7 +60,7 @@ public class MySqlUserDAOTest {
                 .withMiddleName(uBefore.getMiddleName())
                 .withLastName("Bobber")
                 .withPassHash(uBefore.getPassHash())
-                .withRoleId(uBefore.getRole())
+                .withRole(uBefore.getRole())
                 .build();
         userDAO.update(uAfter);
         assertEquals("Bobber", userDAO.getById(1).getLastName());

@@ -13,6 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.ReceiptQuery.*;
+import static com.finalprojultimate.model.db.dao.util.LogMessage.*;
+import static com.finalprojultimate.util.MessageKey.*;
 
 public class MySqlReceiptDAO implements ReceiptDAO {
 
@@ -44,7 +46,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_INSERT_ROW_TO_DATABASE,
+                    INSERT_ROW_TO_DATABASE_LOG_MSG, getClass());
         }
     }
 
@@ -62,7 +65,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_UPDATE_ROW_TO_DATABASE,
+                    UPDATE_ROW_TO_DATABASE_LOG_MSG, getClass());
         }
     }
 
@@ -79,7 +83,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_DELETE_ROW_FROM_DATABASE,
+                    DELETE_ROW_FROM_DATABASE_LOG_MSG, getClass());
         }
     }
 
@@ -96,7 +101,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GETTING_ROW_FROM_DATABASE,
+                    GETTING_ROW_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -113,23 +119,26 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GETTING_ALL_ROWS_FROM_DATABASE,
+                    GETTING_ALL_ROWS_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
 
     /**
      * Transaction that includes four main requests
-     *  - creation of a new receipt
-     *  - set receipt details
-     *  - checking the availability of products in the stock and a corresponding reduction in their amount in the stock
-     *  - insert the table receipt_has_product according to the list of products in the cart
+     * <ul>
+     *     <li>creation of a new receipt</li>
+     *     <li>set receipt details</li>
+     *     <li>checking the availability of products in the stock and a corresponding reduction in their amount in the stock</li>
+     *     <li>insert the table receipt_has_product according to the list of products in the cart</li>
+     * </ul>
      *
-     * @param userId - id of the user (cashier) who request
-     * @param change - sum change
-     * @param paymentId - id of the payment type
-     * @param products - list of products in the cart
-     * @throws DaoException - specific dao exception
+     * @param userId id of the user (cashier) who request
+     * @param change sum change
+     * @param paymentId id of the payment type
+     * @param products list of products in the cart
+     * @throws DaoException specific dao exception
      */
     @Override
     public void create(int userId, BigDecimal change, int paymentId, List<Product> products) throws DaoException {
@@ -150,7 +159,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             rollback(con);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_CREATE_RECEIPT_IN_DATABASE,
+                    CREATE_RECEIPT_IN_DATABASE_LOG_MSG, getClass());
         } finally {
             close(con);
         }
@@ -158,15 +168,17 @@ public class MySqlReceiptDAO implements ReceiptDAO {
 
     /**
      * Transaction that includes four main requests
-     *  - creation of a new reject receipt
-     *  - copy and set receipt details (copy from root receipt (receipt that is being rejecting))
-     *  - processing amount of products in the root receipt (update amount products in the root receipt)
-     *  - insert the table receipt_has_product according to the list of products that is being rejecting
+     * <ul>
+     *     <li>creation of a new reject receipt</li>
+     *     <li>copy and set receipt details (copy from root receipt (receipt that is being rejecting))</li>
+     *     <li>processing amount of products in the root receipt (update amount products in the root receipt)</li>
+     *     <li>insert the table receipt_has_product according to the list of products that is being rejecting</li>
+     * </ul>
      *
-     * @param rootReceiptId - receipt id that is being rejecting
-     * @param userId - id of the user (senior cashier) who request
-     * @param products - list of products in the receipt that is being rejecting
-     * @throws DaoException - specific dao exception
+     * @param rootReceiptId receipt id that is being rejecting
+     * @param userId id of the user (senior cashier) who request
+     * @param products list of products in the receipt that is being rejecting
+     * @throws DaoException specific dao exception
      */
     @Override
     public void createReject(int rootReceiptId, int userId, List<Product> products) throws DaoException {
@@ -193,7 +205,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             rollback(con);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_CREATE_REJECT_RECEIPT_IN_DATABASE,
+                    CREATE_REJECT_RECEIPT_IN_DATABASE_LOG_MSG, getClass());
         } finally {
             close(con);
         }
@@ -213,7 +226,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_FIND_RECEIPTS_WITH_PAGINATION_FROM_DATABASE,
+                    FIND_RECEIPTS_WITH_PAGINATION_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -233,7 +247,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GET_GLOBAL_RECEIPT_PROPERTIES_FROM_DATABASE,
+                    GET_GLOBAL_RECEIPT_PROPERTIES_FROM_DATABASE_LOG_MSG, getClass());
         }
         return receiptDetails;
     }
@@ -246,7 +261,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             cs.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_SET_GLOBAL_RECEIPT_PROPERTIES_TO_DATABASE,
+                    SET_GLOBAL_RECEIPT_PROPERTIES_TO_DATABASE_LOG_MSG, getClass());
         }
     }
 
@@ -256,10 +272,16 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             stmt.executeUpdate(RESET_GLOBAL_RECEIPT_PROPERTIES);
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_RESET_GLOBAL_RECEIPT_PROPERTIES_IN_DATABASE,
+                    RESET_GLOBAL_RECEIPT_PROPERTIES_IN_DATABASE_LOG_MSG, getClass());
         }
     }
 
+    /**
+     *
+     * @param id id receipt
+     * @return total sum receipt
+     */
     @Override
     public BigDecimal getSumReceiptById(int id) {
         BigDecimal result = new BigDecimal("0");
@@ -272,11 +294,17 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GET_SUM_RECEIPT_BY_ID_FROM_DATABASE,
+                    GET_SUM_RECEIPT_BY_ID_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
 
+    /**
+     *
+     * @param id id receipt
+     * @return the list of products contained in the receipt
+     */
     @Override
     public List<Product> getProductsByReceiptId(int id) {
         List<Product> result = new ArrayList<>();
@@ -289,7 +317,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GET_PRODUCTS_BY_RECEIPT_ID_FROM_DATABASE,
+                    GET_PRODUCTS_BY_RECEIPT_ID_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -306,7 +335,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GET_RECEIPT_DETAILS_BY_ID_FROM_DATABASE,
+                    GET_RECEIPT_DETAILS_BY_ID_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -319,6 +349,15 @@ public class MySqlReceiptDAO implements ReceiptDAO {
         ps.setInt(++i, receipt.getStatus().getId());
     }
 
+    /**
+     * mapping creating new receipt with status 'normal'
+     *
+     * @param ps PreparedStatement
+     * @param change change of a receipt
+     * @param paymentId id payment type
+     * @param userId cashier id
+     * @throws SQLException sql exception
+     */
     private void mapReceipt(PreparedStatement ps, BigDecimal change, int paymentId, int userId) throws SQLException {
         int i = 0;
         ps.setBigDecimal(++i, change);
@@ -327,6 +366,13 @@ public class MySqlReceiptDAO implements ReceiptDAO {
         ps.setInt(++i, Status.NORMAL.getId());
     }
 
+    /**
+     * mapping reject receipt with status 'rejected' and default settings (change of a receipt = 0 and payment type 'electronic')
+     *
+     * @param ps PreparedStatement
+     * @param userId senior cashier id
+     * @throws SQLException sql exception
+     */
     private void mapRejectReceipt(PreparedStatement ps, int userId) throws SQLException {
         int i = 0;
         ps.setBigDecimal(++i, new BigDecimal("0"));
@@ -474,6 +520,16 @@ public class MySqlReceiptDAO implements ReceiptDAO {
         }
     }
 
+    /**
+     * delete row from receipt_has_product table if amount of rejected products (@param amount)
+     * is equal to amount of products in the receipt (in receipt_has_product table)
+     * else reduces amount of products in the receipt by the appropriate amount (@param amount)
+     *
+     * @param con database connection
+     * @param rootReceiptId receipt id that is being rejecting
+     * @param productId id rejected product
+     * @param amount amount of rejected products
+     */
     private void processingRejectReceipt(Connection con, int rootReceiptId, int productId, BigDecimal amount) {
         try (CallableStatement cs = con.prepareCall(PROCESSING_REJECT_RECEIPT)) {
             int i = 0;
@@ -483,7 +539,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             cs.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_PROCESSING_REJECT_RECEIPT_IN_DATABASE,
+                    PROCESSING_REJECT_RECEIPT_IN_DATABASE_LOG_MSG, getClass());
         }
     }
 

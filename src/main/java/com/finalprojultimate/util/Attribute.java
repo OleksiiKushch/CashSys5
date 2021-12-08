@@ -37,6 +37,7 @@ public abstract class Attribute {
     public static final String GLOBAL_RECEIPT_PROPERTIES = "global_receipt_properties";
     public static final String RECEIPT = "receipt";
 
+    public static final String LOCALE = "locale";
 
     public static final String ERROR_MESSAGE = "error_message";
     public static final String ERROR_VALIDATION_MESSAGE = "error_validation_message";

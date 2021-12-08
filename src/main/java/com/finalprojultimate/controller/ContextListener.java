@@ -7,6 +7,9 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 import javax.servlet.annotation.WebListener;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.Properties;
 
 @WebListener("application context listener")
 public class ContextListener implements ServletContextListener {
@@ -22,6 +25,26 @@ public class ContextListener implements ServletContextListener {
         String fullPath = context.getRealPath("") + File.separator + log4jConfigFile;
 
         PropertyConfigurator.configure(fullPath);
+
+        // I18n ininialization
+
+        // obtain file name with locales descriptions
+        String localesFileName = context.getInitParameter("locales");
+
+        // obtain reale path on server
+        String localesFileRealPath = context.getRealPath(localesFileName);
+
+        // locad descriptions
+        Properties locales = new Properties();
+        try {
+            locales.load(new FileInputStream(localesFileRealPath));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        // save descriptions to servlet context
+        context.setAttribute("locales", locales);
+
     }
 
     @Override

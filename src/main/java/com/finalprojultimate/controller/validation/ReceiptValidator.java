@@ -20,6 +20,14 @@ public class ReceiptValidator implements Validator<Receipt> {
     private boolean isValidReceiptChange;
     private boolean isUnsignedReceiptChange;
 
+    private final List<Boolean> checksValidation;
+    private final List<String> messagesValidation;
+
+    public ReceiptValidator() {
+        checksValidation = new ArrayList<>();
+        messagesValidation = new ArrayList<>();
+    }
+
     @Override
     public boolean isValid(Receipt receipt) {
         isValidReceiptChange = isValidReceiptChange(receipt.getChange());
@@ -38,11 +46,18 @@ public class ReceiptValidator implements Validator<Receipt> {
 
     @Override
     public List<String> getErrorValidationMessages() {
-        List<String> result = new ArrayList<>();
+        setChecksValidation();
+        setMessagesValidation();
 
-        result.add(extractor.extractIfPositive(!isValidReceiptChange, ERROR_WRONG_RECEIPT_CHANGE));
-        result.add(extractor.extractIfPositive(!isUnsignedReceiptChange, ERROR_WRONG_RECEIPT_CHANGE));
+        return getErrorMessages(extractor, checksValidation, messagesValidation);
+    }
 
-        return result.stream().filter(Objects::nonNull).collect(Collectors.toList());
+    private void setChecksValidation() {
+        checksValidation.add(isValidReceiptChange);
+        checksValidation.add(isUnsignedReceiptChange);
+    }
+    private void setMessagesValidation() {
+        messagesValidation.add(ERROR_WRONG_RECEIPT_CHANGE);
+        messagesValidation.add(ERROR_SINGED_RECEIPT_CHANGE);
     }
 }

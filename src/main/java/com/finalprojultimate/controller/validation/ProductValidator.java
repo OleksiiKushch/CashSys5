@@ -27,8 +27,20 @@ public class ProductValidator implements Validator<Product> {
     private boolean isNotEmptyBarcode;
     private boolean isValidBarcode;
 
+    private final List<Boolean> checks;
+    private final List<String> messages;
+    private final List<Boolean> checksValidation;
+    private final List<String> messagesValidation;
+
     private final StringExtractorBasedOnBool extractor = (isPositive, msg) -> isPositive ? msg : null;
     private final NullChecker<String> nullChecker = (input) -> input == null || input.isEmpty();
+
+    public ProductValidator() {
+        checks = new ArrayList<>();
+        messages = new ArrayList<>();
+        checksValidation = new ArrayList<>();
+        messagesValidation = new ArrayList<>();
+    }
 
     public boolean isValid(Product product) {
         if (product.getPrice() == null || product.getAmount() == null) {
@@ -72,28 +84,49 @@ public class ProductValidator implements Validator<Product> {
 
     @Override
     public List<String> getErrorMessages() {
-        List<String> result = new ArrayList<>();
+        setChecks();
+        setMessages();
 
-        result.add(extractor.extractIfPositive(!isNotEmptyProductName, ERROR_EMPTY_PRODUCT_NAME));
-        result.add(extractor.extractIfPositive(!isNotEmptyPrice, ERROR_EMPTY_PRICE));
-        result.add(extractor.extractIfPositive(!isNotEmptyAmount, ERROR_EMPTY_AMOUNT));
-        result.add(extractor.extractIfPositive(!isNotEmptyBarcode, ERROR_EMPTY_BARCODE));
-        result.add(extractor.extractIfPositive(!isNotEmptyUnit, ERROR_EMPTY_UNIT));
+        return getErrorMessages(extractor, checks, messages);
+    }
 
-        return result.stream().filter(Objects::nonNull).collect(Collectors.toList());
+    private void setChecks() {
+        checks.add(isNotEmptyProductName);
+        checks.add(isNotEmptyPrice);
+        checks.add(isNotEmptyAmount);
+        checks.add(isNotEmptyBarcode);
+        checks.add(isNotEmptyUnit);
+    }
+    private void setMessages() {
+        messages.add(ERROR_EMPTY_PRODUCT_NAME);
+        messages.add(ERROR_EMPTY_PRICE);
+        messages.add(ERROR_EMPTY_AMOUNT);
+        messages.add(ERROR_EMPTY_BARCODE);
+        messages.add(ERROR_EMPTY_UNIT);
     }
 
     @Override
     public List<String> getErrorValidationMessages() {
-        List<String> result = new ArrayList<>();
+        setChecksValidation();
+        setMessagesValidation();
 
-        result.add(extractor.extractIfPositive(!isValidProductName, ERROR_WRONG_PRODUCT_NAME));
-        result.add(extractor.extractIfPositive(!isValidPrice, ERROR_WRONG_PRICE));
-        result.add(extractor.extractIfPositive(!isUnsignedProductPrice, ERROR_WRONG_PRICE));
-        result.add(extractor.extractIfPositive(!isValidAmount, ERROR_WRONG_AMOUNT));
-        result.add(extractor.extractIfPositive(!isUnsignedProductAmount, ERROR_WRONG_AMOUNT));
-        result.add(extractor.extractIfPositive(!isValidBarcode, ERROR_WRONG_BARCODE));
+        return getErrorMessages(extractor, checksValidation, messagesValidation);
+    }
 
-        return result.stream().filter(Objects::nonNull).collect(Collectors.toList());
+    private void setChecksValidation() {
+        checksValidation.add(isValidProductName);
+        checksValidation.add(isValidPrice);
+        checksValidation.add(isUnsignedProductPrice);
+        checksValidation.add(isValidAmount);
+        checksValidation.add(isUnsignedProductAmount);
+        checksValidation.add(isValidBarcode);
+    }
+    private void setMessagesValidation() {
+        messagesValidation.add(ERROR_WRONG_PRODUCT_NAME);
+        messagesValidation.add(ERROR_WRONG_PRICE);
+        messagesValidation.add(ERROR_SINGED_PRICE);
+        messagesValidation.add(ERROR_WRONG_AMOUNT);
+        messagesValidation.add(ERROR_SINGED_AMOUNT);
+        messagesValidation.add(ERROR_WRONG_BARCODE);
     }
 }

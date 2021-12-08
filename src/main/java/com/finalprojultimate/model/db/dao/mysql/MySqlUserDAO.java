@@ -13,8 +13,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.ReceiptQuery.GET_PRODUCTS_BY_RECEIPT_ID;
 import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.UserQuery.*;
+import static com.finalprojultimate.model.db.dao.util.LogMessage.*;
+import static com.finalprojultimate.util.MessageKey.*;
 
 public class MySqlUserDAO implements UserDAO {
 
@@ -46,7 +47,8 @@ public class MySqlUserDAO implements UserDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_INSERT_ROW_TO_DATABASE,
+                    INSERT_ROW_TO_DATABASE_LOG_MSG, getClass());
         }
     }
 
@@ -64,7 +66,8 @@ public class MySqlUserDAO implements UserDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_UPDATE_ROW_TO_DATABASE,
+                    UPDATE_ROW_TO_DATABASE_LOG_MSG, getClass());
         }
     }
 
@@ -81,7 +84,8 @@ public class MySqlUserDAO implements UserDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_DELETE_ROW_FROM_DATABASE,
+                    DELETE_ROW_FROM_DATABASE_LOG_MSG, getClass());
         }
     }
 
@@ -98,7 +102,8 @@ public class MySqlUserDAO implements UserDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GETTING_ROW_FROM_DATABASE,
+                    GETTING_ROW_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -115,7 +120,8 @@ public class MySqlUserDAO implements UserDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GETTING_ALL_ROWS_FROM_DATABASE,
+                    GETTING_ALL_ROWS_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -133,11 +139,20 @@ public class MySqlUserDAO implements UserDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GET_USER_BY_EMAIL_FROM_DATABASE,
+                    GET_USER_BY_EMAIL_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
 
+    /**
+     * find a specific number of users (cashiers), sorting them by the number of receipts <b>per month</b>
+     *
+     * @param limit limit (count) of cashiers found
+     * @return LinkedHashMap where key - id user (cashiers), and
+     *                             value - count of receipt
+     * @throws DaoException specific exception
+     */
     @Override
     public LinkedHashMap<Integer, Integer> findBestCashiersByCountReceipt(int limit) throws DaoException {
         LinkedHashMap<Integer, Integer> result = new LinkedHashMap<>();
@@ -152,7 +167,8 @@ public class MySqlUserDAO implements UserDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_FIND_BEST_CASHIERS_BY_COUNT_RECEIPT_FROM_DATABASE,
+                    FIND_BEST_CASHIERS_BY_COUNT_RECEIPT_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -184,7 +200,7 @@ public class MySqlUserDAO implements UserDAO {
                 .withMiddleName(rs.getString(MySqlConstant.UserField.MIDDLE_NAME))
                 .withLastName(rs.getString(MySqlConstant.UserField.LAST_NAME))
                 .withPassHash(rs.getString(MySqlConstant.UserField.PASS_HASH))
-                .withRoleId(Role.getById(rs.getInt(MySqlConstant.UserField.ROLE_ID)))
+                .withRole(Role.getById(rs.getInt(MySqlConstant.UserField.ROLE_ID)))
                 .build();
     }
 }

@@ -43,8 +43,6 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
             throws ServletException, IOException {
         Receipt receipt = getDataFromRequest(request);
 
-        // writeSpecificDataToRequest(request, user);
-
         if(!validator.isValid(receipt)){
             extractAndWriteErrorMessagesToRequest(request);
             return CREATE_NEW_RECEIPT_PAGE;

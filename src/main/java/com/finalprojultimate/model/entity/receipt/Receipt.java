@@ -58,17 +58,6 @@ public class Receipt extends Entity {
         this.userId = user_id;
     }
 
-    @Override
-    public String toString() {
-        return "Receipt{" +
-                "id=" + id +
-                ", dateTime=" + dateTime +
-                ", change=" + change +
-                ", payment=" + payment +
-                ", status=" + status +
-                ", userId=" + userId +
-                '}';
-    }
 
     public static class Builder {
         private final Receipt newReceipt;

@@ -38,14 +38,10 @@ public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
             throws ServletException, IOException {
         User user = getDataFromRequest(request);
 
-        // writeSpecificDataToRequest(request, user);
-
         if(!validator.isValid(user)){
             extractAndWriteErrorMessagesToRequest(request);
             return REGISTRATION_PAGE;
         }
-
-        user.setPassHash(encryptUserPassword(user.getPassHash()));
 
         userService.create(user);
 
@@ -76,19 +72,12 @@ public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
                 .withMiddleName(middleName)
                 .withLastName(lastName)
                 .withPassHash(password)
-                .withRoleId(Role.getByName(role))
+                .withRole(Role.getByName(role))
                 .build();
     }
 
     @Override
-    protected void writeSpecificDataToRequest(HttpServletRequest request, User user) {
-        // request.setAttribute(PREVIOUS_PERSON, user);
-    }
-
-    private String encryptUserPassword(String password) {
-        BCryptEncryptor encryptor = new BCryptEncryptor();
-        return encryptor.encryptPassword(password);
-    }
+    protected void writeSpecificDataToRequest(HttpServletRequest request, User user) {}
 
     private void extractAndWriteErrorMessagesToRequest(HttpServletRequest request) {
         List<String> errorMessages = validator.getErrorMessages();

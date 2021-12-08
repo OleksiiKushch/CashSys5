@@ -41,4 +41,6 @@ public abstract class Path {
     public static final String SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT = "/successful_create_new_reject_receipt";
     public static final String GENERATE_REPORT = "/generate_report";
     public static final String BEST_CASHIER_FOR_THE_MONTH = "/best_cashier_for_the_last_month";
+
+    public static final String CHANGE_LOCAL = "/change_local";
 }

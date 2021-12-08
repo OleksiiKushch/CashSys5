@@ -52,6 +52,8 @@ public class CommandHolder {
         commands.put(GET + GENERATE_REPORT, new GetGenerateReportCommand());
         commands.put(GET + BEST_CASHIER_FOR_THE_MONTH, new GetBestCashierForTheLastMonthCommand());
 
+        commands.put(GET + CHANGE_LOCAL, new GetChangeLocaleCommand());
+
         commands.put(POST + LOGIN, new LoginSubmitCommand());
         commands.put(POST + REGISTRATION, new RegistrationSubmitCommand());
         commands.put(POST + CREATE_NEW_PRODUCT, new PostCreateNewProductCommand());

@@ -29,8 +29,20 @@ public class ReceiptPropertiesValidator implements Validator<ReceiptDetails> {
     private boolean isNotEmptyTaxationSys;
     private boolean isValidTaxationSys;
 
+    private final List<Boolean> checks;
+    private final List<String> messages;
+    private final List<Boolean> checksValidation;
+    private final List<String> messagesValidation;
+
     private final StringExtractorBasedOnBool extractor = (isPositive, msg) -> isPositive ? msg : null;
     private final NullChecker<String> nullChecker = (input) -> input == null || input.isEmpty();
+
+    public ReceiptPropertiesValidator() {
+        checks = new ArrayList<>();
+        messages = new ArrayList<>();
+        checksValidation = new ArrayList<>();
+        messagesValidation = new ArrayList<>();
+    }
 
     public boolean isValid(ReceiptDetails receiptProperties) {
         isNotEmptyOrganizationTaxIdNumber = !nullChecker
@@ -81,29 +93,52 @@ public class ReceiptPropertiesValidator implements Validator<ReceiptDetails> {
 
     @Override
     public List<String> getErrorMessages() {
-        List<String> result = new ArrayList<>();
+        setChecks();
+        setMessages();
 
-        result.add(extractor.extractIfPositive(!isNotEmptyOrganizationTaxIdNumber, ERROR_EMPTY_ORGANIZATION_TAX_ID_NUMBER));
-        result.add(extractor.extractIfPositive(!isNotEmptyNameOrganization, ERROR_EMPTY_NAME_ORGANIZATION));
-        result.add(extractor.extractIfPositive(!isNotEmptyAddressTradePoint, ERROR_EMPTY_ADDRESS_TRADE_POINT));
-        result.add(extractor.extractIfPositive(!isNotEmptyVat, ERROR_EMPTY_VAT));
-        result.add(extractor.extractIfPositive(!isNotEmptyTaxationSys, ERROR_EMPTY_TAXATION_SYS));
+        return getErrorMessages(extractor, checks, messages);
+    }
 
-        return result.stream().filter(Objects::nonNull).collect(Collectors.toList());
+    private void setChecks() {
+        checks.add(isNotEmptyOrganizationTaxIdNumber);
+        checks.add(isNotEmptyNameOrganization);
+        checks.add(isNotEmptyAddressTradePoint);
+        checks.add(isNotEmptyVat);
+        checks.add(isNotEmptyTaxationSys);
+    }
+    private void setMessages() {
+        messages.add(ERROR_EMPTY_ORGANIZATION_TAX_ID_NUMBER);
+        messages.add(ERROR_EMPTY_NAME_ORGANIZATION);
+        messages.add(ERROR_EMPTY_ADDRESS_TRADE_POINT);
+        messages.add(ERROR_EMPTY_VAT);
+        messages.add(ERROR_EMPTY_TAXATION_SYS);
     }
 
     @Override
     public List<String> getErrorValidationMessages() {
-        List<String> result = new ArrayList<>();
+        setChecksValidation();
+        setMessagesValidation();
 
-        result.add(extractor.extractIfPositive(!isValidOrganizationTaxIdNumber, ERROR_WRONG_ORGANIZATION_TAX_ID_NUMBER));
-        result.add(extractor.extractIfPositive(!isUnsignedOrganizationTaxIdNumber, ERROR_WRONG_ORGANIZATION_TAX_ID_NUMBER));
-        result.add(extractor.extractIfPositive(!isValidNameOrganization, ERROR_WRONG_NAME_ORGANIZATION));
-        result.add(extractor.extractIfPositive(!isValidAddressTradePoint, ERROR_WRONG_ADDRESS_TRADE_POINT));
-        result.add(extractor.extractIfPositive(!isValidVat, ERROR_WRONG_VAT));
-        result.add(extractor.extractIfPositive(!isUnsignedVat, ERROR_WRONG_VAT));
-        result.add(extractor.extractIfPositive(!isValidTaxationSys, ERROR_WRONG_TAXATION_SYS));
-
-        return result.stream().filter(Objects::nonNull).collect(Collectors.toList());
+        return getErrorMessages(extractor, checksValidation, messagesValidation);
     }
+
+    private void setChecksValidation() {
+        checksValidation.add(isValidOrganizationTaxIdNumber);
+        checksValidation.add(isUnsignedOrganizationTaxIdNumber);
+        checksValidation.add(isValidNameOrganization);
+        checksValidation.add(isValidAddressTradePoint);
+        checksValidation.add(isValidVat);
+        checksValidation.add(isUnsignedVat);
+        checksValidation.add(isValidTaxationSys);
+    }
+    private void setMessagesValidation() {
+        messagesValidation.add(ERROR_WRONG_ORGANIZATION_TAX_ID_NUMBER);
+        messagesValidation.add(ERROR_SINGED_ORGANIZATION_TAX_ID_NUMBER);
+        messagesValidation.add(ERROR_WRONG_NAME_ORGANIZATION);
+        messagesValidation.add(ERROR_WRONG_ADDRESS_TRADE_POINT);
+        messagesValidation.add(ERROR_WRONG_VAT);
+        messagesValidation.add(ERROR_SINGED_VAT);
+        messagesValidation.add(ERROR_WRONG_TAXATION_SYS);
+    }
+
 }

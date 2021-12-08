@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.ProductQuery.*;
+import static com.finalprojultimate.model.db.dao.util.LogMessage.*;
+import static com.finalprojultimate.util.MessageKey.*;
 
 public class MySqlProductDAO implements ProductDAO {
 
@@ -43,13 +45,14 @@ public class MySqlProductDAO implements ProductDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_INSERT_ROW_TO_DATABASE,
+                    INSERT_ROW_TO_DATABASE_LOG_MSG, getClass());
         }
     }
 
     /**
      *
-     * @param product
+     * @param product concrete product
      * update product from DB, search by barcode product
      */
     @Override
@@ -61,13 +64,14 @@ public class MySqlProductDAO implements ProductDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_UPDATE_ROW_TO_DATABASE,
+                    UPDATE_ROW_TO_DATABASE_LOG_MSG, getClass());
         }
     }
 
     /**
      *
-     * @param product
+     * @param product concrete product
      * remove product from DB, search by id product
      */
     @Override
@@ -78,7 +82,8 @@ public class MySqlProductDAO implements ProductDAO {
             ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_DELETE_ROW_FROM_DATABASE,
+                    DELETE_ROW_FROM_DATABASE_LOG_MSG, getClass());
         }
     }
 
@@ -95,7 +100,8 @@ public class MySqlProductDAO implements ProductDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GETTING_ROW_FROM_DATABASE,
+                    GETTING_ROW_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -112,7 +118,8 @@ public class MySqlProductDAO implements ProductDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GETTING_ALL_ROWS_FROM_DATABASE,
+                    GETTING_ALL_ROWS_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -149,7 +156,8 @@ public class MySqlProductDAO implements ProductDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_FIND_PRODUCTS_WITH_PAGINATION_FROM_DATABASE,
+                    FIND_PRODUCTS_WITH_PAGINATION_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -171,7 +179,8 @@ public class MySqlProductDAO implements ProductDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_FIND_PRODUCTS_BY_QUERY_FROM_DATABASE,
+                    FIND_PRODUCTS_BY_QUERY_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -202,8 +211,8 @@ public class MySqlProductDAO implements ProductDAO {
     /**
      * replaces special characters of search input data for correct LIKE operator search
      *
-     * @param param - input data for searching
-     * @return - escaping input from special characters
+     * @param param input data for searching
+     * @return escaping input from special characters
      */
     public static String escapeForLike(String param) {
         return param.replace("!", "!!")

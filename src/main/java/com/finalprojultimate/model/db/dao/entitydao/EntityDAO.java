@@ -12,6 +12,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
+import static com.finalprojultimate.model.db.dao.util.LogMessage.GET_COUNT_ROWS_IN_DATABASE_LOG_MSG;
+import static com.finalprojultimate.util.MessageKey.ERROR_GET_COUNT_ROWS_IN_DATABASE;
+
 public interface EntityDAO<T> {
     Logger logger = Logger.getLogger(EntityDAO.class);
 
@@ -38,7 +41,8 @@ public interface EntityDAO<T> {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException("", "", getClass()); // Good explanation of error
+            throw generateException(ERROR_GET_COUNT_ROWS_IN_DATABASE,
+                    GET_COUNT_ROWS_IN_DATABASE_LOG_MSG, getClass());
         }
         return result;
     }
@@ -56,17 +60,6 @@ public interface EntityDAO<T> {
         if (con != null) {
             try {
                 con.close();
-            } catch (SQLException e) {
-                // e.printStackTrace();
-                throw new RuntimeException(e);
-            }
-        }
-    }
-
-    default void close(Statement stmt) {
-        if (stmt != null) {
-            try {
-                stmt.close();
             } catch (SQLException e) {
                 // e.printStackTrace();
                 throw new RuntimeException(e);

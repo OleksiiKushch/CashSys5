@@ -42,6 +42,7 @@ public abstract class MySqlConstant {
         public static final String USER_ID = "user_id";
         public static final String STATUS_ID = "status_id";
 
+        // receipt details
         public static final String RECEIPT_ID = "receipt_id";
         public static final String ROOT_RECEIPT_ID = "root_receipt_id";
         public static final String ORGANIZATION_TAX_ID_NUMBER = "organization_tax_id_number";

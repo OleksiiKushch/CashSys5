@@ -83,6 +83,12 @@ public class MySqlReceiptDAOTest {
     }
 
     @Test
+    public void getCountOfReceipts() {
+        int result = receiptDAO.getCountOfReceipts();
+        assertEquals(11, result);
+    }
+
+    @Test
     public void create() throws SQLException, URISyntaxException, IOException {
         DAOFactory daoFactory = new MySqlDAOFactory();
         ProductDAO productDAO = daoFactory.getProductDAO();
@@ -105,19 +111,55 @@ public class MySqlReceiptDAOTest {
         DBInit.startUp();
     }
 
-    @Test
-    public void createReject() throws SQLException, URISyntaxException, IOException {
+    @Test(expected = DaoException.class)
+    public void createRollback() throws SQLException, URISyntaxException, IOException {
         DAOFactory daoFactory = new MySqlDAOFactory();
         ProductDAO productDAO = daoFactory.getProductDAO();
         productDAO.setConnectionBuilder(new DirectConnectionBuilder());
 
         List<Product> products = new ArrayList<>();
         Product product1 = productDAO.getById(1);
-        product1.setAmount(new BigDecimal("1"));
+        product1.setAmount(new BigDecimal("30000"));
         products.add(product1);
-        receiptDAO.createReject(11, 6, products);
+        receiptDAO.create(1, new BigDecimal("0"), 2, products);
 
-        Receipt result = receiptDAO.getById(13);
+        Receipt result = receiptDAO.getById(12);
+        assertNull(result);
+
+        DBInit.startUp();
+    }
+
+    @Test
+    public void createReject() throws SQLException, URISyntaxException, IOException {
+        DAOFactory daoFactory = new MySqlDAOFactory();
+        ProductDAO productDAO = daoFactory.getProductDAO();
+        productDAO.setConnectionBuilder(new DirectConnectionBuilder());
+
+        // create new receipt
+        List<Product> products = new ArrayList<>();
+        Product product1 = productDAO.getById(1);
+        product1.setAmount(new BigDecimal("3"));
+        products.add(product1);
+        Product product2 = productDAO.getById(3);
+        product2.setAmount(new BigDecimal("1"));
+        products.add(product2);
+        receiptDAO.create(1, new BigDecimal("0"), 2, products);
+
+        Receipt testReceipt = receiptDAO.getById(14);
+        assertEquals(1, testReceipt.getUserId());
+
+        assertEquals("ReceiptProperties{receiptId=14, organizationTaxIdNumber=7802870820, " +
+                "nameOrganization='ТОВ \"Епіцентр К\"', addressTradePoint='м.Харків, вул.Героїв Праці, 9А', " +
+                "vat=20.00, taxationSys='ОСН'}", receiptDAO.getReceiptDetailsById(testReceipt.getId()).toString());
+
+        // reject some products from new receipt
+        List<Product> productsReject = new ArrayList<>();
+        Product product1Reject = productDAO.getById(1);
+        product1Reject.setAmount(new BigDecimal("1"));
+        productsReject.add(product1Reject);
+        receiptDAO.createReject(testReceipt.getId(), 6, productsReject);
+
+        Receipt result = receiptDAO.getById(15);
         assertEquals("rejected", result.getStatus().getName());
 
         DBInit.startUp();
@@ -144,6 +186,10 @@ public class MySqlReceiptDAOTest {
 
         assertEquals("15.00", receiptDetailsTest.getVat().toString());
 
+        assertEquals("ReceiptProperties{receiptId=0, organizationTaxIdNumber=7802870820, nameOrganization='ТОВ " +
+                "\"Епіцентр К\"', addressTradePoint='м.Харків, вул.Героїв Праці, 9А', vat=15.00, taxationSys='ОСН'}",
+                receiptDetailsTest.toString());
+
         receiptDAO.resetGlobalReceiptProperties();
 
         receiptDetailsTest = receiptDAO.getGlobalReceiptProperties();
@@ -154,6 +200,31 @@ public class MySqlReceiptDAOTest {
 
         receiptDAO.setGlobalReceiptProperties(receiptDetails);
 
+    }
+
+    @Test
+    public void getReceiptDetailsById() throws SQLException, URISyntaxException, IOException {
+        DAOFactory daoFactory = new MySqlDAOFactory();
+        ProductDAO productDAO = daoFactory.getProductDAO();
+        productDAO.setConnectionBuilder(new DirectConnectionBuilder());
+
+        // create new receipt
+        List<Product> products = new ArrayList<>();
+        Product product1 = productDAO.getById(1);
+        product1.setAmount(new BigDecimal("3"));
+        products.add(product1);
+        Product product2 = productDAO.getById(3);
+        product2.setAmount(new BigDecimal("1"));
+        products.add(product2);
+        receiptDAO.create(1, new BigDecimal("0"), 2, products);
+
+        ReceiptDetails receiptDetails = receiptDAO.getReceiptDetailsById(12);
+
+        assertEquals("ReceiptProperties{receiptId=12, organizationTaxIdNumber=7802870820, " +
+                "nameOrganization='ТОВ \"Епіцентр К\"', addressTradePoint='м.Харків, вул.Героїв Праці, 9А', " +
+                "vat=20.00, taxationSys='ОСН'}", receiptDetails.toString());
+
+        DBInit.startUp();
     }
 
     @Test
