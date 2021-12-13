@@ -17,7 +17,7 @@
 
 <header class="card-header text-dark bg-light">
     <nav class="navbar">
-        <a class="navbar-brand" href="#">CashSys</a>
+        <a class="navbar-brand" href="${pageContext.request.contextPath}/FrontController?command=/main">CashSys</a>
 
         <c:if test="${sessionScope.logged_user.role == Role.CASHIER}">
             <ul class="nav navbar-nav">
@@ -34,6 +34,10 @@
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/FrontController?command=/receipt_catalog&page=1&page_size=8">
                     <fmt:message key="header.receipt.catalog.text"/></a></li>
+            </ul>
+            <ul class="nav navbar-nav">
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/user_catalog&page=1&page_size=8">
+                    <fmt:message key="header.user.catalog.text"/></a></li>
             </ul>
             <ul class="nav navbar-nav">
                 <li><a href="${pageContext.request.contextPath}/FrontController?command=/generate_report">
@@ -81,7 +85,8 @@
 
         <c:if test="${sessionScope.logged_user != null}">
             <ul class="nav navbar-nav">
-                <li><a href=""><fmt:message key="header.my.profile.text"/></a></li>
+                <li><a href="${pageContext.request.contextPath}/FrontController?command=/my_profile">
+                    <fmt:message key="header.my.profile.text"/></a></li>
                 <li><a href="${pageContext.request.contextPath}/FrontController?command=/logout">
                     <fmt:message key="header.logout.text"/></a></li>
             </ul>

@@ -10,6 +10,7 @@ import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.receipt.Payment;
 import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
+import com.finalprojultimate.model.entity.user.User;
 import com.finalprojultimate.model.services.ReceiptService;
 import com.finalprojultimate.model.services.util.Cart;
 import org.junit.Before;
@@ -125,6 +126,17 @@ public class ReceiptServiceTest {
     public void getForPaginationTest() {
         List<Receipt> result = testReceiptService.getForPagination(2, 2);
         assertEquals(2, result.size());
+    }
+
+    @Test
+    public void getForPaginationSortByParameterTest() {
+        List<Receipt> result = testReceiptService.getForPaginationSortByParameter("none",2, 2);
+        assertEquals("0.00", result.get(0).getChange().toString());
+        assertEquals("2.50", result.get(1).getChange().toString());
+
+        result = testReceiptService.getForPaginationSortByParameter("dateTime",2, 2);
+        assertEquals("0.00", result.get(0).getChange().toString());
+        assertEquals("2.50", result.get(1).getChange().toString());
     }
 
     @Test

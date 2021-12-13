@@ -17,6 +17,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
+import static com.finalprojultimate.util.Parameter.EMAIL;
+
 public class UserServiceImpl implements UserService {
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
@@ -78,13 +80,40 @@ public class UserServiceImpl implements UserService {
      * @return LinkedHashMap (id user, count receipt)
      */
     @Override
-    public LinkedHashMap<Integer, Integer> getBestCashiersByCountReceipt(int limit) {
-        return userDAO.findBestCashiersByCountReceipt(limit);
+    public LinkedHashMap<Integer, Integer> getBestCashiersByCountReceiptForTheLastMonth(int limit) {
+        return userDAO.findBestCashiersByCountReceiptForTheLastMonth(limit);
     }
 
     @Override
     public List<User> getUsersByIds(Set<Integer> ids) {
         return userDAO.findUsersByIds(ids);
+    }
+
+    @Override
+    public List<User> getForPagination(int offset, int limit) {
+        return userDAO.findUsersWithPaginationSortByNone(offset, limit);
+    }
+
+    /**
+     * return users from the database in the range [(offset - 1) * limit; offset * limit] pre-sorted by parameter or not (none)
+     *
+     * @param sortParameter parameter sorting [none, email]
+     * @param offset number of page at pagination
+     * @param limit number of return users (size List)
+     * @return list of users
+     */
+    @Override
+    public List<User> getForPaginationSortByParameter(String sortParameter, int offset, int limit) {
+        if (sortParameter.equals(EMAIL)) {
+            return userDAO.findUsersWithPaginationSortByEmail(offset, limit);
+        } else {
+            return getForPagination(offset, limit);
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return userDAO.getCountOfUsers();
     }
 
     private String encryptUserPassword(String password) {

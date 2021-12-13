@@ -3,6 +3,7 @@ package com.finalprojultimate.model.services;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
+import com.finalprojultimate.model.entity.user.User;
 import com.finalprojultimate.model.services.util.Cart;
 
 import java.math.BigDecimal;
@@ -14,6 +15,7 @@ public interface ReceiptService {
     void create(Receipt receipt, Cart cart);
     void createReject(int rootReceiptId, Receipt receipt, List<Product> products, List<BigDecimal> amounts);
     List<Receipt> getForPagination(int offset, int limit);
+    List<Receipt> getForPaginationSortByParameter(String sortParameter, int offset, int limit);
     int getCount();
     ReceiptDetails getGlobalReceiptProperties();
     void setGlobalReceiptProperties(ReceiptDetails receiptProperties);

@@ -5,6 +5,7 @@ import com.finalprojultimate.model.db.dao.entitydao.ReceiptDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.receipt.*;
+import com.finalprojultimate.model.entity.user.User;
 import org.apache.log4j.Logger;
 
 import java.math.BigDecimal;
@@ -13,6 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.ReceiptQuery.*;
+import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.UserQuery.FIND_USERS_SORT_BY_EMAIL;
+import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.UserQuery.FIND_USERS_SORT_BY_NONE;
 import static com.finalprojultimate.model.db.dao.util.LogMessage.*;
 import static com.finalprojultimate.util.MessageKey.*;
 
@@ -213,16 +216,24 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     }
 
     @Override
-    public List<Receipt> findReceipts(int offset, int limit) throws DaoException {
+    public List<Receipt> findReceiptsWithPaginationSortByNone(int offset, int limit) throws DaoException {
+        return findReceiptsWithPaginationSortByQuery(FIND_RECEIPTS_SORT_BY_NONE, offset, limit);
+    }
+
+    @Override
+    public List<Receipt> findReceiptsWithPaginationSortByDateTime(int offset, int limit) throws DaoException {
+        return findReceiptsWithPaginationSortByQuery(FIND_RECEIPTS_SORT_BY_DATE_TIME, offset, limit);
+    }
+
+    private List<Receipt> findReceiptsWithPaginationSortByQuery(String query, int offset, int limit) throws DaoException {
         List<Receipt> result = new ArrayList<>();
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(FIND_RECEIPTS_WITH_PAGINATION)) {
+             PreparedStatement ps = con.prepareStatement(query)) {
             ps.setInt(1, limit);
             ps.setInt(2, offset);
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    result.add(mapReceipt(rs));
-                }
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(mapReceipt(rs));
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);

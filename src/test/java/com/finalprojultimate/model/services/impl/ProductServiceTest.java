@@ -7,14 +7,19 @@ import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.mysql.MySqlDAOFactory;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
+import com.finalprojultimate.model.entity.user.User;
 import com.finalprojultimate.model.services.ProductService;
+import com.finalprojultimate.model.services.util.ReportBestProductByCountReceipt;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.lang.reflect.Field;
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -97,6 +102,28 @@ public class ProductServiceTest {
 
         updateProduct.setPrice(new BigDecimal("5"));
         testProductService.update(updateProduct);
+    }
+
+    @Test
+    public void getBestProductsByCountReceiptForTheLastMonthTest() {
+        List<ReportBestProductByCountReceipt> result = testProductService.getBestProductsByCountReceiptForTheLastMonth(2);
+        assertEquals("[ReportBestProductByCountReceipt{productId=3, totalAmount=9.000, totalSum=7.20000, countReceipts=4}, " +
+                "ReportBestProductByCountReceipt{productId=4, totalAmount=5.000, totalSum=5.00000, countReceipts=4}]",
+                result.toString());
+    }
+
+    @Test
+    public void getUsersByIdsTest() {
+        Set<Integer> ids = new HashSet<>();
+        ids.add(1);
+        ids.add(6);
+        List<Product> result = testProductService.getProductsByIds(ids);
+        assertEquals(
+                "[Product{id=1, name='stapler LUXON', price=2.50, amount=70.000, " +
+                        "unit=Unit{id=1, name='pieces'}, barcode='4613244322657'}, " +
+                        "Product{id=6, name='pen JoJ', price=3.80, amount=189.000, " +
+                        "unit=Unit{id=1, name='pieces'}, barcode='0601762649669'}]",
+                result.toString());
     }
 
     @Test

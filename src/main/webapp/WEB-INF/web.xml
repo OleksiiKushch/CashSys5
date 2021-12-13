@@ -7,7 +7,7 @@
     <display-name>Cash System</display-name>
 
     <welcome-file-list>
-        <welcome-file>/WEB-INF/view/jsp/main.jsp</welcome-file>
+        <welcome-file>/WEB-INF/view/jsp/general/main.jsp</welcome-file>
     </welcome-file-list>
 
     <context-param>

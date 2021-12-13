@@ -1,5 +1,6 @@
 package com.finalprojultimate.controller.validation;
 
+import com.finalprojultimate.controller.validation.impl.RegistrationValidator;
 import com.finalprojultimate.model.entity.user.Role;
 import com.finalprojultimate.model.entity.user.User;
 import org.junit.Test;
@@ -10,7 +11,7 @@ public class RegistrationValidatorTest {
 
     @Test
     public void isValid() {
-        RegistrationValidator registrationValidator = new RegistrationValidator();
+        Validator<User> registrationValidator = new RegistrationValidator();
 
         User user = new User.Builder()
                 .withEmail("alex.thor@gmail.com")
@@ -35,7 +36,7 @@ public class RegistrationValidatorTest {
 
     @Test
     public void getErrorMessages() {
-        RegistrationValidator registrationValidator = new RegistrationValidator();
+        Validator<User> registrationValidator = new RegistrationValidator();
 
         User user = new User.Builder()
                 .withEmail("alex.thor@gmail.com")
@@ -56,7 +57,7 @@ public class RegistrationValidatorTest {
 
     @Test
     public void getErrorValidationMessages() {
-        RegistrationValidator registrationValidator = new RegistrationValidator();
+        Validator<User> registrationValidator = new RegistrationValidator();
 
         User user = new User.Builder()
                 .withEmail("alex.thor@gmail.com")

@@ -16,25 +16,27 @@
     <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
 
     <div class="container-fluid">
-        <h1 class="mt-4">Product catalog:</h1>
+        <h1 class="mt-4"><fmt:message key="product_catalog.product.catalog.text"/></h1>
 
         <nav class="navbar">
+
             <ul class="pagination justify-content-end">
                 <li class="page-item">
                     <form action="<%= request.getContextPath() %>/FrontController" method="get">
                         <input name="command" value="/product_catalog" type="hidden">
                         <input name="page" value="1" type="hidden">
                         <input name="page_size" value="8" type="hidden">
-                        <label for="selectSortParameter" class="form-label">Sort by:</label>
-                        <select id="selectSortParameter" name="sort_by">
-                            <option value="none" selected>None</option>
-                            <option value="name">Name</option>
+                        <label for="selectSortParameter" class="form-label">
+                            <fmt:message key="product_catalog.sort.by.text"/></label>
+                        <select id="selectSortParameter" name="product_sort_param">
+                            <option value="none" selected><fmt:message key="product_catalog.sort.by.none.text"/></option>
+                            <option value="name"><fmt:message key="product_catalog.sort.by.name.text"/></option>
                         </select>
-                        <button type="submit" class="btn btn-primary btn-sm">Go</button>
+                        <button type="submit" class="btn btn-primary btn-sm"><fmt:message key="product_catalog.go.text"/></button>
                     </form>
                 </li>
-
             </ul>
+
 <%--            <ul class="pagination justify-content-end">--%>
 <%--                <li class="page-item">--%>
 <%--                    <form action="<%= request.getContextPath() %>/FrontController" method="get">--%>
@@ -50,21 +52,23 @@
 <%--                    </form>--%>
 <%--                </li>--%>
 <%--            </ul>--%>
+
             <ul class="pagination justify-content-end">
                 <li class="page-item">
                     <form action="<%= request.getContextPath() %>/FrontController" method="get">
                         <input name="command" value="/product_catalog" type="hidden">
-                        <label for="selectPage" class="form-label">Select page number:</label>
+                        <label for="selectPage" class="form-label"><fmt:message key="product_catalog.select.page.number.text"/></label>
                         <select class="form-select" name="page" id="selectPage">
                             <c:forEach begin="1" end="${page_count}" var="p">
                                 <option value="${p}" ${p == param.page ? 'selected' : ''}>${p}</option>
                             </c:forEach>
                         </select>
                         <input name="page_size" value="${page_size}" type="hidden">
-                        <button type="submit" class="btn btn-primary btn-sm">Go</button>
+                        <button type="submit" class="btn btn-primary btn-sm"><fmt:message key="product_catalog.go.text"/></button>
                     </form>
                 </li>
             </ul>
+
             <ul class="pagination justify-content-end">
 
                 <c:choose>
@@ -72,12 +76,12 @@
                         <li class="page-item">
                             <a class="page-link"
                                href="<%= request.getContextPath() %>/FrontController?command=/product_catalog&page=${page-1}&page_size=${page_size}">
-                                Previous</a>
+                                <fmt:message key="product_catalog.previous.text"/></a>
                         </li>
                     </c:when>
                     <c:otherwise>
                         <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Previous</a>
+                            <a class="page-link" href="#" tabindex="-1"><fmt:message key="product_catalog.previous.text"/></a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -86,7 +90,8 @@
                     <c:choose>
                         <c:when test="${page == p}">
                             <li class="page-item disabled">
-                                <a class="page-link">Page ${p} of ${page_count}</a>
+                                <a class="page-link">
+                                    <fmt:message key="product_catalog.page.text"/> ${p} <fmt:message key="product_catalog.of.text"/> ${page_count}</a>
                             </li>
                         </c:when>
                         <c:otherwise>
@@ -104,12 +109,12 @@
                         <li class="page-item">
                             <a class="page-link"
                                href="<%= request.getContextPath() %>/FrontController?command=/product_catalog&page=${page+1}&page_size=${page_size}">
-                                Next</a>
+                                <fmt:message key="product_catalog.next.text"/></a>
                         </li>
                     </c:when>
                     <c:otherwise>
                         <li class="page-item disabled">
-                            <a class="page-link" href="#" tabindex="-1">Next</a>
+                            <a class="page-link" href="#" tabindex="-1"><fmt:message key="product_catalog.next.text"/></a>
                         </li>
                     </c:otherwise>
                 </c:choose>
@@ -120,12 +125,12 @@
         <table class="table table-striped border rounded">
             <thead class="thead-light">
             <tr>
-                <th scope="col">id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Price</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Barcode</th>
-                <th scope="col">Action</th>
+                <th scope="col"><fmt:message key="product_catalog.id.text"/></th>
+                <th scope="col"><fmt:message key="product_catalog.name.text"/></th>
+                <th scope="col"><fmt:message key="product_catalog.price.text"/></th>
+                <th scope="col"><fmt:message key="product_catalog.amount.text"/></th>
+                <th scope="col"><fmt:message key="product_catalog.barcode.text"/></th>
+                <th scope="col"><fmt:message key="product_catalog.action.text"/></th>
             </tr>
             </thead>
             <tbody>
@@ -134,13 +139,14 @@
                         <th class="col-md-1" scope="row">${product.id}</th>
                         <td>${product.name}</td>
                         <td class="col-md-1">${product.price}</td>
-                        <td class="col-md-2">${product.getAmount()} ${product.unit.name}</td>
+                        <td class="col-md-2">${product.getAmount()} <fmt:message key="${product.unit.message}"/></td>
                         <td class="col-md-1">${product.barcode}</td>
                         <td class="col-md-1">
-                            <a href="${pageContext.request.contextPath}/FrontController?command=/edit_product&product_id=${product.id}">
-                                edit</a>
+                            <a href="${pageContext.request.contextPath}/FrontController?command=/edit_product&productId=${product.id}">
+                                <fmt:message key="product_catalog.edit.text"/></a>
                             &nbsp &nbsp
-                            <a href="" class="deleteLink" data-id="${product.id}" data-toggle="modal" data-target="#deleteModal">delete</a>
+                            <a href="" class="deleteLink" data-id="${product.id}" data-toggle="modal" data-target="#deleteModal">
+                                <fmt:message key="product_catalog.delete.text"/></a>
                         </td>
                     </tr>
                 </c:forEach>
@@ -152,7 +158,7 @@
         <div class="modal-dialog modal-dialog-centered"> <!-- role="document" -->
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="deleteModalCenterTitle">Warning!</h5>
+                    <h5 class="modal-title" id="deleteModalCenterTitle"><fmt:message key="product_catalog.warning.text"/></h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -164,8 +170,8 @@
                 <div class="modal-footer">
                     <form id="deleteForm" action=""
                           method="post">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                        <button type="submit" class="btn btn-primary">Yes</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><fmt:message key="product_catalog.no.text"/></button>
+                        <button type="submit" class="btn btn-primary"><fmt:message key="product_catalog.yes.text"/></button>
                     </form>
                 </div>
             </div>
@@ -177,9 +183,9 @@
     <script type="text/javascript">
         $(".deleteLink").click(function () {
             var id = $(this).attr("data-id");
-            var str = "Are you sure you want to delete product with id: " + id;
+            var str = "<fmt:message key="product_catalog.delete.warning.help.text"/>" + " " + id;
             $("#modalBody").html(str);
-            $("#deleteForm").attr("action", "<%= request.getContextPath() %>/FrontController?command=/delete_product&product_id=" + id);
+            $("#deleteForm").attr("action", "<%= request.getContextPath() %>/FrontController?command=/delete_product&productId=" + id);
         });
     </script>
 

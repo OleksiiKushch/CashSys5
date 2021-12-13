@@ -15,4 +15,9 @@ public class UnitTest {
     public void getName() {
         assertEquals("kilogram", Unit.KILOGRAM.getName());
     }
+
+    @Test
+    public void getMessage() {
+        assertEquals("litre", Unit.LITRE.getMessage());
+    }
 }

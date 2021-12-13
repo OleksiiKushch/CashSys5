@@ -1,5 +1,6 @@
 package com.finalprojultimate.controller.validation;
 
+import com.finalprojultimate.controller.validation.impl.ProductValidator;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
 import org.junit.Test;
@@ -13,7 +14,7 @@ public class ProductValidatorTest {
 
     @Test
     public void isValid() {
-        ProductValidator productValidator = new ProductValidator();
+        Validator<Product> productValidator = new ProductValidator();
 
         Product product = new Product.Builder()
                 .withName("Test1")
@@ -57,7 +58,7 @@ public class ProductValidatorTest {
 
     @Test
     public void getErrorMessages() {
-        ProductValidator productValidator = new ProductValidator();
+        Validator<Product> productValidator = new ProductValidator();
 
         Product product = new Product.Builder()
                 .withName("")
@@ -76,7 +77,7 @@ public class ProductValidatorTest {
 
     @Test
     public void getErrorValidationMessages() {
-        ProductValidator productValidator = new ProductValidator();
+        Validator<Product> productValidator = new ProductValidator();
 
         Product product = new Product.Builder()
                 .withName("Test1")

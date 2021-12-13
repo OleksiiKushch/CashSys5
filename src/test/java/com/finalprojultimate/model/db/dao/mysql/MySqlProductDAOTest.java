@@ -7,12 +7,17 @@ import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
+import com.finalprojultimate.model.entity.user.User;
+import com.finalprojultimate.model.services.util.ReportBestProductByCountReceipt;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.math.BigDecimal;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Set;
 
 import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
@@ -88,6 +93,29 @@ public class MySqlProductDAOTest {
         assertEquals(3, result.size());
         result = productDAO.findProductsByBarcode("320499");
         assertEquals(1, result.size());
+    }
+
+    @Test
+    public void findBestCashiersByCountReceiptForTheLastMonth() {
+        int limit = 3;
+        List<ReportBestProductByCountReceipt> result = productDAO.findBestProductsByCountReceiptForTheLastMonth(limit);
+        assertEquals("[ReportBestProductByCountReceipt{productId=3, totalAmount=9.000, totalSum=7.20000, countReceipts=4}, " +
+                "ReportBestProductByCountReceipt{productId=4, totalAmount=5.000, totalSum=5.00000, countReceipts=4}, " +
+                "ReportBestProductByCountReceipt{productId=1, totalAmount=5.000, totalSum=12.30000, countReceipts=4}]",
+                result.toString());
+    }
+
+    @Test
+    public void findProductsByIds() {
+        Set<Integer> test = new HashSet<>();
+        test.add(1);
+        test.add(2);
+        List<Product> result = productDAO.findProductsByIds(test);
+        assertEquals("[Product{id=1, name='stapler LUXON', price=2.50, amount=70.000, " +
+                        "unit=Unit{id=1, name='pieces'}, barcode='4613244322657'}, " +
+                        "Product{id=2, name='comb ParallaX', price=5.00, amount=23.000, " +
+                        "unit=Unit{id=1, name='pieces'}, barcode='4605821233212'}]",
+                result.toString());
     }
 
     @Test

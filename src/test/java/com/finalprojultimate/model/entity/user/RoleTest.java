@@ -16,4 +16,9 @@ public class RoleTest {
     public void getName() {
         assertEquals("senior cashier", Role.SENIOR_CASHIER.getName());
     }
+
+    @Test
+    public void getMessage() {
+        assertEquals("commodity.expert", Role.COMMODITY_EXPERT.getMessage());
+    }
 }

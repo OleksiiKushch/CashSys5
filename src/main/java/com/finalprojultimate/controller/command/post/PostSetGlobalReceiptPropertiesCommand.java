@@ -1,7 +1,7 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.ReceiptPropertiesValidator;
+import com.finalprojultimate.controller.validation.impl.ReceiptPropertiesValidator;
 import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
 import com.finalprojultimate.model.services.ReceiptService;

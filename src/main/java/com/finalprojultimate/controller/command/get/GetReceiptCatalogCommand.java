@@ -3,6 +3,7 @@ package com.finalprojultimate.controller.command.get;
 import com.finalprojultimate.controller.command.Command;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.receipt.Receipt;
+import com.finalprojultimate.model.entity.user.User;
 import com.finalprojultimate.model.services.ReceiptService;
 import com.finalprojultimate.model.services.UserService;
 import com.finalprojultimate.model.services.impl.ProductServiceImpl;
@@ -15,6 +16,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
@@ -34,7 +36,21 @@ public class GetReceiptCatalogCommand implements Command {
         int page = Integer.parseInt(paramPage);
         int pageSize = Integer.parseInt(paramPageSize);
 
-        List<Receipt> paginateReceipts = receiptService.getForPagination(pageSize * (page - 1), pageSize);
+        String sortParam = request.getParameter(Attribute.RECEIPT_SORT_PARAM);
+        HttpSession session = request.getSession();
+        if (sortParam == null) {
+            sortParam = (String) session.getAttribute(Attribute.RECEIPT_SORT_PARAM);
+        } else {
+            session.setAttribute(Attribute.RECEIPT_SORT_PARAM, sortParam);
+        }
+
+        List<Receipt> paginateReceipts;
+        if (sortParam == null) {
+            paginateReceipts = receiptService.getForPagination(pageSize * (page - 1), pageSize);
+        } else {
+            paginateReceipts = receiptService.getForPaginationSortByParameter(sortParam, pageSize * (page - 1), pageSize);
+        }
+
         int size = receiptService.getCount();
 
         int minPagePossible = Math.max(page - shift, 1);

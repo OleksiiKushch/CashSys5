@@ -3,15 +3,17 @@ package com.finalprojultimate.model.entity.receipt;
 import java.util.Objects;
 
 public enum Payment {
-    CASH (1, "cash"),
-    ELECTRONIC (2, "electronic");
+    CASH (1, "cash", "cash"),
+    ELECTRONIC (2, "electronic", "electronic");
 
     private final int id;
     private final String name;
+    private final String message;
 
-    Payment(int id, String name) {
+    Payment(int id, String name, String message) {
         this.id = id;
         this.name = name;
+        this.message = message;
     }
 
     /**
@@ -42,6 +44,9 @@ public enum Payment {
 
     public String getName() {
         return name;
+    }
+    public String getMessage() {
+        return message;
     }
 
     @Override

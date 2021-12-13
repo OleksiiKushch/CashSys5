@@ -1,7 +1,7 @@
 package com.finalprojultimate.controller.command.login;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.LoginValidator;
+import com.finalprojultimate.controller.validation.impl.LoginValidator;
 import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.controller.writer.RequestAttributeWriter;
 import com.finalprojultimate.model.entity.user.User;

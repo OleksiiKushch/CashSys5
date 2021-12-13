@@ -3,16 +3,18 @@ package com.finalprojultimate.model.entity.product;
 import java.util.Objects;
 
 public enum Unit {
-    PIECES (1, "pieces"),
-    KILOGRAM (2, "kilogram"),
-    LITRE (3, "litre");
+    PIECES (1, "pieces", "pieces"),
+    KILOGRAM (2, "kilogram", "kilogram"),
+    LITRE (3, "litre", "litre");
 
     private final int id;
     private final String name;
+    private final String message;
 
-    Unit(int id, String name) {
+    Unit(int id, String name, String message) {
         this.id = id;
         this.name = name;
+        this.message = message;
     }
 
     /**
@@ -43,6 +45,10 @@ public enum Unit {
 
     public String getName() {
         return name;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     @Override

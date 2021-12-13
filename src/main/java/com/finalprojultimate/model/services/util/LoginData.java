@@ -26,4 +26,12 @@ public class LoginData {
         this.password = password;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return "LoginData{" +
+                "email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

@@ -6,10 +6,12 @@ import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.util.DAOConstants;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.services.ProductService;
+import com.finalprojultimate.model.services.util.ReportBestProductByCountReceipt;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Set;
 
 import static com.finalprojultimate.util.Parameter.*;
 
@@ -62,6 +64,16 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public void delete(Product product) {
         productDAO.delete(product);
+    }
+
+    @Override
+    public List<ReportBestProductByCountReceipt> getBestProductsByCountReceiptForTheLastMonth(int limit) {
+        return productDAO.findBestProductsByCountReceiptForTheLastMonth(limit);
+    }
+
+    @Override
+    public List<Product> getProductsByIds(Set<Integer> ids) {
+        return productDAO.findProductsByIds(ids);
     }
 
     @Override

@@ -3,16 +3,18 @@ package com.finalprojultimate.model.entity.user;
 import java.util.Objects;
 
 public enum Role {
-    CASHIER (1, "cashier"),
-    SENIOR_CASHIER (2, "senior cashier"),
-    COMMODITY_EXPERT (3, "commodity expert");
+    CASHIER (1, "cashier", "cashier"),
+    SENIOR_CASHIER (2, "senior cashier", "senior.cashier"),
+    COMMODITY_EXPERT (3, "commodity expert", "commodity.expert");
 
     private final int id;
     private final String name;
+    private final String message;
 
-    Role(int id, String name) {
+    Role(int id, String name, String message) {
         this.id = id;
         this.name = name;
+        this.message = message;
     }
 
     /**
@@ -43,6 +45,10 @@ public enum Role {
 
     public String getName() {
         return name;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     @Override

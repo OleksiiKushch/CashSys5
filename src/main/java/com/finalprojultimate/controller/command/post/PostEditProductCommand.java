@@ -1,7 +1,7 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.ProductValidator;
+import com.finalprojultimate.controller.validation.impl.ProductValidator;
 import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;

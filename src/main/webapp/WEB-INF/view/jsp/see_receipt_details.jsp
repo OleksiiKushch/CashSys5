@@ -17,19 +17,19 @@
 <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
 
 <div class="container-fluid">
-    <h1 class="mt-4">Detail (id: ${receipt.id}) receipt information:</h1>
+    <h1 class="mt-4"><fmt:message key="see_receipt_details.detail.id.text"/> ${receipt.id}<fmt:message key="see_receipt_details.receipt.information.text"/></h1>
     <form action="<%= request.getContextPath() %>/FrontController?command=/create_reject_receipt" method="post">
-        <h3 class="mt-4">List of products:</h3>
+        <h3 class="mt-4"><fmt:message key="see_receipt_details.list.of.products.text"/></h3>
         <table class="table border rounded" id="productsTable">
             <thead class="thead-light">
             <tr>
-                <th scope="col">id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Sum</th>
-                <th scope="col">Price</th>
-                <th scope="col">Amount</th>
-                <th scope="col">Barcode</th>
-                <th scope="col">Action</th>
+                <th scope="col"><fmt:message key="see_receipt_details.id.text"/></th>
+                <th scope="col"><fmt:message key="see_receipt_details.name.text"/></th>
+                <th scope="col"><fmt:message key="see_receipt_details.sum.text"/></th>
+                <th scope="col"><fmt:message key="see_receipt_details.price.text"/></th>
+                <th scope="col"><fmt:message key="see_receipt_details.amount.text"/></th>
+                <th scope="col"><fmt:message key="see_receipt_details.barcode.text"/></th>
+                <th scope="col"><fmt:message key="see_receipt_details.action.text"/></th>
             </tr>
             </thead>
             <tbody>
@@ -39,15 +39,16 @@
                     <td>${product.name}</td>
                     <td class="col-md-1">${product.price.multiply(product.amount).setScale(2)}</td>
                     <td class="col-md-1">${product.price}</td>
-                    <td class="col-md-1">${product.getAmount()} ${product.unit.name}</td>
+                    <td class="col-md-1">${product.getAmount()} <fmt:message key="${product.unit.message}"/></td>
                     <td class="col-md-1">${product.barcode}</td>
                     <td class="col-md-2">
                         <div class="d-flex justify-content-between">
-                            <input name="receipt_id" value="${receipt.id}" type="hidden">
+                            <input name="receiptId" value="${receipt.id}" type="hidden">
                             <div class="custom-control custom-switch">
                                 <input type="checkbox" class="custom-control-input rejectSwitcher" id="rejectSwitch${product.id}"
                                        name="rejectReceiptId" value="${product.id}">
-                                <label class="custom-control-label" for="rejectSwitch${product.id}">reject?</label>
+                                <label class="custom-control-label" for="rejectSwitch${product.id}">
+                                    <fmt:message key="see_receipt_details.reject.text"/></label>
                             </div>
                             <div class="input-group mx-3 was-validated">
                                 <label for="rejectInputAmount${product.id}"></label>
@@ -65,12 +66,12 @@
         <div class="row float-right">
             <div class="p-2 mx-2">
                 <button type="submit" class="mb-5 btn btn-primary">
-                    Save (create reject receipt)
+                    <fmt:message key="see_receipt_details.save.text"/>
                 </button>
             </div>
             <div class="p-2 mx-2">
                 <a class="mb-5 btn btn-secondary rejectAllLink text-light">
-                    Reject all
+                    <fmt:message key="see_receipt_details.reject.all.text"/>
                 </a>
             </div>
         </div>
@@ -79,11 +80,11 @@
 
 
     <div class="p-2 mx-2">
-        <h4 class="" id="sum">Sum: ${receipt_service.getSumReceiptById(receipt.id).setScale(2)} </h4>
+        <h4 class="" id="sum"><fmt:message key="see_receipt_details.sum.with.colon.text"/> ${receipt_service.getSumReceiptById(receipt.id).setScale(2)} </h4>
     </div>
 
     <div class="p-2 mx-2">
-        <h6 class="" id="change">Change: ${receipt.change} </h6>
+        <h6 class="" id="change"><fmt:message key="see_receipt_details.change.text"/> ${receipt.change} </h6>
     </div>
 
     <div class="row mt-4">
@@ -91,19 +92,20 @@
             <div class="card mx-3" >
                 <div class="card-body">
                     <div class="row p-2 mx-2">
-                        <p>Cashier: &nbsp</p><h6>(id: ${receipt.userId}) ${user_service.getFormattedNameById(receipt.userId)}</h6>
+                        <p><fmt:message key="see_receipt_details.cashier.text"/> &nbsp</p>
+                        <h6>(<fmt:message key="see_receipt_details.id.text"/>: ${receipt.userId}) ${user_service.getFormattedNameById(receipt.userId)}</h6>
                     </div>
                     <div class="row p-2 mx-2">
-                        <p>Type payment: &nbsp</p><h6>${receipt.payment.name}</h6>
+                        <p><fmt:message key="see_receipt_details.type.payment.text"/> &nbsp</p><h6><fmt:message key="${receipt.payment.message}"/></h6>
                     </div>
                     <div class="row p-2 mx-2">
-                        <p>Date time: &nbsp</p><h6>${receipt.dateTime}</h6>
+                        <p><fmt:message key="see_receipt_details.date.time.text"/> &nbsp</p><h6>${receipt.dateTime}</h6>
                     </div>
                     <div class="row p-2 mx-2">
-                        <p>Status: &nbsp</p><h6>${receipt.status.name}</h6>
+                        <p><fmt:message key="see_receipt_details.status.text"/> &nbsp</p><h6><fmt:message key="${receipt.status.message}"/></h6>
                     </div>
                     <div class="row p-2 mx-2">
-                        <p>Root receipt id: &nbsp</p><h6>${receipt_details.rootReceiptId}</h6>
+                        <p><fmt:message key="see_receipt_details.root.receipt.id.text"/> &nbsp</p><h6>${receipt_details.rootReceiptId}</h6>
                     </div>
                 </div>
             </div>
@@ -113,19 +115,19 @@
             <div class="card mx-3" >
                 <div class="card-body">
                     <div class="row p-2 mx-2">
-                        <p>Organization tax id number: &nbsp</p><h6>${receipt_details.organizationTaxIdNumber}</h6>
+                        <p><fmt:message key="see_receipt_details.organization.tax.id.number.text"/> &nbsp</p><h6>${receipt_details.organizationTaxIdNumber}</h6>
                     </div>
                     <div class="row p-2 mx-2">
-                        <p>Name organization: &nbsp</p><h6>${receipt_details.nameOrganization}</h6>
+                        <p><fmt:message key="see_receipt_details.name.organization.text"/> &nbsp</p><h6>${receipt_details.nameOrganization}</h6>
                     </div>
                     <div class="row p-2 mx-2">
-                        <p>Address trade point: &nbsp</p><h6>${receipt_details.addressTradePoint}</h6>
+                        <p><fmt:message key="see_receipt_details.address.trade.point.text"/> &nbsp</p><h6>${receipt_details.addressTradePoint}</h6>
                     </div>
                     <div class="row p-2 mx-2">
-                        <p>VAT (value added tax): &nbsp</p><h6>${receipt_details.vat}</h6>
+                        <p><fmt:message key="see_receipt_details.vat.text"/> &nbsp</p><h6>${receipt_details.vat}</h6>
                     </div>
                     <div class="row p-2 mx-2">
-                        <p>Taxation system: &nbsp</p><h6>${receipt_details.taxationSys}</h6>
+                        <p><fmt:message key="see_receipt_details.taxation.system.text"/> &nbsp</p><h6>${receipt_details.taxationSys}</h6>
                     </div>
                 </div>
             </div>
@@ -135,7 +137,7 @@
     <div class="p-2 mx-2">
         <a href="${pageContext.request.contextPath}/FrontController?command=/receipt_catalog&page=1&page_size=8"
            type="submit" class="mt-5 mb-5 btn btn-primary float-left">
-            Come back to receipt catalog
+            <fmt:message key="see_receipt_details.come.back.to.receipt.catalog.text"/>
         </a>
     </div>
 

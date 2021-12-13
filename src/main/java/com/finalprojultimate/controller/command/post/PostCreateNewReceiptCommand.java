@@ -1,7 +1,7 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.ReceiptValidator;
+import com.finalprojultimate.controller.validation.impl.ReceiptValidator;
 import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.model.entity.receipt.Payment;
 import com.finalprojultimate.model.entity.receipt.Receipt;
@@ -36,7 +36,7 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
 
     public PostCreateNewReceiptCommand() {
         super(INTERNAL_SERVER_ERROR_PAGE);
-    } // TODO
+    } // TODO ?
 
     @Override
     protected String performExecute(HttpServletRequest request, HttpServletResponse response)

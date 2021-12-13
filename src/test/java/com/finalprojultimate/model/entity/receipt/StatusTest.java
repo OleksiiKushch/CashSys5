@@ -15,4 +15,9 @@ public class StatusTest {
     public void toStringTest() {
         assertEquals("Status{id=1, name='normal'}", Status.NORMAL.toString());
     }
+
+    @Test
+    public void getMessage() {
+        assertEquals("rejected", Status.REJECTED.getMessage());
+    }
 }

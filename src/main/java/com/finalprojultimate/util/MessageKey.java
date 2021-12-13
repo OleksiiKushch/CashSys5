@@ -26,6 +26,8 @@ public abstract class MessageKey {
     public static final String ERROR_INCORRECT_LOGIN_DATA = "error.incorrect.email.or.password";
     public static final String ERROR_ILLEGAL_PASSWORD_DECRYPTED = "error.invalid.password.decrypted";
 
+    public static final String ERROR_IS_NOT_SAME_CONFIRMATION_PASSWORD = "error.is.not.same.confirmation.password";
+
     // product validation
     public static final String ERROR_EMPTY_PRODUCT_NAME = "error.empty.product.name.field";
     public static final String ERROR_EMPTY_PRICE = "error.empty.price.field";
@@ -66,6 +68,8 @@ public abstract class MessageKey {
     // dao product
     public static final String ERROR_FIND_PRODUCTS_WITH_PAGINATION_FROM_DATABASE = "error.find.products.with.pagination.from.database";
     public static final String ERROR_FIND_PRODUCTS_BY_QUERY_FROM_DATABASE = "error.find.products.by.query.from.database";
+    public static final String ERROR_FIND_BEST_PRODUCTS_BY_COUNT_RECEIPT_FOR_THE_LAST_MONTH_FROM_DATABASE
+            = "error.find.best.products.by.count.receipt.for.the.last.month.from.database";
 
     // dao receipt
     public static final String ERROR_CREATE_RECEIPT_IN_DATABASE = "error.create.receipt.in.database";
@@ -81,7 +85,9 @@ public abstract class MessageKey {
 
     // dao user
     public static final String ERROR_GET_USER_BY_EMAIL_FROM_DATABASE = "error.get.user.by.email.from.database";
-    public static final String ERROR_FIND_BEST_CASHIERS_BY_COUNT_RECEIPT_FROM_DATABASE = "error.find.best.cashiers.by.count.receipt.from.database";
+    public static final String ERROR_FIND_USERS_WITH_PAGINATION_FROM_DATABASE = "error.find.users.with.pagination.from.database";
+    public static final String ERROR_FIND_BEST_CASHIERS_BY_COUNT_RECEIPT_FOR_THE_LAST_MONTH_FROM_DATABASE
+            = "error.find.best.cashiers.by.count.receipt.for.the.last.month.from.database";
 
     // general
     public static final String ERROR_UNKNOWN_EXCEPTION = "error.unknown.exception";

@@ -5,11 +5,13 @@ import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
+import com.finalprojultimate.model.services.util.ReportBestProductByCountReceipt;
 import org.apache.log4j.Logger;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.ProductQuery.*;
 import static com.finalprojultimate.model.db.dao.util.LogMessage.*;
@@ -134,6 +136,42 @@ public class MySqlProductDAO implements ProductDAO {
         return findProductsByQuery(FIND_PRODUCTS_BY_BARCODE, pattern);
     }
 
+    /**
+     * find a specific number of products, sorting them by the number of receipts <b>per month</b>
+     *
+     * @param limit limit (count) of products found
+     * @return List of objects utility service class ReportBestProductsByCountReceipt
+     * @throws DaoException specific exception
+     */
+    @Override
+    public List<ReportBestProductByCountReceipt> findBestProductsByCountReceiptForTheLastMonth(int limit)
+            throws DaoException {
+        List<ReportBestProductByCountReceipt> result = new ArrayList<>();
+        try (Connection con = getConnection(); PreparedStatement ps
+                = con.prepareStatement(FIND_BEST_PRODUCTS_BY_COUNT_RECEIPT_FOR_THE_LAST_MONTH)) {
+            ps.setInt(1, limit);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(mapReportBestProductByCountReceipt(rs));
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException(ERROR_FIND_BEST_PRODUCTS_BY_COUNT_RECEIPT_FOR_THE_LAST_MONTH_FROM_DATABASE,
+                    FIND_BEST_PRODUCTS_BY_COUNT_RECEIPT_FROM_DATABASE_LOG_MSG, getClass());
+        }
+        return result;
+    }
+
+    @Override
+    public List<Product> findProductsByIds(Set<Integer> ids) {
+        List<Product> result = new ArrayList<>();
+        for (Integer id : ids) {
+            result.add(getById(id));
+        }
+        return result;
+    }
+
     @Override
     public List<Product> findProductsWithPaginationSortByNone(int offset, int limit) throws DaoException {
         return findProductsWithPaginationSortByQuery(FIND_PRODUCTS_SORT_BY_NONE, offset, limit);
@@ -144,7 +182,8 @@ public class MySqlProductDAO implements ProductDAO {
         return findProductsWithPaginationSortByQuery(FIND_PRODUCTS_SORT_BY_NAME, offset, limit);
     }
 
-    private List<Product> findProductsWithPaginationSortByQuery(String query, int offset, int limit) throws DaoException {
+    private List<Product> findProductsWithPaginationSortByQuery(String query, int offset, int limit)
+            throws DaoException {
         List<Product> result = new ArrayList<>();
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(query)) {
@@ -206,6 +245,15 @@ public class MySqlProductDAO implements ProductDAO {
                 .withBarcode(rs.getString(MySqlConstant.ProductField.BARCODE))
                 .withUnit(Unit.getById(rs.getInt(MySqlConstant.ProductField.UNIT_ID)))
                 .build();
+    }
+
+    private ReportBestProductByCountReceipt mapReportBestProductByCountReceipt(ResultSet rs) throws SQLException {
+        return new ReportBestProductByCountReceipt(
+                rs.getInt(MySqlConstant.ProductField.PRODUCT_ID),
+                rs.getBigDecimal(MySqlConstant.ProductField.TOTAL_AMOUNT),
+                rs.getBigDecimal(MySqlConstant.ProductField.TOTAL_SUM),
+                rs.getInt(MySqlConstant.ProductField.COUNT)
+        );
     }
 
     /**

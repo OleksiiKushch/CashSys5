@@ -33,19 +33,19 @@ public class GetProductCatalogCommand implements Command {
         int page = Integer.parseInt(paramPage);
         int pageSize = Integer.parseInt(paramPageSize);
 
-        String paramSort = request.getParameter(Attribute.SORT_BY);
+        String sortParam = request.getParameter(Attribute.PRODUCT_SORT_PARAM);
         HttpSession session = request.getSession();
-        if (paramSort == null) {
-            paramSort = (String) session.getAttribute(Attribute.SORT_BY);
+        if (sortParam == null) {
+            sortParam = (String) session.getAttribute(Attribute.PRODUCT_SORT_PARAM);
         } else {
-            session.setAttribute(Attribute.SORT_BY, paramSort);
+            session.setAttribute(Attribute.PRODUCT_SORT_PARAM, sortParam);
         }
 
-        List<Product> paginateProducts = null;
-        if (paramSort == null) {
+        List<Product> paginateProducts;
+        if (sortParam == null) {
             paginateProducts = productService.getForPagination(pageSize * (page - 1), pageSize);
         } else {
-            paginateProducts = productService.getForPaginationSortByParameter(paramSort, pageSize * (page - 1), pageSize);
+            paginateProducts = productService.getForPaginationSortByParameter(sortParam, pageSize * (page - 1), pageSize);
         }
 
         int size = productService.getCount();

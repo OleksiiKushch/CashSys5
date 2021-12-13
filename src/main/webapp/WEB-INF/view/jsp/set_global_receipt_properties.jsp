@@ -17,7 +17,7 @@
 
 <div class="container">
 
-    <h1 class="mt-4">Global receipt properties set/edit form:</h1>
+    <h1 class="mt-4"><fmt:message key="set_global_receipt_properties.global.receipt.properties.set.edit.form.text"/></h1>
 
     <div class="card my-3">
         <div class="card-body">
@@ -26,52 +26,58 @@
                   method="post">
 
                 <div class="mb-3">
-                    <label for="inputOrganizationTaxIdNumber" class="form-label">Organization tax id number:</label>
+                    <label for="inputOrganizationTaxIdNumber" class="form-label">
+                        <fmt:message key="set_global_receipt_properties.organization.tax.id.number.text"/></label>
                     <input type="number" min="0" class="form-control is-invalid" id="inputOrganizationTaxIdNumber" name="organizationTaxIdNumber"
-                           placeholder="Enter organization tax id number"
+                           placeholder="<fmt:message key="set_global_receipt_properties.enter.organization.tax.id.number.text"/>"
                            value="${requestScope.global_receipt_properties.organizationTaxIdNumber}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="inputNameOrganization" class="form-label">Name organization:</label>
+                    <label for="inputNameOrganization" class="form-label">
+                        <fmt:message key="set_global_receipt_properties.name.organization.text"/></label>
                     <input type="text" class="form-control is-invalid" id="inputNameOrganization" name="nameOrganization"
-                           placeholder="Enter name organization"
+                           placeholder="<fmt:message key="set_global_receipt_properties.enter.name.organization.text"/>"
                            value="${requestScope.global_receipt_properties.nameOrganization}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="inputAddressTradePoint" class="form-label">Address trade point:</label>
+                    <label for="inputAddressTradePoint" class="form-label">
+                        <fmt:message key="set_global_receipt_properties.address.trade.point.text"/></label>
                     <input type="text" class="form-control is-invalid" id="inputAddressTradePoint" name="addressTradePoint"
-                           placeholder="Enter address trade point"
+                           placeholder="<fmt:message key="set_global_receipt_properties.enter.address.trade.point.text"/>"
                            value="${requestScope.global_receipt_properties.addressTradePoint}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="inputVat" class="form-label">VAT (value added tax):</label>
+                    <label for="inputVat" class="form-label">
+                        <fmt:message key="set_global_receipt_properties.vat.text"/></label>
                     <input type="number" min="0" step=".01" class="form-control is-invalid" id="inputVat" name="vat"
-                           placeholder="Enter VAT (value added tax)"
+                           placeholder="<fmt:message key="set_global_receipt_properties.enter.vat.text"/>"
                            value="${requestScope.global_receipt_properties.vat}" required>
                 </div>
 
                 <div class="mb-3">
-                    <label for="inputTaxationSys" class="form-label">Taxation system:</label>
+                    <label for="inputTaxationSys" class="form-label">
+                        <fmt:message key="set_global_receipt_properties.taxation.system.text"/></label>
                     <input type="text" class="form-control is-invalid" id="inputTaxationSys" name="taxationSys"
-                           placeholder="Enter taxation sys"
+                           placeholder="<fmt:message key="set_global_receipt_properties.enter.taxation.system.text"/>"
                            value="${requestScope.global_receipt_properties.taxationSys}" required>
                 </div>
 
-                <button type="submit" class="mb-3 btn btn-primary">Save</button>
+                <button type="submit" class="mb-3 btn btn-primary"><fmt:message key="set_global_receipt_properties.save.text"/></button>
 
             </form>
 
-            <a href="" class="resetLink btn btn-danger" data-toggle="modal" data-target="#resetModal">Reset all receipt properties</a>
+            <a href="" class="resetLink btn btn-danger" data-toggle="modal" data-target="#resetModal">
+                <fmt:message key="set_global_receipt_properties.reset.all.receipt.properties.text"/></a>
         </div>
     </div>
 
     <div class="p-2 mx-2">
         <a href="${pageContext.request.contextPath}/FrontController?command=/main"
            type="submit" class="mb-5 btn btn-primary float-right">
-            Come back to main page
+            <fmt:message key="set_global_receipt_properties.come.back.to.main.page.text"/>
         </a>
     </div>
 
@@ -81,7 +87,7 @@
     <div class="modal-dialog modal-dialog-centered"> <!-- role="document" -->
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="resetModalCenterTitle">Warning!</h5>
+                <h5 class="modal-title" id="resetModalCenterTitle"><fmt:message key="set_global_receipt_properties.warning.text"/></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -93,8 +99,10 @@
             <div class="modal-footer">
                 <form id="resetForm" action=""
                       method="post">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
-                    <button type="submit" class="btn btn-primary">Yes</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                        <fmt:message key="set_global_receipt_properties.no.text"/></button>
+                    <button type="submit" class="btn btn-primary">
+                        <fmt:message key="set_global_receipt_properties.yes.text"/></button>
                 </form>
             </div>
         </div>
@@ -105,7 +113,7 @@
 
 <script type="text/javascript">
     $(".resetLink").click(function () {
-        var str = "Are you sure you want to reset global receipt properties?";
+        var str = "<fmt:message key="set_global_receipt_properties.set.global.receipt.properties.help.text"/>";
         $("#modalBody").html(str);
         $("#resetForm").attr("action", "<%= request.getContextPath() %>/FrontController?command=/reset_global_receipt_properties");
     });

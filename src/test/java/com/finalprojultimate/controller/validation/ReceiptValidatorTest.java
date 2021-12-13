@@ -1,5 +1,6 @@
 package com.finalprojultimate.controller.validation;
 
+import com.finalprojultimate.controller.validation.impl.ReceiptValidator;
 import com.finalprojultimate.model.entity.receipt.Receipt;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ public class ReceiptValidatorTest {
 
     @Test
     public void isValid() {
-        ReceiptValidator receiptValidator = new ReceiptValidator();
+        Validator<Receipt> receiptValidator = new ReceiptValidator();
 
         Receipt receipt = new Receipt.Builder()
                 .withChange(new BigDecimal("50"))
@@ -30,7 +31,7 @@ public class ReceiptValidatorTest {
 
     @Test
     public void getErrorValidationMessages() {
-        ReceiptValidator receiptValidator = new ReceiptValidator();
+        Validator<Receipt> receiptValidator = new ReceiptValidator();
 
         Receipt receipt = new Receipt.Builder()
                 .withChange(new BigDecimal("-50"))
@@ -46,7 +47,7 @@ public class ReceiptValidatorTest {
 
     @Test
     public void getErrorMessages() {
-        ReceiptValidator receiptValidator = new ReceiptValidator();
+        Validator<Receipt> receiptValidator = new ReceiptValidator();
 
         Receipt receipt = new Receipt.Builder()
                 .withChange(new BigDecimal("-25"))

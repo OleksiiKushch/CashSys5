@@ -21,4 +21,9 @@ public class PaymentTest {
     public void getName() {
         assertEquals("cash", Payment.CASH.getName());
     }
+
+    @Test
+    public void getMessage() {
+        assertEquals("electronic", Payment.ELECTRONIC.getMessage());
+    }
 }

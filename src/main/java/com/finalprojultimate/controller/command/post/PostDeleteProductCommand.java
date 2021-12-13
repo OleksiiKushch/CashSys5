@@ -23,7 +23,7 @@ public class PostDeleteProductCommand extends AbstractCommandWrapper<Product> {
 
     public PostDeleteProductCommand() {
         super(INTERNAL_SERVER_ERROR_PAGE);
-    } // TODO
+    } // TODO ?
 
     @Override
     protected String performExecute(HttpServletRequest request, HttpServletResponse response)

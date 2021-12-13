@@ -1,5 +1,6 @@
 package com.finalprojultimate.controller.validation;
 
+import com.finalprojultimate.controller.validation.impl.ReceiptPropertiesValidator;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
 import org.junit.Test;
 
@@ -11,7 +12,7 @@ public class ReceiptPropertiesValidatorTest {
 
     @Test
     public void isValid() {
-        ReceiptPropertiesValidator receiptPropertiesValidator = new ReceiptPropertiesValidator();
+        Validator<ReceiptDetails> receiptPropertiesValidator = new ReceiptPropertiesValidator();
 
         ReceiptDetails receiptDetails = new ReceiptDetails.Builder()
                 .withOrganizationTaxIdNumber(7802870820L)
@@ -34,7 +35,7 @@ public class ReceiptPropertiesValidatorTest {
 
     @Test
     public void getErrorMessages() {
-        ReceiptPropertiesValidator receiptPropertiesValidator = new ReceiptPropertiesValidator();
+        Validator<ReceiptDetails> receiptPropertiesValidator = new ReceiptPropertiesValidator();
 
         ReceiptDetails receiptDetails = new ReceiptDetails.Builder()
                 .withOrganizationTaxIdNumber(7802870820L)
@@ -54,7 +55,7 @@ public class ReceiptPropertiesValidatorTest {
 
     @Test
     public void getErrorValidationMessages() {
-        ReceiptPropertiesValidator receiptPropertiesValidator = new ReceiptPropertiesValidator();
+        Validator<ReceiptDetails> receiptPropertiesValidator = new ReceiptPropertiesValidator();
 
         ReceiptDetails receiptDetails = new ReceiptDetails.Builder()
                 .withOrganizationTaxIdNumber(7802870820L)

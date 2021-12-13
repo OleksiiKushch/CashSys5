@@ -1,11 +1,8 @@
 package com.finalprojultimate.controller.validation;
 
-import com.finalprojultimate.model.entity.product.Product;
-import com.finalprojultimate.model.entity.product.Unit;
+import com.finalprojultimate.controller.validation.impl.LoginValidator;
 import com.finalprojultimate.model.services.util.LoginData;
 import org.junit.Test;
-
-import java.math.BigDecimal;
 
 import static org.junit.Assert.*;
 
@@ -13,7 +10,7 @@ public class LoginValidatorTest {
 
     @Test
     public void isValid() {
-        LoginValidator loginValidator = new LoginValidator();
+        Validator<LoginData> loginValidator = new LoginValidator();
 
         LoginData loginData = new LoginData("bob.fel@gmail.com", "123321");
 
@@ -42,7 +39,7 @@ public class LoginValidatorTest {
 
     @Test
     public void getErrorMessages() {
-        LoginValidator loginValidator = new LoginValidator();
+        Validator<LoginData> loginValidator = new LoginValidator();
 
         LoginData loginData = new LoginData("bob.fel@gmail.com", "");
 
@@ -65,7 +62,7 @@ public class LoginValidatorTest {
 
     @Test
     public void getErrorValidationMessages() {
-        LoginValidator loginValidator = new LoginValidator();
+        Validator<LoginData> loginValidator = new LoginValidator();
 
         LoginData loginData = new LoginData("bob.felgmail.com", "123321");
 

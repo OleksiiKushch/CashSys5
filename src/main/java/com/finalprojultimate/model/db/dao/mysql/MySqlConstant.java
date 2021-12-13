@@ -18,6 +18,12 @@ public abstract class MySqlConstant {
         public static final String AMOUNT = "amount";
         public static final String BARCODE = "barcode";
         public static final String UNIT_ID = "unit_id";
+
+        // ReportBestProductByCountReceipt
+        public static final String PRODUCT_ID = "product_id";
+        public static final String TOTAL_AMOUNT = "total_amount";
+        public static final String TOTAL_SUM = "total_sum";
+        public static final String COUNT = "count";
     }
 
     // User
@@ -42,7 +48,7 @@ public abstract class MySqlConstant {
         public static final String USER_ID = "user_id";
         public static final String STATUS_ID = "status_id";
 
-        // receipt details
+        // ReceiptDetails
         public static final String RECEIPT_ID = "receipt_id";
         public static final String ROOT_RECEIPT_ID = "root_receipt_id";
         public static final String ORGANIZATION_TAX_ID_NUMBER = "organization_tax_id_number";
@@ -70,6 +76,15 @@ public abstract class MySqlConstant {
         public static final String FIND_PRODUCTS_SORT_BY_NONE = "SELECT * FROM product LIMIT ? OFFSET ?";
         public static final String FIND_PRODUCTS_SORT_BY_NAME = "SELECT * FROM product ORDER BY `name` LIMIT ? OFFSET ?";
         public static final String GET_COUNT_OF_PRODUCTS = "SELECT COUNT(*) FROM product";
+        public static final String FIND_BEST_PRODUCTS_BY_COUNT_RECEIPT_FOR_THE_LAST_MONTH = "SELECT receipt_has_product.product_id, " +
+                "sum(receipt_has_product.amount) AS total_amount, " +
+                "sum(receipt_has_product.amount * receipt_has_product.price) AS total_sum, " +
+                "count(*) AS count FROM receipt_has_product " +
+                "JOIN receipt ON receipt_has_product.receipt_id = receipt.id " +
+                "WHERE receipt.date_time >= DATE_SUB(NOW(), INTERVAL 1 MONTH) " +
+                "GROUP BY receipt_has_product.product_id " +
+                "ORDER BY count DESC " +
+                "LIMIT ?";
 
         public static final String GET_AMOUNT_PRODUCT_IN_STOCK_BY_ID = "SELECT amount FROM product WHERE id = ?";
         public static final String UPDATE_AMOUNT_PRODUCT_IN_STOCK_BY_ID = "UPDATE product SET amount = ? WHERE id = ?";
@@ -86,12 +101,16 @@ public abstract class MySqlConstant {
         public static final String GET_USER_BY_ID = "SELECT * FROM `user` WHERE id = ?";
         public static final String GET_ALL_USERS = "SELECT * FROM `user`";
         public static final String GET_USER_BY_EMAIL = "SELECT * FROM `user` WHERE email = ?";
-        public static final String FIND_BEST_CASHIERS_BY_COUNT_RECEIPT = "SELECT `user`.id, count(*) AS count  FROM `user` " +
+        public static final String FIND_USERS_SORT_BY_NONE = "SELECT * FROM user LIMIT ? OFFSET ?";
+        public static final String FIND_USERS_SORT_BY_EMAIL = "SELECT * FROM user ORDER BY `email` LIMIT ? OFFSET ?";
+        public static final String GET_COUNT_OF_USERS = "SELECT COUNT(*) FROM user";
+        public static final String FIND_BEST_CASHIERS_BY_COUNT_RECEIPT_FOR_THE_LAST_MONTH
+                = "SELECT `user`.id, count(*) AS count  FROM `user` " +
                 "JOIN user_role ON `user`.role_id = user_role.id " +
                 "JOIN receipt ON `user`.id = receipt.user_id " +
                 "WHERE user_role.`name` = 'cashier' AND receipt.date_time >= DATE_SUB(NOW(), INTERVAL 1 MONTH) " +
                 "GROUP BY `user`.id " +
-                "ORDER BY count DESC  " +
+                "ORDER BY count DESC " +
                 "LIMIT ?";
     }
 
@@ -105,7 +124,8 @@ public abstract class MySqlConstant {
         public static final String DELETE_RECEIPT_BY_ID = "DELETE FROM receipt WHERE id = ?";
         public static final String GET_RECEIPT_BY_ID = "SELECT * FROM receipt WHERE id = ?";
         public static final String GET_ALL_RECEIPTS = "SELECT * FROM receipt";
-        public static final String FIND_RECEIPTS_WITH_PAGINATION = "SELECT * FROM receipt LIMIT ? OFFSET ?";
+        public static final String FIND_RECEIPTS_SORT_BY_NONE = "SELECT * FROM receipt LIMIT ? OFFSET ?";
+        public static final String FIND_RECEIPTS_SORT_BY_DATE_TIME = "SELECT * FROM receipt ORDER BY date_time DESC LIMIT ? OFFSET ?";
         public static final String GET_COUNT_OF_RECEIPTS = "SELECT COUNT(*) FROM receipt";
         public static final String INSERT_RECEIPT_HAS_PRODUCT = "INSERT INTO receipt_has_product (receipt_id, product_id, price, amount) " +
                 "VALUES (?, ?, ?, ?)";

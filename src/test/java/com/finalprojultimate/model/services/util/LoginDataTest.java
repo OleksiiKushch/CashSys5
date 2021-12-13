@@ -9,6 +9,7 @@ public class LoginDataTest {
     @Test
     public void testLoginData() {
         LoginData loginData = new LoginData("bob.dillan@gmail.com", "123456789");
+        assertEquals("LoginData{email='bob.dillan@gmail.com', password='123456789'}", loginData.toString());
         assertEquals("bob.dillan@gmail.com", loginData.getEmail());
         assertEquals("123456789", loginData.getPassword());
         loginData.setEmail("bob2.dillan@gmail.com");

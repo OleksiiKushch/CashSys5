@@ -3,15 +3,17 @@ package com.finalprojultimate.model.entity.receipt;
 import java.util.Objects;
 
 public enum Status {
-    NORMAL (1, "normal"),
-    REJECTED (2, "rejected");
+    NORMAL (1, "normal", "normal"),
+    REJECTED (2, "rejected", "rejected");
 
     private final int id;
     private final String name;
+    private final String message;
 
-    Status(int id, String name) {
+    Status(int id, String name, String message) {
         this.id = id;
         this.name = name;
+        this.message = message;
     }
 
     /**
@@ -39,8 +41,13 @@ public enum Status {
     public int getId() {
         return id;
     }
+
     public String getName() {
         return name;
+    }
+
+    public String getMessage() {
+        return message;
     }
 
     @Override

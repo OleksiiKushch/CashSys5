@@ -17,6 +17,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import static com.finalprojultimate.util.Parameter.DATE_TIME;
+
 public class ReceiptServiceImpl implements ReceiptService {
     private static final Logger logger = Logger.getLogger(ReceiptServiceImpl.class);
 
@@ -69,7 +71,24 @@ public class ReceiptServiceImpl implements ReceiptService {
 
     @Override
     public List<Receipt> getForPagination(int offset, int limit) {
-        return receiptDAO.findReceipts(offset, limit);
+        return receiptDAO.findReceiptsWithPaginationSortByNone(offset, limit);
+    }
+
+    /**
+     * return receipts from the database in the range [(offset - 1) * limit; offset * limit] pre-sorted by parameter or not (none)
+     *
+     * @param sortParameter parameter sorting [none, dateTime]
+     * @param offset number of page at pagination
+     * @param limit number of return receipts (size List)
+     * @return list of receipts
+     */
+    @Override
+    public List<Receipt> getForPaginationSortByParameter(String sortParameter, int offset, int limit) {
+        if (sortParameter.equals(DATE_TIME)) {
+            return receiptDAO.findReceiptsWithPaginationSortByDateTime(offset, limit);
+        } else {
+            return getForPagination(offset, limit);
+        }
     }
 
     @Override

@@ -154,9 +154,11 @@ public class MySqlUserDAO implements UserDAO {
      * @throws DaoException specific exception
      */
     @Override
-    public LinkedHashMap<Integer, Integer> findBestCashiersByCountReceipt(int limit) throws DaoException {
+    public LinkedHashMap<Integer, Integer> findBestCashiersByCountReceiptForTheLastMonth(int limit)
+            throws DaoException {
         LinkedHashMap<Integer, Integer> result = new LinkedHashMap<>();
-        try (Connection con = getConnection(); PreparedStatement ps = con.prepareStatement(FIND_BEST_CASHIERS_BY_COUNT_RECEIPT)) {
+        try (Connection con = getConnection(); PreparedStatement ps
+                = con.prepareStatement(FIND_BEST_CASHIERS_BY_COUNT_RECEIPT_FOR_THE_LAST_MONTH)) {
             ps.setInt(1, limit);
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
@@ -167,7 +169,7 @@ public class MySqlUserDAO implements UserDAO {
             }
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
-            throw generateException(ERROR_FIND_BEST_CASHIERS_BY_COUNT_RECEIPT_FROM_DATABASE,
+            throw generateException(ERROR_FIND_BEST_CASHIERS_BY_COUNT_RECEIPT_FOR_THE_LAST_MONTH_FROM_DATABASE,
                     FIND_BEST_CASHIERS_BY_COUNT_RECEIPT_FROM_DATABASE_LOG_MSG, getClass());
         }
         return result;
@@ -180,6 +182,39 @@ public class MySqlUserDAO implements UserDAO {
             result.add(getById(id));
         }
         return result;
+    }
+
+    @Override
+    public List<User> findUsersWithPaginationSortByNone(int offset, int limit) throws DaoException {
+        return findUsersWithPaginationSortByQuery(FIND_USERS_SORT_BY_NONE, offset, limit);
+    }
+
+    @Override
+    public List<User> findUsersWithPaginationSortByEmail(int offset, int limit) throws DaoException {
+        return findUsersWithPaginationSortByQuery(FIND_USERS_SORT_BY_EMAIL, offset, limit);
+    }
+
+    private List<User> findUsersWithPaginationSortByQuery(String query, int offset, int limit) throws DaoException {
+        List<User> result = new ArrayList<>();
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(query)) {
+            ps.setInt(1, limit);
+            ps.setInt(2, offset);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                result.add(mapUser(rs));
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException(ERROR_FIND_USERS_WITH_PAGINATION_FROM_DATABASE,
+                    FIND_USERS_WITH_PAGINATION_FROM_DATABASE_LOG_MSG, getClass());
+        }
+        return result;
+    }
+
+    @Override
+    public int getCountOfUsers() throws DaoException {
+        return getCountByQuery(GET_COUNT_OF_USERS);
     }
 
     private void mapUser(PreparedStatement ps, User user) throws SQLException {

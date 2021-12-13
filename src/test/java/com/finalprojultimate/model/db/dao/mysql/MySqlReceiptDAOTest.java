@@ -11,6 +11,7 @@ import com.finalprojultimate.model.entity.receipt.Payment;
 import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
 import com.finalprojultimate.model.entity.receipt.Status;
+import com.finalprojultimate.model.entity.user.User;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -166,9 +167,17 @@ public class MySqlReceiptDAOTest {
     }
 
     @Test
-    public void findReceipts() {
-        List<Receipt> result = receiptDAO.findReceipts(2, 3);
-        assertEquals(3, result.size());
+    public void findProductsWithPaginationSortByNone() {
+        List<Receipt> result = receiptDAO.findReceiptsWithPaginationSortByNone(2, 2);
+        assertEquals("0.00", result.get(0).getChange().toString());
+        assertEquals("2.50", result.get(1).getChange().toString());
+    }
+
+    @Test
+    public void findProductsWithPaginationSortByEmail() {
+        List<Receipt> result = receiptDAO.findReceiptsWithPaginationSortByDateTime(2, 2);
+        assertEquals("0.00", result.get(0).getChange().toString());
+        assertEquals("2.50", result.get(1).getChange().toString());
     }
 
     @Test
