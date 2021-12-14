@@ -6,8 +6,8 @@ import com.finalprojultimate.controller.validation.impl.RegistrationValidator;
 import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.model.entity.user.Role;
 import com.finalprojultimate.model.entity.user.User;
-import com.finalprojultimate.model.services.UserService;
-import com.finalprojultimate.model.services.impl.UserServiceImpl;
+import com.finalprojultimate.model.service.UserService;
+import com.finalprojultimate.model.service.impl.UserServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

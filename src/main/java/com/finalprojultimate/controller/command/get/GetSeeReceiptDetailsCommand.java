@@ -4,14 +4,12 @@ import com.finalprojultimate.controller.command.Command;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
-import com.finalprojultimate.model.services.ReceiptService;
-import com.finalprojultimate.model.services.UserService;
-import com.finalprojultimate.model.services.impl.ReceiptServiceImpl;
-import com.finalprojultimate.model.services.impl.UserServiceImpl;
-import com.finalprojultimate.model.services.util.Cart;
+import com.finalprojultimate.model.service.ReceiptService;
+import com.finalprojultimate.model.service.UserService;
+import com.finalprojultimate.model.service.impl.ReceiptServiceImpl;
+import com.finalprojultimate.model.service.impl.UserServiceImpl;
 import com.finalprojultimate.util.Attribute;
 import com.finalprojultimate.util.Page;
-import com.finalprojultimate.util.Parameter;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;
@@ -26,7 +24,6 @@ public class GetSeeReceiptDetailsCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetSeeReceiptDetailsCommand.class);
 
     private final ReceiptService receiptService = ReceiptServiceImpl.getInstance();
-    private final UserService userService = UserServiceImpl.getInstance();
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -39,8 +36,6 @@ public class GetSeeReceiptDetailsCommand implements Command {
 
         request.setAttribute(Attribute.PRODUCTS, products);
         request.setAttribute(Attribute.RECEIPT, receipt);
-        request.setAttribute(Attribute.RECEIPT_SERVICE, receiptService);
-        request.setAttribute(Attribute.USER_SERVICE, userService);
         request.setAttribute(Attribute.RECEIPT_DETAILS, receiptDetails);
 
 

@@ -9,6 +9,8 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
 
+<security:check role="senior cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
+
 <div class="jumbotron">
     <div class="container text-center">
         <h2 class="display-4"><fmt:message key="generate_report.list.reports.text"/></h2>

@@ -1,4 +1,10 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ taglib prefix="totalSum" uri="http://com.finalprojultimate/model/tag/TagTotalSum" %>
+<%@ taglib prefix="amount" uri="http://com.finalprojultimate/model/tag/TagAmount" %>
+<%@ taglib prefix="formattedUserName" uri="http://com.finalprojultimate/model/tag/TagFormattedUserName" %>
+<%@ taglib prefix="formattedRootReceiptId" uri="http://com.finalprojultimate/model/tag/TagFormattedRootReceiptId" %>
+<%@ taglib prefix="totalReceiptSum" uri="http://com.finalprojultimate/model/tag/TagTotalReceiptSum" %>
+
 <html>
 <head>
     <title>CashSys.see.receipt.details</title>
@@ -16,8 +22,11 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
 
+<security:check role="senior cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
+
 <div class="container-fluid">
-    <h1 class="mt-4"><fmt:message key="see_receipt_details.detail.id.text"/> ${receipt.id}<fmt:message key="see_receipt_details.receipt.information.text"/></h1>
+    <h1 class="mt-4"><fmt:message key="see_receipt_details.detail.id.text"/>
+        ${receipt.id}<fmt:message key="see_receipt_details.receipt.information.text"/></h1>
     <form action="<%= request.getContextPath() %>/FrontController?command=/create_reject_receipt" method="post">
         <h3 class="mt-4"><fmt:message key="see_receipt_details.list.of.products.text"/></h3>
         <table class="table border rounded" id="productsTable">
@@ -37,9 +46,10 @@
                 <tr>
                     <th class="col-md-1" scope="row">${product.id}</th>
                     <td>${product.name}</td>
-                    <td class="col-md-1">${product.price.multiply(product.amount).setScale(2)}</td>
+                    <td class="col-md-1"><totalSum:get price="${product.price}" amount="${product.amount}" /></td>
                     <td class="col-md-1">${product.price}</td>
-                    <td class="col-md-1">${product.getAmount()} <fmt:message key="${product.unit.message}"/></td>
+                    <td class="col-md-1"><amount:get amount="${product.amount}" unit="${product.unit}" />
+                        <fmt:message key="${product.unit.message}"/></td>
                     <td class="col-md-1">${product.barcode}</td>
                     <td class="col-md-2">
                         <div class="d-flex justify-content-between">
@@ -80,7 +90,7 @@
 
 
     <div class="p-2 mx-2">
-        <h4 class="" id="sum"><fmt:message key="see_receipt_details.sum.with.colon.text"/> ${receipt_service.getSumReceiptById(receipt.id).setScale(2)} </h4>
+        <h4 class="" id="sum"><fmt:message key="see_receipt_details.sum.with.colon.text"/> <totalReceiptSum:get receiptId="${receipt.id}" /></h4>
     </div>
 
     <div class="p-2 mx-2">
@@ -93,7 +103,7 @@
                 <div class="card-body">
                     <div class="row p-2 mx-2">
                         <p><fmt:message key="see_receipt_details.cashier.text"/> &nbsp</p>
-                        <h6>(<fmt:message key="see_receipt_details.id.text"/>: ${receipt.userId}) ${user_service.getFormattedNameById(receipt.userId)}</h6>
+                        <h6>(<fmt:message key="see_receipt_details.id.text"/>: ${receipt.userId}) <formattedUserName:get userId="${receipt.userId}" /></h6>
                     </div>
                     <div class="row p-2 mx-2">
                         <p><fmt:message key="see_receipt_details.type.payment.text"/> &nbsp</p><h6><fmt:message key="${receipt.payment.message}"/></h6>
@@ -105,7 +115,8 @@
                         <p><fmt:message key="see_receipt_details.status.text"/> &nbsp</p><h6><fmt:message key="${receipt.status.message}"/></h6>
                     </div>
                     <div class="row p-2 mx-2">
-                        <p><fmt:message key="see_receipt_details.root.receipt.id.text"/> &nbsp</p><h6>${receipt_details.rootReceiptId}</h6>
+                        <p><fmt:message key="see_receipt_details.root.receipt.id.text"/> &nbsp</p>
+                        <h6><formattedRootReceiptId:get rootReceiptId="${receipt_details.rootReceiptId}" /></h6>
                     </div>
                 </div>
             </div>

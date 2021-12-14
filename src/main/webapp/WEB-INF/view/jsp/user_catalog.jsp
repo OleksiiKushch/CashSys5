@@ -10,6 +10,8 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
 
+<security:check role="senior cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
+
 <div class="container-fluid">
     <h1 class="mt-4"><fmt:message key="user_catalog.user.catalog.text"/></h1>
 
@@ -101,7 +103,7 @@
                 <c:when test="${page + 1 <= page_count}">
                     <li class="page-item">
                         <a class="page-link"
-                           href="<%= request.getContextPath() %>/FrontController?command=/user_catalog&page=${page+1}&page_size=${page_size}">
+                           href="<%= request.getContextPath() %>/FrontController?command=/user_catalog&page=${page + 1}&page_size=${page_size}">
                             <fmt:message key="user_catalog.next.text"/></a>
                     </li>
                 </c:when>

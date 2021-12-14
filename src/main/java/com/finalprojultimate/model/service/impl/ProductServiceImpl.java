@@ -1,0 +1,115 @@
+package com.finalprojultimate.model.service.impl;
+
+import com.finalprojultimate.model.db.dao.DAOFactory;
+import com.finalprojultimate.model.db.dao.connection.PoolConnectionBuilder;
+import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
+import com.finalprojultimate.model.db.dao.util.DAOConstants;
+import com.finalprojultimate.model.entity.product.Product;
+import com.finalprojultimate.model.service.ProductService;
+import com.finalprojultimate.model.service.util.ReportBestProductByCountReceipt;
+import org.apache.log4j.Logger;
+
+import java.lang.reflect.InvocationTargetException;
+import java.util.List;
+import java.util.Set;
+
+import static com.finalprojultimate.util.Parameter.*;
+
+public class ProductServiceImpl implements ProductService {
+    private static final Logger logger = Logger.getLogger(ProductServiceImpl.class);
+
+    private final ProductDAO productDAO;
+
+    private static class Holder {
+        static final ProductServiceImpl INSTANCE = new ProductServiceImpl();
+    }
+
+    public static ProductServiceImpl getInstance() {
+        return Holder.INSTANCE;
+    }
+
+    public ProductServiceImpl() {
+        DAOFactory.setDaoFactoryFCN(DAOConstants.MY_SQL_DAO_FACTORY_FCN);
+        DAOFactory daoFactory = null;
+        try {
+            daoFactory = DAOFactory.getInstance();
+        } catch (NoSuchMethodException | ClassNotFoundException | InvocationTargetException |
+                InstantiationException | IllegalAccessException e) {
+            logger.error(e.getMessage(), e);
+        }
+        productDAO = daoFactory.getProductDAO();
+        productDAO.setConnectionBuilder(PoolConnectionBuilder.getInstance());
+    }
+
+    @Override
+    public List<Product> getAll() {
+        return productDAO.getAll();
+    }
+
+    @Override
+    public void create(Product product) {
+        productDAO.insert(product);
+    }
+
+    @Override
+    public Product getById(int id) {
+        return productDAO.getById(id);
+    }
+
+    @Override
+    public void update(Product product) {
+        productDAO.update(product);
+    }
+
+    @Override
+    public void delete(Product product) {
+        productDAO.delete(product);
+    }
+
+    @Override
+    public List<ReportBestProductByCountReceipt> getBestProductsByCountReceiptForTheLastMonth(int limit) {
+        return productDAO.findBestProductsByCountReceiptForTheLastMonth(limit);
+    }
+
+    @Override
+    public List<Product> getProductsByIds(Set<Integer> ids) {
+        return productDAO.findProductsByIds(ids);
+    }
+
+    @Override
+    public List<Product> getForPagination(int offset, int limit) {
+        return productDAO.findProductsWithPaginationSortByNone(offset, limit);
+    }
+
+    /**
+     * return products from the database in the range [(offset - 1) * limit; offset * limit] pre-sorted by parameter or not (none)
+     *
+     * @param sortParameter parameter sorting [none, name]
+     * @param offset number of page at pagination
+     * @param limit number of return products (size List)
+     * @return list of products
+     */
+    @Override
+    public List<Product> getForPaginationSortByParameter(String sortParameter, int offset, int limit) {
+        if (sortParameter.equals(NAME)) {
+            return productDAO.findProductsWithPaginationSortByName(offset, limit);
+        } else {
+            return getForPagination(offset, limit);
+        }
+    }
+
+    @Override
+    public int getCount() {
+        return productDAO.getCountOfProducts();
+    }
+
+    @Override
+    public List<Product> findProductsByBarcode(String pattern) {
+        return productDAO.findProductsByBarcode(pattern);
+    }
+
+    @Override
+    public List<Product> findProductsByName(String pattern) {
+        return productDAO.findProductsByName(pattern);
+    }
+}

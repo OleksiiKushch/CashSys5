@@ -5,7 +5,7 @@ import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
-import com.finalprojultimate.model.services.util.ReportBestProductByCountReceipt;
+import com.finalprojultimate.model.service.util.ReportBestProductByCountReceipt;
 import org.apache.log4j.Logger;
 
 import java.sql.*;

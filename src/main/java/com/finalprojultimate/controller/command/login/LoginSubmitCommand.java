@@ -5,9 +5,9 @@ import com.finalprojultimate.controller.validation.impl.LoginValidator;
 import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.controller.writer.RequestAttributeWriter;
 import com.finalprojultimate.model.entity.user.User;
-import com.finalprojultimate.model.services.UserService;
-import com.finalprojultimate.model.services.impl.UserServiceImpl;
-import com.finalprojultimate.model.services.util.LoginData;
+import com.finalprojultimate.model.service.UserService;
+import com.finalprojultimate.model.service.impl.UserServiceImpl;
+import com.finalprojultimate.model.service.util.LoginData;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

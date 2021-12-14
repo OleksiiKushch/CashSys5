@@ -28,10 +28,6 @@ public abstract class Attribute {
     public static final String USER_SORT_PARAM = "user_sort_param";
     public static final String RECEIPT_SORT_PARAM = "receipt_sort_param";
 
-    // service
-    public static final String USER_SERVICE = "user_service";
-    public static final String RECEIPT_SERVICE = "receipt_service";
-
     // create new receipt
     public static final String CART = "cart";
     public static final String SUM = "sum";

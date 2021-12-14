@@ -1,7 +1,7 @@
 package com.finalprojultimate.controller.validation;
 
 import com.finalprojultimate.controller.validation.impl.LoginValidator;
-import com.finalprojultimate.model.services.util.LoginData;
+import com.finalprojultimate.model.service.util.LoginData;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

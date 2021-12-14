@@ -4,10 +4,10 @@ import com.finalprojultimate.controller.command.Command;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.entity.user.User;
-import com.finalprojultimate.model.services.ProductService;
-import com.finalprojultimate.model.services.ReceiptService;
-import com.finalprojultimate.model.services.impl.ProductServiceImpl;
-import com.finalprojultimate.model.services.impl.ReceiptServiceImpl;
+import com.finalprojultimate.model.service.ProductService;
+import com.finalprojultimate.model.service.ReceiptService;
+import com.finalprojultimate.model.service.impl.ProductServiceImpl;
+import com.finalprojultimate.model.service.impl.ReceiptServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

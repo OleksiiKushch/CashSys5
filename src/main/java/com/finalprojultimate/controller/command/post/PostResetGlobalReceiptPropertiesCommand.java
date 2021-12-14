@@ -1,8 +1,8 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.Command;
-import com.finalprojultimate.model.services.ReceiptService;
-import com.finalprojultimate.model.services.impl.ReceiptServiceImpl;
+import com.finalprojultimate.model.service.ReceiptService;
+import com.finalprojultimate.model.service.impl.ReceiptServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

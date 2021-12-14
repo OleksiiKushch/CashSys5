@@ -7,19 +7,16 @@ import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
-import com.finalprojultimate.model.entity.user.User;
-import com.finalprojultimate.model.services.util.ReportBestProductByCountReceipt;
+import com.finalprojultimate.model.service.util.ReportBestProductByCountReceipt;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
-import static org.junit.Assert.*;
 import static org.junit.Assert.assertEquals;
 
 public class MySqlProductDAOTest {
@@ -54,7 +51,7 @@ public class MySqlProductDAOTest {
     }
 
     @Test
-    public void updateTest() throws DaoException {
+    public void update() throws DaoException {
         Product pBefore = productDAO.findProductsByName("sugar").get(0);
         Product pAfter = new Product.Builder()
                 .withId(pBefore.getId())
@@ -71,24 +68,24 @@ public class MySqlProductDAOTest {
     }
 
     @Test
-    public void getByIdTest() throws DaoException {
+    public void getById() throws DaoException {
         assertEquals("comb ParallaX", productDAO.getById(2).getName());
     }
 
     @Test
-    public void getAllTest() throws DaoException {
+    public void getAll() throws DaoException {
         List<Product> result = productDAO.getAll();
         assertEquals(8, result.size());
     }
 
     @Test
-    public void findProductsByNameTest() throws DaoException {
+    public void findProductsByName() throws DaoException {
         List<Product> result = productDAO.findProductsByName("lux");
         assertEquals(2, result.size());
     }
 
     @Test
-    public void findProductsByBarcodeTest() throws DaoException {
+    public void findProductsByBarcode() throws DaoException {
         List<Product> result = productDAO.findProductsByBarcode("22");
         assertEquals(3, result.size());
         result = productDAO.findProductsByBarcode("320499");

@@ -43,7 +43,7 @@ public class MySqlReceiptDAOTest {
     }
 
     @Test
-    public void saveDeleteTest() throws DaoException {
+    public void saveAndDeleteTest() throws DaoException, SQLException, URISyntaxException, IOException {
         Receipt receipt = new Receipt.Builder()
                 .withChange(new BigDecimal("0.45"))
                 .withPayment(Payment.CASH)
@@ -51,13 +51,14 @@ public class MySqlReceiptDAOTest {
                 .withStatus(Status.NORMAL)
                 .build();
         receiptDAO.insert(receipt);
-        assertEquals(new BigDecimal("0.45"), receiptDAO.getById(12).getChange());
+        receipt = receiptDAO.getById(12);
+        assertEquals(new BigDecimal("0.45"), receipt.getChange());
         receiptDAO.delete(receipt);
         assertNull(receiptDAO.getById(12));
     }
 
     @Test
-    public void updateTest() throws DaoException {
+    public void update() throws DaoException {
         Receipt rBefore = receiptDAO.getById(3);
         Receipt rAfter = new Receipt.Builder()
                 .withId(rBefore.getId())
@@ -73,12 +74,12 @@ public class MySqlReceiptDAOTest {
     }
 
     @Test
-    public void getByIdTest() throws DaoException {
+    public void getById() throws DaoException {
         assertEquals(new BigDecimal("12.00"), receiptDAO.getById(2).getChange());
     }
 
     @Test
-    public void getAllTest() throws DaoException {
+    public void getAll() throws DaoException {
         List<Receipt> result = receiptDAO.getAll();
         assertEquals(11, result.size());
     }
@@ -105,7 +106,7 @@ public class MySqlReceiptDAOTest {
         products.add(product2);
         receiptDAO.create(1, new BigDecimal("0"), 2, products);
 
-        Receipt result = receiptDAO.getById(12);
+        Receipt result = receiptDAO.getById(13);
         assertEquals("normal", result.getStatus().getName());
         assertEquals(testAmountProduct1.subtract(new BigDecimal("3")), productDAO.getById(1).getAmount());
 
@@ -113,7 +114,7 @@ public class MySqlReceiptDAOTest {
     }
 
     @Test(expected = DaoException.class)
-    public void createRollback() throws SQLException, URISyntaxException, IOException {
+    public void createRollbackTest() throws SQLException, URISyntaxException, IOException {
         DAOFactory daoFactory = new MySqlDAOFactory();
         ProductDAO productDAO = daoFactory.getProductDAO();
         productDAO.setConnectionBuilder(new DirectConnectionBuilder());
@@ -146,10 +147,10 @@ public class MySqlReceiptDAOTest {
         products.add(product2);
         receiptDAO.create(1, new BigDecimal("0"), 2, products);
 
-        Receipt testReceipt = receiptDAO.getById(14);
+        Receipt testReceipt = receiptDAO.getById(13);
         assertEquals(1, testReceipt.getUserId());
 
-        assertEquals("ReceiptProperties{receiptId=14, organizationTaxIdNumber=7802870820, " +
+        assertEquals("ReceiptDetails{receiptId=13, rootReceiptId=0, organizationTaxIdNumber=7802870820, " +
                 "nameOrganization='ТОВ \"Епіцентр К\"', addressTradePoint='м.Харків, вул.Героїв Праці, 9А', " +
                 "vat=20.00, taxationSys='ОСН'}", receiptDAO.getReceiptDetailsById(testReceipt.getId()).toString());
 
@@ -160,7 +161,7 @@ public class MySqlReceiptDAOTest {
         productsReject.add(product1Reject);
         receiptDAO.createReject(testReceipt.getId(), 6, productsReject);
 
-        Receipt result = receiptDAO.getById(15);
+        Receipt result = receiptDAO.getById(14);
         assertEquals("rejected", result.getStatus().getName());
 
         DBInit.startUp();
@@ -181,7 +182,7 @@ public class MySqlReceiptDAOTest {
     }
 
     @Test
-    public void setAndResetGlobalReceiptProperties() {
+    public void setAndResetGlobalReceiptPropertiesTest() {
         ReceiptDetails receiptDetails = new ReceiptDetails();
         receiptDetails.setOrganizationTaxIdNumber(7802870820L);
         receiptDetails.setNameOrganization("ТОВ \"Епіцентр К\"");
@@ -195,7 +196,7 @@ public class MySqlReceiptDAOTest {
 
         assertEquals("15.00", receiptDetailsTest.getVat().toString());
 
-        assertEquals("ReceiptProperties{receiptId=0, organizationTaxIdNumber=7802870820, nameOrganization='ТОВ " +
+        assertEquals("ReceiptDetails{receiptId=0, rootReceiptId=0, organizationTaxIdNumber=7802870820, nameOrganization='ТОВ " +
                 "\"Епіцентр К\"', addressTradePoint='м.Харків, вул.Героїв Праці, 9А', vat=15.00, taxationSys='ОСН'}",
                 receiptDetailsTest.toString());
 
@@ -229,7 +230,7 @@ public class MySqlReceiptDAOTest {
 
         ReceiptDetails receiptDetails = receiptDAO.getReceiptDetailsById(12);
 
-        assertEquals("ReceiptProperties{receiptId=12, organizationTaxIdNumber=7802870820, " +
+        assertEquals("ReceiptDetails{receiptId=12, rootReceiptId=0, organizationTaxIdNumber=7802870820, " +
                 "nameOrganization='ТОВ \"Епіцентр К\"', addressTradePoint='м.Харків, вул.Героїв Праці, 9А', " +
                 "vat=20.00, taxationSys='ОСН'}", receiptDetails.toString());
 

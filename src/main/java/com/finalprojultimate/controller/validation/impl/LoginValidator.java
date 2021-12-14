@@ -3,7 +3,7 @@ package com.finalprojultimate.controller.validation.impl;
 import com.finalprojultimate.controller.validation.NullChecker;
 import com.finalprojultimate.controller.validation.StringExtractorBasedOnBool;
 import com.finalprojultimate.controller.validation.Validator;
-import com.finalprojultimate.model.services.util.LoginData;
+import com.finalprojultimate.model.service.util.LoginData;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.log4j.Logger;
 

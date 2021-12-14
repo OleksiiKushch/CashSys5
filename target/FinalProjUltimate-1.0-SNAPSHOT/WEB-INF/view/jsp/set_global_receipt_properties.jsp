@@ -15,6 +15,8 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
 
+<security:check role="senior cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
+
 <div class="container">
 
     <h1 class="mt-4"><fmt:message key="set_global_receipt_properties.global.receipt.properties.set.edit.form.text"/></h1>

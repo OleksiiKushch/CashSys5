@@ -19,17 +19,12 @@ public interface EntityDAO<T> {
     Logger logger = Logger.getLogger(EntityDAO.class);
 
     void setConnectionBuilder(ConnectionBuilder connectionBuilder);
-
     Connection getConnection() throws SQLException;
 
     void insert(T t) throws DaoException;
-
     void update(T t) throws DaoException;
-
     void delete(T t) throws DaoException;
-
     T getById(int id) throws DaoException;
-
     List<T> getAll() throws DaoException;
 
     default int getCountByQuery(String query) throws DaoException {

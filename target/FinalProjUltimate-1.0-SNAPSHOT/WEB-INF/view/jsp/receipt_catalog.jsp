@@ -1,5 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="formattedUserName" uri="http://com.finalprojultimate/model/tag/TagFormattedUserName" %>
+<%@ taglib prefix="totalReceiptSum" uri="http://com.finalprojultimate/model/tag/TagTotalReceiptSum" %>
+
 <html>
 <head>
     <title>CashSys.receipt.catalog</title>
@@ -14,6 +17,8 @@
 <body class="d-flex flex-column min-vh-100">
 
 <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
+
+<security:check role="senior cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
 
 <div class="container-fluid">
     <h1 class="mt-4"><fmt:message key="receipt_catalog.receipt.catalog.text"/></h1>
@@ -73,7 +78,7 @@
                 <c:when test="${page - 1 > 0}">
                     <li class="page-item">
                         <a class="page-link"
-                           href="<%= request.getContextPath() %>/FrontController?command=/receipt_catalog&page=${page-1}&page_size=${page_size}">
+                           href="<%= request.getContextPath() %>/FrontController?command=/receipt_catalog&page=${page - 1}&page_size=${page_size}">
                             <fmt:message key="receipt_catalog.previous.text"/></a>
                     </li>
                 </c:when>
@@ -136,9 +141,9 @@
         <c:forEach var="receipt" items="${requestScope.paginate_receipts}">
             <tr>
                 <th class="col-md-1" scope="row">${receipt.id}</th>
-                <td>(${receipt.userId}) ${user_service.getFormattedNameById(receipt.userId)}</td>
+                <td>(${receipt.userId}) <formattedUserName:get userId="${receipt.userId}" /></td>
                 <td class="col-md-2">${receipt.dateTime}</td>
-                <td class="col-md-1">${receipt_service.getSumReceiptById(receipt.id).setScale(2)}</td>
+                <td class="col-md-1"><totalReceiptSum:get receiptId="${receipt.id}" /></td>
                 <td class="col-md-1">${receipt.change}</td>
                 <td class="col-md-1"><fmt:message key="${receipt.payment.message}"/></td>
                 <td class="col-md-1"><fmt:message key="${receipt.status.message}"/></td>

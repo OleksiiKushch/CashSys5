@@ -1,6 +1,8 @@
-<%@ page import="java.math.BigDecimal" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="totalSum" uri="http://com.finalprojultimate/model/tag/TagTotalSum" %>
+<%@ taglib prefix="amount" uri="http://com.finalprojultimate/model/tag/TagAmount" %>
+
 <html>
 <head>
     <title>CashSys.cart.of.products</title>
@@ -16,6 +18,8 @@
 <body class="d-flex flex-column min-vh-100">
 
 <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
+
+<security:check role="cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
 
 <div class="container-fluid">
     <h1 class="mt-4"><fmt:message key="cart_of_products.list.of.added.products.text"/></h1>
@@ -37,9 +41,10 @@
             <tr>
                 <th class="col-md-1" scope="row">${product.id}</th>
                 <td>${product.name}</td>
-                <td class="col-md-1">${(product.price * product.amount).setScale(2)}</td>
+                <td class="col-md-1"><totalSum:get price="${product.price}" amount="${product.amount}" /></td>
                 <td class="col-md-1">${product.price}</td>
-                <td class="col-md-2">${product.getAmount()} <fmt:message key="${product.unit.message}"/></td>
+                <td class="col-md-2"><amount:get amount="${product.amount}" unit="${product.unit}" />
+                    <fmt:message key="${product.unit.message}"/></td>
                 <td class="col-md-1">${product.barcode}</td>
                 <td class="col-md-1">
                     <a href="" class="editLink" data-amount="${product.amount}" data-id="${product.id}" data-toggle="modal" data-target="#editModal">

@@ -7,9 +7,9 @@ import com.finalprojultimate.model.entity.receipt.Payment;
 import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.entity.receipt.Status;
 import com.finalprojultimate.model.entity.user.User;
-import com.finalprojultimate.model.services.ReceiptService;
-import com.finalprojultimate.model.services.impl.ReceiptServiceImpl;
-import com.finalprojultimate.model.services.util.Cart;
+import com.finalprojultimate.model.service.ReceiptService;
+import com.finalprojultimate.model.service.impl.ReceiptServiceImpl;
+import com.finalprojultimate.model.service.util.Cart;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

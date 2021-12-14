@@ -74,9 +74,11 @@ public class ReceiptDetails implements Serializable {
         this.taxationSys = taxationSys;
     }
 
+    @Override
     public String toString() {
-        return "ReceiptProperties{" +
+        return "ReceiptDetails{" +
                 "receiptId=" + receiptId +
+                ", rootReceiptId=" + rootReceiptId +
                 ", organizationTaxIdNumber=" + organizationTaxIdNumber +
                 ", nameOrganization='" + nameOrganization + '\'' +
                 ", addressTradePoint='" + addressTradePoint + '\'' +

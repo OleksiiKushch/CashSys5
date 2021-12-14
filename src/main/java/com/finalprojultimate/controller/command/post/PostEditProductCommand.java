@@ -5,8 +5,8 @@ import com.finalprojultimate.controller.validation.impl.ProductValidator;
 import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
-import com.finalprojultimate.model.services.ProductService;
-import com.finalprojultimate.model.services.impl.ProductServiceImpl;
+import com.finalprojultimate.model.service.ProductService;
+import com.finalprojultimate.model.service.impl.ProductServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

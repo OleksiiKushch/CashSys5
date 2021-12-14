@@ -1,6 +1,5 @@
 package com.finalprojultimate.controller.exception;
 
-import com.finalprojultimate.model.services.exception.ServiceException;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

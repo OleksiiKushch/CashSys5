@@ -1,12 +1,9 @@
 package com.finalprojultimate.controller.command.get;
 
 import com.finalprojultimate.controller.command.Command;
-import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.user.User;
-import com.finalprojultimate.model.services.ProductService;
-import com.finalprojultimate.model.services.UserService;
-import com.finalprojultimate.model.services.impl.ProductServiceImpl;
-import com.finalprojultimate.model.services.impl.UserServiceImpl;
+import com.finalprojultimate.model.service.UserService;
+import com.finalprojultimate.model.service.impl.UserServiceImpl;
 import com.finalprojultimate.util.Attribute;
 import com.finalprojultimate.util.Page;
 import org.apache.log4j.Logger;

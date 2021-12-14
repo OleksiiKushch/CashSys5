@@ -14,6 +14,8 @@
 
     <h1 class="mt-4"><fmt:message key="create_new_product.new.product.creation.form.text"/></h1>
 
+    <security:check role="commodity expert" loggedUserRole="${sessionScope.logged_user.role.name}" />
+
     <div class="card my-3">
         <div class="card-body">
             <form class="was-validated" action="<%= request.getContextPath() %>/FrontController?command=/create_new_product"

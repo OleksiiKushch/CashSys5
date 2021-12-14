@@ -10,6 +10,8 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
 
+<security:check role="senior cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
+
 <div class="container">
 
     <div class="container-fluid">

@@ -9,6 +9,8 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
 
+<security:check role="senior cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
+
 <div class="container">
     <div class="jumbotron mt-3">
         <h1><fmt:message key="successful_create_new_reject_receipt.reject.receipt.successfully.created.text"/></h1>

@@ -4,8 +4,8 @@ import com.finalprojultimate.controller.command.AbstractCommandWrapper;
 import com.finalprojultimate.controller.validation.impl.ReceiptPropertiesValidator;
 import com.finalprojultimate.controller.validation.Validator;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
-import com.finalprojultimate.model.services.ReceiptService;
-import com.finalprojultimate.model.services.impl.ReceiptServiceImpl;
+import com.finalprojultimate.model.service.ReceiptService;
+import com.finalprojultimate.model.service.impl.ReceiptServiceImpl;
 import org.apache.log4j.Logger;
 
 import javax.servlet.ServletException;

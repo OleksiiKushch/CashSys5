@@ -2,9 +2,9 @@ package com.finalprojultimate.controller.command.get.report;
 
 import com.finalprojultimate.controller.command.Command;
 import com.finalprojultimate.model.entity.product.Product;
-import com.finalprojultimate.model.services.ProductService;
-import com.finalprojultimate.model.services.impl.ProductServiceImpl;
-import com.finalprojultimate.model.services.util.ReportBestProductByCountReceipt;
+import com.finalprojultimate.model.service.ProductService;
+import com.finalprojultimate.model.service.impl.ProductServiceImpl;
+import com.finalprojultimate.model.service.util.ReportBestProductByCountReceipt;
 import com.finalprojultimate.util.Page;
 import org.apache.log4j.Logger;
 

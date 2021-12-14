@@ -35,7 +35,7 @@ public class MySqlUserDAOTest {
     }
 
     @Test
-    public void saveDeleteTest() throws DaoException {
+    public void saveAndDeleteTest() throws DaoException {
         User user = new User.Builder()
                 .withEmail("ben.cupper@.cashsys.com")
                 .withFirstName("Ben")
@@ -51,7 +51,7 @@ public class MySqlUserDAOTest {
     }
 
     @Test
-    public void updateTest() throws DaoException {
+    public void update() throws DaoException {
         User uBefore = userDAO.getById(1);
         User uAfter = new User.Builder()
                 .withId(uBefore.getId())
@@ -69,18 +69,18 @@ public class MySqlUserDAOTest {
     }
 
     @Test
-    public void getByIdTest() throws DaoException {
+    public void getById() throws DaoException {
         assertEquals("Alex", userDAO.getById(3).getFirstName());
     }
 
     @Test
-    public void getAllTest() throws DaoException {
+    public void getAll() throws DaoException {
         List<User> result = userDAO.getAll();
         assertEquals(7, result.size());
     }
 
     @Test
-    public void getByEmailTest() throws DaoException {
+    public void getByEmail() throws DaoException {
         assertEquals("Ado", userDAO.getUserByEmail("tom.lee@cashsys.com").getMiddleName());
     }
 

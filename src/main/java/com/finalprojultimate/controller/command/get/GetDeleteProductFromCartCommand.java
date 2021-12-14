@@ -1,9 +1,8 @@
 package com.finalprojultimate.controller.command.get;
 
 import com.finalprojultimate.controller.command.Command;
-import com.finalprojultimate.controller.command.post.PostDeleteProductCommand;
 import com.finalprojultimate.model.entity.product.Product;
-import com.finalprojultimate.model.services.util.Cart;
+import com.finalprojultimate.model.service.util.Cart;
 import com.finalprojultimate.util.Attribute;
 import com.finalprojultimate.util.Page;
 import org.apache.log4j.Logger;
@@ -13,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
-import java.util.LinkedHashMap;
 
 import static com.finalprojultimate.util.Attribute.CART;
 import static com.finalprojultimate.util.Parameter.PRODUCT_ID;

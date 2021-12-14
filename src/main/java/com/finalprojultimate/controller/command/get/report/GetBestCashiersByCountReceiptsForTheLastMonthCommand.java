@@ -2,8 +2,8 @@ package com.finalprojultimate.controller.command.get.report;
 
 import com.finalprojultimate.controller.command.Command;
 import com.finalprojultimate.model.entity.user.User;
-import com.finalprojultimate.model.services.UserService;
-import com.finalprojultimate.model.services.impl.UserServiceImpl;
+import com.finalprojultimate.model.service.UserService;
+import com.finalprojultimate.model.service.impl.UserServiceImpl;
 import com.finalprojultimate.util.Page;
 import org.apache.log4j.Logger;
 
