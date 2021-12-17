@@ -56,17 +56,17 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
-    public void create(Receipt receipt, Cart cart) {
+    public Receipt create(Receipt receipt, Cart cart) {
         Collection<Product> products = cart.getContainer().values();
-        receiptDAO.create(receipt.getUserId(), receipt.getChange(), receipt.getPayment().getId(), new ArrayList<>(products));
+        return receiptDAO.create(receipt.getUserId(), receipt.getChange(), receipt.getPayment().getId(), new ArrayList<>(products));
     }
 
     @Override
-    public void createReject(int rootReceiptId, Receipt newReceipt, List<Product> products, List<BigDecimal> amounts) {
+    public Receipt createReject(int rootReceiptId, Receipt newReceipt, List<Product> products, List<BigDecimal> amounts) {
         for (int i = 0; i < products.size(); i++) {
             products.get(i).setAmount(amounts.get(i));
         }
-        receiptDAO.createReject(rootReceiptId, newReceipt.getUserId(), products);
+        return receiptDAO.createReject(rootReceiptId, newReceipt.getUserId(), products);
     }
 
     @Override

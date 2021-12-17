@@ -6,8 +6,6 @@ import com.finalprojultimate.model.db.dao.exception.DaoException;
 import com.finalprojultimate.model.db.dao.mysql.MySqlDAOFactory;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class EntityDAOTest {
 
     @Test(expected = DaoException.class)

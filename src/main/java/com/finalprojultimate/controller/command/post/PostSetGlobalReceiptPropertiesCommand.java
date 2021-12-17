@@ -1,8 +1,8 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.impl.ReceiptPropertiesValidator;
-import com.finalprojultimate.controller.validation.Validator;
+import com.finalprojultimate.model.validation.impl.ReceiptPropertiesValidator;
+import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
 import com.finalprojultimate.model.service.ReceiptService;
 import com.finalprojultimate.model.service.impl.ReceiptServiceImpl;
@@ -15,10 +15,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.finalprojultimate.util.Attribute.ERROR_MESSAGE;
-import static com.finalprojultimate.util.Attribute.ERROR_VALIDATION_MESSAGE;
+import static com.finalprojultimate.util.Attribute.ERROR_MESSAGES;
+import static com.finalprojultimate.util.Attribute.ERROR_VALIDATION_MESSAGES;
 import static com.finalprojultimate.util.Page.SET_GLOBAL_RECEIPT_PROPERTIES_PAGE;
 import static com.finalprojultimate.util.Parameter.*;
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES;
 import static com.finalprojultimate.util.Path.*;
 
 public class PostSetGlobalReceiptPropertiesCommand extends AbstractCommandWrapper<ReceiptDetails> {
@@ -38,8 +41,6 @@ public class PostSetGlobalReceiptPropertiesCommand extends AbstractCommandWrappe
             throws ServletException, IOException {
         ReceiptDetails globalReceiptProperties = getDataFromRequest(request);
 
-        // writeSpecificDataToRequest(request, user);
-
         if(!validator.isValid(globalReceiptProperties)){
             extractAndWriteErrorMessagesToRequest(request);
             return SET_GLOBAL_RECEIPT_PROPERTIES_PAGE;
@@ -48,7 +49,7 @@ public class PostSetGlobalReceiptPropertiesCommand extends AbstractCommandWrappe
         receiptService.setGlobalReceiptProperties(globalReceiptProperties);
 
         logger.info(SET_GLOBAL_RECEIPT_PROPERTIES);
-        response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES);
         return REDIRECTED;
     }
 
@@ -76,7 +77,7 @@ public class PostSetGlobalReceiptPropertiesCommand extends AbstractCommandWrappe
         List<String> errorMessages = validator.getErrorMessages();
         List<String> errorValidationMessages =
                 validator.getErrorValidationMessages();
-        request.setAttribute(ERROR_MESSAGE, errorMessages);
-        request.setAttribute(ERROR_VALIDATION_MESSAGE, errorValidationMessages);
+        request.setAttribute(ERROR_MESSAGES, errorMessages);
+        request.setAttribute(ERROR_VALIDATION_MESSAGES, errorValidationMessages);
     }
 }

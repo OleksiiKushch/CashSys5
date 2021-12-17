@@ -1,8 +1,8 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.impl.ProductValidator;
-import com.finalprojultimate.controller.validation.Validator;
+import com.finalprojultimate.model.validation.impl.ProductValidator;
+import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
 import com.finalprojultimate.model.service.ProductService;
@@ -16,10 +16,13 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.finalprojultimate.util.Attribute.ERROR_MESSAGE;
-import static com.finalprojultimate.util.Attribute.ERROR_VALIDATION_MESSAGE;
+import static com.finalprojultimate.util.Attribute.ERROR_MESSAGES;
+import static com.finalprojultimate.util.Attribute.ERROR_VALIDATION_MESSAGES;
 import static com.finalprojultimate.util.Page.EDIT_PRODUCT_PAGE;
 import static com.finalprojultimate.util.Parameter.*;
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.SUCCESSFUL_UPDATE_PRODUCT;
 import static com.finalprojultimate.util.Path.*;
 
 public class PostEditProductCommand extends AbstractCommandWrapper<Product> {
@@ -49,7 +52,7 @@ public class PostEditProductCommand extends AbstractCommandWrapper<Product> {
         productService.update(product);
 
         logger.info(String.format(PRODUCT_UPDATE, product.getId()));
-        response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_UPDATE_PRODUCT);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_UPDATE_PRODUCT);
         return REDIRECTED;
     }
 
@@ -79,7 +82,7 @@ public class PostEditProductCommand extends AbstractCommandWrapper<Product> {
         List<String> errorMessages = validator.getErrorMessages();
         List<String> errorValidationMessages =
                 validator.getErrorValidationMessages();
-        request.setAttribute(ERROR_MESSAGE, errorMessages);
-        request.setAttribute(ERROR_VALIDATION_MESSAGE, errorValidationMessages);
+        request.setAttribute(ERROR_MESSAGES, errorMessages);
+        request.setAttribute(ERROR_VALIDATION_MESSAGES, errorValidationMessages);
     }
 }

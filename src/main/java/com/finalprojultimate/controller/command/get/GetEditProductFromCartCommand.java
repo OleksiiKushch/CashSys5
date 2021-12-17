@@ -20,7 +20,7 @@ import static com.finalprojultimate.util.Parameter.PRODUCT_ID;
 
 public class GetEditProductFromCartCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetEditProductFromCartCommand.class);
-    private static final String PRODUCT_EDIT_FROM_CART = "Product with id: %d was successfully update to cart!";
+    private static final String PRODUCT_EDIT_FROM_CART = "Product with id: %d was successfully update (amount) to cart!";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

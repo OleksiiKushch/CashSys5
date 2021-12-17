@@ -15,7 +15,7 @@ import java.util.Properties;
 public class ContextListener implements ServletContextListener {
 
     /**
-     * Initialize log4j when the application is being started
+     * Initialize log4j and I18n when the application is being started
      */
     @Override
     public void contextInitialized(ServletContextEvent event) {

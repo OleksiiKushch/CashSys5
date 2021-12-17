@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.ProductQuery.*;
+import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.UserQuery.DELETE_USER_BY_ID;
 import static com.finalprojultimate.model.db.dao.util.LogMessage.*;
 import static com.finalprojultimate.util.MessageKey.*;
 
@@ -34,17 +35,18 @@ public class MySqlProductDAO implements ProductDAO {
     }
 
     @Override
-    public void insert(Product product) throws DaoException {
+    public int insert(Product product) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(CREATE_PRODUCT,
                      Statement.RETURN_GENERATED_KEYS)) {
             mapProduct(ps, product);
-            ps.executeUpdate();
+            int result = ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     product.setId(rs.getInt(1));
                 }
             }
+            return result;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw generateException(ERROR_INSERT_ROW_TO_DATABASE,
@@ -58,12 +60,12 @@ public class MySqlProductDAO implements ProductDAO {
      * update product from DB, search by barcode product
      */
     @Override
-    public void update(Product product) throws DaoException {
+    public int update(Product product) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(UPDATE_PRODUCT)) {
             mapProduct(ps, product);
             ps.setInt(6, product.getId());
-            ps.executeUpdate();
+            return ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw generateException(ERROR_UPDATE_ROW_TO_DATABASE,
@@ -77,16 +79,8 @@ public class MySqlProductDAO implements ProductDAO {
      * remove product from DB, search by id product
      */
     @Override
-    public void delete(Product product) throws DaoException {
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(DELETE_PRODUCT_BY_BARCODE)) {
-            ps.setInt(1, product.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw generateException(ERROR_DELETE_ROW_FROM_DATABASE,
-                    DELETE_ROW_FROM_DATABASE_LOG_MSG, getClass());
-        }
+    public int delete(Product product) throws DaoException {
+        return deleteByQuery(product, DELETE_PRODUCT_BY_ID);
     }
 
     @Override

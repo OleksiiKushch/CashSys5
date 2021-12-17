@@ -11,10 +11,12 @@ public class Cart implements Serializable {
     private static final long serialVersionUID = 139389168791006342L;
     private static final Logger logger = Logger.getLogger(Cart.class);
 
+    private BigDecimal sum;
     private LinkedHashMap<Integer, Product> container;
 
     public Cart() {
         container = new LinkedHashMap<>();
+        sum = calculateSum();
     }
 
     public LinkedHashMap<Integer, Product> getContainer() {
@@ -25,21 +27,11 @@ public class Cart implements Serializable {
         this.container = container;
     }
 
-    public void put(Integer id, Product product) {
-        if (container.containsKey(id)) {
-            Product oldProduct = container.get(id);
-            oldProduct.setAmount(oldProduct.getAmount().add(product.getAmount()));
-            container.put(id, oldProduct);
-        } else {
-            container.put(id, product);
-        }
-    }
-
-    public void remove(Integer id) {
-        container.remove(id);
-    }
-
     public BigDecimal getSum() {
+        return sum;
+    }
+
+    private BigDecimal calculateSum() {
         // TODO implements with stream
         BigDecimal result = new BigDecimal("0");
         Collection<Product> products = container.values();
@@ -49,17 +41,34 @@ public class Cart implements Serializable {
         return result;
     }
 
+    public void put(Integer id, Product product) {
+        if (container.containsKey(id)) {
+            Product oldProduct = container.get(id);
+            oldProduct.setAmount(oldProduct.getAmount().add(product.getAmount()));
+            container.put(id, oldProduct);
+        } else {
+            container.put(id, product);
+        }
+        sum = calculateSum();
+    }
+
+    public void remove(Integer id) {
+        container.remove(id);
+        sum = calculateSum();
+    }
+
     public void updateAmount(Integer id, BigDecimal amount) {
         Product oldProduct = container.get(id);
         oldProduct.setAmount(amount);
         container.put(id, oldProduct);
+        sum = calculateSum();
     }
 
     @Override
     public String toString() {
         return "Cart{" +
-                "container=" + container +
+                "sum=" + sum +
+                ", container=" + container +
                 '}';
     }
-
 }

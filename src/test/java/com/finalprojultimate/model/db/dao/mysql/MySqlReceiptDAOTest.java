@@ -11,7 +11,6 @@ import com.finalprojultimate.model.entity.receipt.Payment;
 import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
 import com.finalprojultimate.model.entity.receipt.Status;
-import com.finalprojultimate.model.entity.user.User;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -43,7 +42,7 @@ public class MySqlReceiptDAOTest {
     }
 
     @Test
-    public void saveAndDeleteTest() throws DaoException, SQLException, URISyntaxException, IOException {
+    public void saveAndDeleteTest() throws DaoException {
         Receipt receipt = new Receipt.Builder()
                 .withChange(new BigDecimal("0.45"))
                 .withPayment(Payment.CASH)
@@ -51,10 +50,10 @@ public class MySqlReceiptDAOTest {
                 .withStatus(Status.NORMAL)
                 .build();
         receiptDAO.insert(receipt);
-        receipt = receiptDAO.getById(12);
+        receipt = receiptDAO.getById(receipt.getId());
         assertEquals(new BigDecimal("0.45"), receipt.getChange());
         receiptDAO.delete(receipt);
-        assertNull(receiptDAO.getById(12));
+        assertNull(receiptDAO.getById(receipt.getId()));
     }
 
     @Test
@@ -104,9 +103,8 @@ public class MySqlReceiptDAOTest {
         Product product2 = productDAO.getById(3);
         product2.setAmount(new BigDecimal("1"));
         products.add(product2);
-        receiptDAO.create(1, new BigDecimal("0"), 2, products);
+        Receipt result = receiptDAO.create(1, new BigDecimal("0"), 2, products);
 
-        Receipt result = receiptDAO.getById(13);
         assertEquals("normal", result.getStatus().getName());
         assertEquals(testAmountProduct1.subtract(new BigDecimal("3")), productDAO.getById(1).getAmount());
 
@@ -123,9 +121,8 @@ public class MySqlReceiptDAOTest {
         Product product1 = productDAO.getById(1);
         product1.setAmount(new BigDecimal("30000"));
         products.add(product1);
-        receiptDAO.create(1, new BigDecimal("0"), 2, products);
+        Receipt result = receiptDAO.create(1, new BigDecimal("0"), 2, products);
 
-        Receipt result = receiptDAO.getById(12);
         assertNull(result);
 
         DBInit.startUp();
@@ -145,9 +142,9 @@ public class MySqlReceiptDAOTest {
         Product product2 = productDAO.getById(3);
         product2.setAmount(new BigDecimal("1"));
         products.add(product2);
-        receiptDAO.create(1, new BigDecimal("0"), 2, products);
+        Receipt testReceipt = receiptDAO.create(1, new BigDecimal("0"), 2, products);
 
-        Receipt testReceipt = receiptDAO.getById(13);
+        assertEquals("normal", testReceipt.getStatus().getName());
         assertEquals(1, testReceipt.getUserId());
 
         assertEquals("ReceiptDetails{receiptId=13, rootReceiptId=0, organizationTaxIdNumber=7802870820, " +
@@ -159,9 +156,8 @@ public class MySqlReceiptDAOTest {
         Product product1Reject = productDAO.getById(1);
         product1Reject.setAmount(new BigDecimal("1"));
         productsReject.add(product1Reject);
-        receiptDAO.createReject(testReceipt.getId(), 6, productsReject);
+        Receipt result = receiptDAO.createReject(testReceipt.getId(), 6, productsReject);
 
-        Receipt result = receiptDAO.getById(14);
         assertEquals("rejected", result.getStatus().getName());
 
         DBInit.startUp();
@@ -226,9 +222,9 @@ public class MySqlReceiptDAOTest {
         Product product2 = productDAO.getById(3);
         product2.setAmount(new BigDecimal("1"));
         products.add(product2);
-        receiptDAO.create(1, new BigDecimal("0"), 2, products);
+        Receipt testReceipt = receiptDAO.create(1, new BigDecimal("0"), 2, products);
 
-        ReceiptDetails receiptDetails = receiptDAO.getReceiptDetailsById(12);
+        ReceiptDetails receiptDetails = receiptDAO.getReceiptDetailsById(testReceipt.getId());
 
         assertEquals("ReceiptDetails{receiptId=12, rootReceiptId=0, organizationTaxIdNumber=7802870820, " +
                 "nameOrganization='ТОВ \"Епіцентр К\"', addressTradePoint='м.Харків, вул.Героїв Праці, 9А', " +

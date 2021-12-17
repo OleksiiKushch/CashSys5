@@ -84,14 +84,14 @@ public class ProductServiceImpl implements ProductService {
     /**
      * return products from the database in the range [(offset - 1) * limit; offset * limit] pre-sorted by parameter or not (none)
      *
-     * @param sortParameter parameter sorting [none, name]
+     * @param sortParameter parameter sorting [none, productName]
      * @param offset number of page at pagination
      * @param limit number of return products (size List)
      * @return list of products
      */
     @Override
     public List<Product> getForPaginationSortByParameter(String sortParameter, int offset, int limit) {
-        if (sortParameter.equals(NAME)) {
+        if (sortParameter.equals(PRODUCT_NAME)) {
             return productDAO.findProductsWithPaginationSortByName(offset, limit);
         } else {
             return getForPagination(offset, limit);

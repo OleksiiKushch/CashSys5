@@ -17,6 +17,9 @@ import java.math.BigDecimal;
 
 import static com.finalprojultimate.util.Attribute.*;
 import static com.finalprojultimate.util.Parameter.*;
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.CREATE_NEW_RECEIPT;
 import static com.finalprojultimate.util.Path.*;
 
 public class GetAddProductToCartCommand implements Command {
@@ -45,7 +48,7 @@ public class GetAddProductToCartCommand implements Command {
         logger.info(String.format(PRODUCT_ADD_TO_CART + product.getAmount() + " " +
                         product.getUnit().getName(), product.getId()));
 
-        response.sendRedirect(CONTROLLER + "?command=" + CREATE_NEW_RECEIPT);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + CREATE_NEW_RECEIPT);
         return REDIRECTED;
     }
 

@@ -10,6 +10,7 @@ import com.finalprojultimate.model.entity.user.User;
 import com.finalprojultimate.model.service.UserService;
 import com.finalprojultimate.model.service.exception.ServiceException;
 import com.finalprojultimate.model.service.util.LoginData;
+import com.finalprojultimate.util.Parameter;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -121,7 +122,7 @@ public class UserServiceTest {
 
     @Test
     public void getForPaginationSortByParameter() {
-        List<User> result = testUserService.getForPaginationSortByParameter("none",2, 2);
+        List<User> result = testUserService.getForPaginationSortByParameter(Parameter.NONE,2, 2);
         assertEquals(
                 "[User{id=3, email='alex.fpster@cashsys.com', firstName='Alex', middleName='Henry', lastName='Fpster', " +
                         "passHash='DB0BDF2FC0893C0848CC11795E952735A2E18D38F008E39C568961B477BD2CB7', role=Role{id=1, name='cashier'}}, " +
@@ -129,7 +130,7 @@ public class UserServiceTest {
                         "passHash='3F94E34DD40435CCF08E34AA158F6630ED7F11017C781F83A9BB5FF2129BBDE7', role=Role{id=1, name='cashier'}}]",
                 result.toString());
 
-        result = testUserService.getForPaginationSortByParameter("email",2, 2);
+        result = testUserService.getForPaginationSortByParameter(Parameter.EMAIL,2, 2);
         assertEquals(
                 "[User{id=2, email='bob.yang@cashsys.com', firstName='Bob', middleName='Ken', lastName='Yang', " +
                         "passHash='4E672DBA718E2552FC20E5ECFD4A0EFB47609F50EC10CB21DCA75C0800D124D5', role=Role{id=1, name='cashier'}}, " +

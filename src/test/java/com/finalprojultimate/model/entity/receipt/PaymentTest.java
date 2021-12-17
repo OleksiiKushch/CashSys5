@@ -1,6 +1,5 @@
 package com.finalprojultimate.model.entity.receipt;
 
-import com.finalprojultimate.model.entity.user.Role;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

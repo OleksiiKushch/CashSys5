@@ -1,6 +1,5 @@
 package com.finalprojultimate.model.entity.user;
 
-import com.finalprojultimate.model.entity.product.Unit;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

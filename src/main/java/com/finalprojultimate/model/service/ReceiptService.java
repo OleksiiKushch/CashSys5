@@ -11,8 +11,8 @@ import java.util.List;
 public interface ReceiptService {
     List<Receipt> getAll();
     Receipt getById(int id);
-    void create(Receipt receipt, Cart cart);
-    void createReject(int rootReceiptId, Receipt receipt, List<Product> products, List<BigDecimal> amounts);
+    Receipt create(Receipt receipt, Cart cart);
+    Receipt createReject(int rootReceiptId, Receipt receipt, List<Product> products, List<BigDecimal> amounts);
     List<Receipt> getForPagination(int offset, int limit);
     List<Receipt> getForPaginationSortByParameter(String sortParameter, int offset, int limit);
     int getCount();

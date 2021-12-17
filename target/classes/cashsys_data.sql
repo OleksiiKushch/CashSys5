@@ -2,22 +2,22 @@ USE cashsysdb ;
 
 INSERT INTO user_role (id, `name`)
 VALUES
-    (DEFAULT, 'cashier'),
-    (DEFAULT, 'senior cashier'),
-    (DEFAULT, 'commodity expert');
+    (1, 'cashier'),
+    (2, 'senior cashier'),
+    (3, 'commodity expert');
 
 INSERT INTO payment (id, `name`)
 VALUES
-    (DEFAULT, 'cash'),
-    (DEFAULT, 'electronic');
+    (1, 'cash'),
+    (2, 'electronic');
 
 INSERT INTO unit (id, `name`)
 VALUES
-    (DEFAULT, 'piece'),
-    (DEFAULT, 'kilogram'),
-    (DEFAULT, 'litre');
+    (1, 'piece'),
+    (2, 'kilogram'),
+    (3, 'litre');
 
 INSERT INTO receipt_status (id, `name`)
 VALUES
-    (DEFAULT, 'normal'),
-    (DEFAULT, 'rejected');
+    (1, 'normal'),
+    (2, 'rejected');

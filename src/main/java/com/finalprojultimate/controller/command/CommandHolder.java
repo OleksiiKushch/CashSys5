@@ -17,7 +17,7 @@ import com.finalprojultimate.controller.command.registration.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.finalprojultimate.util.Path.*;
+import static com.finalprojultimate.util.Command.*;
 
 public class CommandHolder {
     private static final String GET = "GET:";
@@ -72,9 +72,9 @@ public class CommandHolder {
 
         // report
         commands.put(GET + GENERATE_REPORT, new GetGenerateReportCommand());
-        commands.put(GET + BEST_CASHIERS_BY_COUNT_RECEIPTS_FOR_THE_MONTH,
+        commands.put(GET + BEST_CASHIERS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH,
                 new GetBestCashiersByCountReceiptsForTheLastMonthCommand());
-        commands.put(GET + BEST_PRODUCTS_BY_COUNT_RECEIPTS_FOR_THE_MONTH,
+        commands.put(GET + BEST_PRODUCTS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH,
                 new GetBestProductsByCountReceiptsForTheLastMonthCommand());
 
         commands.put(POST + LOGIN, new LoginSubmitCommand());

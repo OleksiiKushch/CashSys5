@@ -10,9 +10,10 @@ import java.math.BigDecimal;
 import java.util.List;
 
 public interface ReceiptDAO extends EntityDAO<Receipt> {
-    // transaction
-    void create(int userId, BigDecimal change, int paymentId, List<Product> products) throws DaoException;
-    void createReject(int rootReceiptId, int userId, List<Product> products) throws DaoException;
+    // transactions
+    Receipt create(int userId, BigDecimal change, int paymentId, List<Product> products) throws DaoException;
+    Receipt createReject(int rootReceiptId, int userId, List<Product> products) throws DaoException;
+
     List<Receipt> findReceiptsWithPaginationSortByNone(int offset, int limit) throws DaoException;
     List<Receipt> findReceiptsWithPaginationSortByDateTime(int offset, int limit) throws DaoException;
     int getCountOfReceipts() throws DaoException;

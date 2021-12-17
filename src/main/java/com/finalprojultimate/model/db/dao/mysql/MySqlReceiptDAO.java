@@ -36,17 +36,18 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     }
 
     @Override
-    public void insert(Receipt receipt) throws DaoException {
+    public int insert(Receipt receipt) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(CREATE_RECEIPT,
                      Statement.RETURN_GENERATED_KEYS)) {
             mapReceipt(ps, receipt);
-            ps.executeUpdate();
+            int result = ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     receipt.setId(rs.getInt(1));
                 }
             }
+            return result;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw generateException(ERROR_INSERT_ROW_TO_DATABASE,
@@ -60,12 +61,12 @@ public class MySqlReceiptDAO implements ReceiptDAO {
      * update receipt from DB, search by id receipt
      */
     @Override
-    public void update(Receipt receipt) throws DaoException {
+    public int update(Receipt receipt) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(UPDATE_RECEIPT)) {
             mapReceipt(ps, receipt);
             ps.setInt(5, receipt.getId());
-            ps.executeUpdate();
+            return ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw generateException(ERROR_UPDATE_ROW_TO_DATABASE,
@@ -79,16 +80,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
      * remove receipt from DB, search by id receipt
      */
     @Override
-    public void delete(Receipt receipt) throws DaoException {
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(DELETE_RECEIPT_BY_ID)) {
-            ps.setInt(1, receipt.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw generateException(ERROR_DELETE_ROW_FROM_DATABASE,
-                    DELETE_ROW_FROM_DATABASE_LOG_MSG, getClass());
-        }
+    public int delete(Receipt receipt) throws DaoException {
+        return deleteByQuery(receipt, DELETE_RECEIPT_BY_ID);
     }
 
     @Override
@@ -141,16 +134,18 @@ public class MySqlReceiptDAO implements ReceiptDAO {
      * @param change sum change
      * @param paymentId id of the payment type
      * @param products list of products in the cart
+     * @return created receipt
      * @throws DaoException specific dao exception
      */
     @Override
-    public void create(int userId, BigDecimal change, int paymentId, List<Product> products) throws DaoException {
+    public Receipt create(int userId, BigDecimal change, int paymentId, List<Product> products) throws DaoException {
         Connection con = null;
         try {
             con = getConnection();
             con.setAutoCommit(false);
 
             int idCreatedReceipt = createNewReceipt(con, change, paymentId, userId);
+            Receipt result = getById(con, idCreatedReceipt);
 
             setReceiptDetails(con, idCreatedReceipt);
 
@@ -159,6 +154,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             insertReceiptHasProduct(con, idCreatedReceipt, products);
 
             con.commit();
+
+            return result;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             rollback(con);
@@ -181,16 +178,18 @@ public class MySqlReceiptDAO implements ReceiptDAO {
      * @param rootReceiptId receipt id that is being rejecting
      * @param userId id of the user (senior cashier) who request
      * @param products list of products in the receipt that is being rejecting
+     * @return created reject receipt
      * @throws DaoException specific dao exception
      */
     @Override
-    public void createReject(int rootReceiptId, int userId, List<Product> products) throws DaoException {
+    public Receipt createReject(int rootReceiptId, int userId, List<Product> products) throws DaoException {
         Connection con = null;
         try {
             con = getConnection();
             con.setAutoCommit(false);
 
             int idCreatedRejectReceipt = createNewRejectReceipt(con, userId);
+            Receipt result = getById(con, idCreatedRejectReceipt);
 
             ReceiptDetails receiptDetails = getReceiptDetailsById(rootReceiptId);
             if (receiptDetails != null) {
@@ -205,6 +204,8 @@ public class MySqlReceiptDAO implements ReceiptDAO {
             insertReceiptHasProduct(con, idCreatedRejectReceipt, products);
 
             con.commit();
+
+            return result;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             rollback(con);
@@ -451,6 +452,23 @@ public class MySqlReceiptDAO implements ReceiptDAO {
         ps.setString(++i, receiptDetails.getAddressTradePoint());
         ps.setBigDecimal(++i, receiptDetails.getVat());
         ps.setString(++i, receiptDetails.getTaxationSys());
+    }
+
+    private Receipt getById(Connection con, int id) throws DaoException {
+        Receipt result = null;
+        try (PreparedStatement ps = con.prepareStatement(GET_RECEIPT_BY_ID)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    result = mapReceipt(rs);
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException(ERROR_GETTING_ROW_FROM_DATABASE,
+                    GETTING_ROW_FROM_DATABASE_LOG_MSG, getClass());
+        }
+        return result;
     }
 
     private int createNewReceipt(Connection con, BigDecimal change, int paymentId, int userId)

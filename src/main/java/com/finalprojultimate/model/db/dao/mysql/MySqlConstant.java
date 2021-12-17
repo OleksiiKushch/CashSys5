@@ -68,7 +68,7 @@ public abstract class MySqlConstant {
         public static final String UPDATE_PRODUCT = "UPDATE product " +
                 "SET `name` = ?, price = ?, amount = ?, barcode = ?, unit_id = ? " +
                 "WHERE id = ?";
-        public static final String DELETE_PRODUCT_BY_BARCODE = "DELETE FROM product WHERE id = ?";
+        public static final String DELETE_PRODUCT_BY_ID = "DELETE FROM product WHERE id = ?";
         public static final String GET_PRODUCT_BY_ID = "SELECT * FROM product WHERE id = ?";
         public static final String GET_ALL_PRODUCTS = "SELECT * FROM product";
         public static final String FIND_PRODUCTS_BY_NAME = "SELECT * FROM product WHERE `name` LIKE ? ORDER BY `name`";

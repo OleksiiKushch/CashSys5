@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.finalprojultimate.util.Attribute.LOGGED_USER;
-import static com.finalprojultimate.util.Path.*;
+import static com.finalprojultimate.util.Command.*;
 
 public class LoginCommand implements Command {
 

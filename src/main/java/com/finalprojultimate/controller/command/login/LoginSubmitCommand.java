@@ -1,8 +1,9 @@
 package com.finalprojultimate.controller.command.login;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.impl.LoginValidator;
-import com.finalprojultimate.controller.validation.Validator;
+import com.finalprojultimate.model.service.exception.ServiceException;
+import com.finalprojultimate.model.validation.impl.LoginValidator;
+import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.controller.writer.RequestAttributeWriter;
 import com.finalprojultimate.model.entity.user.User;
 import com.finalprojultimate.model.service.UserService;
@@ -14,12 +15,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.finalprojultimate.util.Attribute.*;
 import static com.finalprojultimate.util.Page.LOGIN_PAGE;
 import static com.finalprojultimate.util.Parameter.*;
-import static com.finalprojultimate.util.Path.*;
+import static com.finalprojultimate.util.Command.*;
 
 public class LoginSubmitCommand extends AbstractCommandWrapper<LoginData> {
     private static final Logger logger = Logger.getLogger(LoginSubmitCommand.class);
@@ -45,7 +48,14 @@ public class LoginSubmitCommand extends AbstractCommandWrapper<LoginData> {
             return LOGIN_PAGE;
         }
 
-        User user = userService.login(loginData);
+        User user;
+        try {
+            user = userService.login(loginData);
+        } catch (ServiceException e) {
+            extractAndWriteErrorMessages(e.getMessage());
+            return LOGIN_PAGE;
+        }
+
         attributeWriter.writeToSession(LOGGED_USER, user);
 
         logger.info(String.format(USER_LOGGED_IN, user.getEmail()));
@@ -69,7 +79,12 @@ public class LoginSubmitCommand extends AbstractCommandWrapper<LoginData> {
     private void extractAndWriteErrorMessages() {
         List<String> errorMessages = loginValidator.getErrorMessages();
         List<String> errorValidationMessages = loginValidator.getErrorValidationMessages();
-        attributeWriter.writeToRequest(ERROR_MESSAGE, errorMessages);
-        attributeWriter.writeToRequest(ERROR_VALIDATION_MESSAGE, errorValidationMessages);
+        attributeWriter.writeToRequest(ERROR_MESSAGES, errorMessages);
+        attributeWriter.writeToRequest(ERROR_VALIDATION_MESSAGES, errorValidationMessages);
+    }
+
+    private void extractAndWriteErrorMessages(String ... messages) {
+        List<String> errorMessages = new ArrayList<>(Arrays.asList(messages));
+        attributeWriter.writeToRequest(ERROR_MESSAGES, errorMessages);
     }
 }

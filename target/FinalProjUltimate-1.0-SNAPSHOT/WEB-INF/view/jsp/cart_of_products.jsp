@@ -1,25 +1,37 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.finalprojultimate.model.entity.user.Role" %>
+<%@ page import="com.finalprojultimate.util.Attribute" %>
+<%@ page import="com.finalprojultimate.util.Parameter" %>
+<%@ page import="com.finalprojultimate.util.Path" %>
+<%@ page import="com.finalprojultimate.util.Command" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="totalSum" uri="http://com.finalprojultimate/model/tag/TagTotalSum" %>
 <%@ taglib prefix="amount" uri="http://com.finalprojultimate/model/tag/TagAmount" %>
+<%@ taglib prefix="price" uri="http://com.finalprojultimate/model/tag/TagPrice" %>
 
 <html>
 <head>
     <title>CashSys.cart.of.products</title>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/js/jquery.slim.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14"></script>
 
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/js/bootstrap.bundle.min.js"></script>
-
-    <script type="text/javascript" src="${pageContext.request.contextPath}/resources/script/js/vue.js"></script>
 </head>
+
+<c:set var="logged_user" value="${sessionScope[Attribute.LOGGED_USER]}"/>
+<c:set var="cart" value="${sessionScope[Attribute.CART]}"/>
+
 <body class="d-flex flex-column min-vh-100">
 
-<%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
+<%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
+<security:check role="${Role.CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container-fluid">
     <h1 class="mt-4"><fmt:message key="cart_of_products.list.of.added.products.text"/></h1>
@@ -58,9 +70,8 @@
         </tbody>
     </table>
     <div class="p-2 mx-2">
-        <h4 class="float-left" id="sum"><fmt:message key="cart_of_products.sum.with.colon.text"/> {{ (${cart.getSum()}).toFixed(2) }} </h4>
-        <a href="${pageContext.request.contextPath}/FrontController?command=/create_new_receipt"
-                type="submit" class="mb-5 btn btn-primary float-right">
+        <h4 class="float-left"><fmt:message key="cart_of_products.sum.with.colon.text"/> <price:get price="${cart.sum}" /></h4>
+        <a href="${Path.CREATE_NEW_RECEIPT}" type="submit" class="mb-5 btn btn-primary float-right">
             <fmt:message key="cart_of_products.come.back.to.receipt.creation.form.text"/>
         </a>
     </div>
@@ -68,7 +79,7 @@
 </div>
 
 <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered"> <!-- role="document" -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalCenterTitle"><fmt:message key="cart_of_products.form.text"/></h5>
@@ -77,14 +88,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <%--                    Form for edit the amount of product with id: ${product.id} in the cart--%>
+                <%-- Here a help message (form) on editing product in the cart --%>
                 <h6 id="modalBodyEditForm"></h6>
             </div>
             <div class="modal-footer">
-                <form id="editForm" class="was-validated" action="<%= request.getContextPath() %>/FrontController"
+                <form id="editForm" class="was-validated" action="${Path.APP_CONTEXT}${Path.CONTROLLER}"
                       method="get">
-                    <input name="command" value="/edit_product_amount_from_cart" type="hidden">
-                    <input id="editFormProductId" name="productId" value="" type="hidden">
+                    <input name="${Path.COMMAND}" value="${Command.EDIT_PRODUCT_AMOUNT_FROM_CART}" type="hidden">
+                    <input id="editFormProductId" name="${Parameter.PRODUCT_ID}" value="" type="hidden">
                     <div class="input-group">
                         <div class="input-group-prepend">
                             <button type="submit" class="input-group-text mb-3 btn btn-outline-success">
@@ -92,7 +103,7 @@
                         </div>
                         <label for="inputAmount"></label>
                         <input type="number" min="0.001" step=".001" class="form-control is-invalid"
-                               id="inputAmount" name="amount" value="" required>
+                               id="inputAmount" name="${Parameter.AMOUNT}" value="" required>
                     </div>
                 </form>
             </div>
@@ -101,7 +112,7 @@
 </div>
 
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalCenterTitle" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered"> <!-- role="document" -->
+    <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="deleteModalCenterTitle"><fmt:message key="cart_of_products.warning.text"/></h5>
@@ -110,14 +121,14 @@
                 </button>
             </div>
             <div class="modal-body">
-                <%--                    Are you sure you want to drop this product (with id: ${product.id}) from a flow receipt?--%>
+                <%-- Here a help message (warning) on deleting product in the cart --%>
                 <h6 id="modalBodyDeleteForm"></h6>
             </div>
             <div class="modal-footer">
-                <form id="deleteForm" action="<%= request.getContextPath() %>/FrontController"
+                <form id="deleteForm" action="${Path.APP_CONTEXT}${Path.CONTROLLER}"
                       method="get">
-                    <input name="command" value="/delete_product_from_cart" type="hidden">
-                    <input id="deleteFormProductId" name="productId" value="" type="hidden">
+                    <input name="${Path.COMMAND}" value="${Command.DELETE_PRODUCT_FROM_CART}" type="hidden">
+                    <input id="deleteFormProductId" name="${Parameter.PRODUCT_ID}" value="" type="hidden">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><fmt:message key="cart_of_products.no.text"/></button>
                     <button type="submit" class="btn btn-primary"><fmt:message key="cart_of_products.yes.text"/></button>
                 </form>
@@ -126,7 +137,7 @@
     </div>
 </div>
 
-<%@ include file="/WEB-INF/view/jsp/template/index_footer.jsp" %>
+<%@ include file="/WEB-INF/view/jsp/template/footer.jsp" %>
 
 <script type="text/javascript">
     $(".editLink").click(function () {
@@ -148,12 +159,6 @@
         $("#modalBodyDeleteForm").html(str);
         $("#deleteFormProductId").attr("value", id);
     });
-</script>
-
-<script>
-    let sumListener = new Vue({
-        el: '#sum'
-    })
 </script>
 
 </body>

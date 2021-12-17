@@ -20,6 +20,9 @@ import java.util.List;
 
 import static com.finalprojultimate.util.Attribute.LOGGED_USER;
 import static com.finalprojultimate.util.Parameter.*;
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT;
 import static com.finalprojultimate.util.Path.*;
 
 public class PostCreateRejectReceiptCommand implements Command {
@@ -33,6 +36,10 @@ public class PostCreateRejectReceiptCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String [] rejectProductIds = request.getParameterValues(REJECT_RECEIPT_ID);
+
+        // validation
+
+
         List<Product> products = new ArrayList<>();
         for (String id : rejectProductIds) {
             products.add(productService.getById(Integer.parseInt(id)));
@@ -54,7 +61,7 @@ public class PostCreateRejectReceiptCommand implements Command {
         receiptService.createReject(Integer.parseInt(rootReceiptId), newReceipt, products, amounts);
 
         logger.info(REJECT_RECEIPT_CREATE);
-        response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT);
         return REDIRECTED;
     }
 }

@@ -6,13 +6,15 @@ import com.finalprojultimate.model.service.ProductService;
 import com.finalprojultimate.model.service.impl.ProductServiceImpl;
 import org.apache.log4j.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static com.finalprojultimate.util.Page.*;
 import static com.finalprojultimate.util.Parameter.*;
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.SUCCESSFUL_DELETE_PRODUCT;
 import static com.finalprojultimate.util.Path.*;
 
 public class PostDeleteProductCommand extends AbstractCommandWrapper<Product> {
@@ -27,7 +29,7 @@ public class PostDeleteProductCommand extends AbstractCommandWrapper<Product> {
 
     @Override
     protected String performExecute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         Product product = getDataFromRequest(request);
 
         // writeSpecificDataToRequest(request, user);
@@ -35,7 +37,7 @@ public class PostDeleteProductCommand extends AbstractCommandWrapper<Product> {
         productService.delete(product);
 
         logger.info(String.format(PRODUCT_DELETE, product.getId()));
-        response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_DELETE_PRODUCT);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_DELETE_PRODUCT);
         return REDIRECTED;
     }
 

@@ -12,6 +12,7 @@ import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.entity.receipt.ReceiptDetails;
 import com.finalprojultimate.model.service.ReceiptService;
 import com.finalprojultimate.model.service.util.Cart;
+import com.finalprojultimate.util.Parameter;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -82,12 +83,10 @@ public class ReceiptServiceTest {
         Cart testCart = new Cart();
         putProductsIntoCart(testCart);
 
-        testReceiptService.create(testReceipt, testCart);
+        Receipt result = testReceiptService.create(testReceipt, testCart);
 
-        Receipt result = testReceiptService.getById(12);
         assertEquals("0.50", result.getChange().toString());
-        BigDecimal resultSum = testReceiptService.getSumReceiptById(12);
-        assertEquals("7.40000", resultSum.toString());
+        assertEquals("7.40000", testReceiptService.getSumReceiptById(result.getId()).toString());
 
         Receipt testRejectReceipt = new Receipt.Builder()
                 .withUserId(6)
@@ -98,10 +97,9 @@ public class ReceiptServiceTest {
         rejectAmounts.add(new BigDecimal("1"));
         rejectAmounts.add(new BigDecimal("2"));
 
-        testReceiptService.createReject(result.getId(), testRejectReceipt, rejectProduct, rejectAmounts);
+        Receipt resultReject = testReceiptService.createReject(result.getId(), testRejectReceipt, rejectProduct, rejectAmounts);
 
-        BigDecimal resultSumReject = testReceiptService.getSumReceiptById(13);
-        assertEquals("6.60000", resultSumReject.toString());
+        assertEquals("6.60000", testReceiptService.getSumReceiptById(resultReject.getId()).toString());
 
         DBInit.startUp();
     }
@@ -129,11 +127,11 @@ public class ReceiptServiceTest {
 
     @Test
     public void getForPaginationSortByParameter() {
-        List<Receipt> result = testReceiptService.getForPaginationSortByParameter("none",2, 2);
+        List<Receipt> result = testReceiptService.getForPaginationSortByParameter(Parameter.NONE,2, 2);
         assertEquals("0.00", result.get(0).getChange().toString());
         assertEquals("2.50", result.get(1).getChange().toString());
 
-        result = testReceiptService.getForPaginationSortByParameter("dateTime",2, 2);
+        result = testReceiptService.getForPaginationSortByParameter(Parameter.DATE_TIME,2, 2);
         assertEquals("0.00", result.get(0).getChange().toString());
         assertEquals("2.50", result.get(1).getChange().toString());
     }

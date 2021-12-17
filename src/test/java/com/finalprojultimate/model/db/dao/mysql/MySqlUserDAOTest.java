@@ -45,9 +45,9 @@ public class MySqlUserDAOTest {
                 .withRole(Role.CASHIER)
                 .build();
         userDAO.insert(user);
-        assertEquals("Ben", userDAO.getById(8).getFirstName());
+        assertEquals("Ben", userDAO.getById(user.getId()).getFirstName());
         userDAO.delete(user);
-        assertNull(userDAO.getById(8));
+        assertNull(userDAO.getById(user.getId()));
     }
 
     @Test

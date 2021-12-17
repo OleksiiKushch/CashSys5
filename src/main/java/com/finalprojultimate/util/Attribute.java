@@ -1,6 +1,6 @@
 package com.finalprojultimate.util;
 
-public abstract class Attribute {
+public final class Attribute {
 
     private Attribute() {
         // hide
@@ -30,7 +30,6 @@ public abstract class Attribute {
 
     // create new receipt
     public static final String CART = "cart";
-    public static final String SUM = "sum";
     // product searching
     public static final String PRODUCTS_FOUND = "products_found";
     public static final String PARAMETER_SEARCHING = "parameter_searching";
@@ -49,6 +48,6 @@ public abstract class Attribute {
     public static final String REPORT_BEST_PRODUCTS_BY_COUNT_RECEIPT = "report_best_products_by_count_receipt";
 
     // error
-    public static final String ERROR_MESSAGE = "error_message";
-    public static final String ERROR_VALIDATION_MESSAGE = "error_validation_message";
+    public static final String ERROR_MESSAGES = "error_messages";
+    public static final String ERROR_VALIDATION_MESSAGES = "error_validation_messages";
 }

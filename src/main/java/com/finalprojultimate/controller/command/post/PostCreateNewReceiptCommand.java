@@ -1,8 +1,8 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.impl.ReceiptValidator;
-import com.finalprojultimate.controller.validation.Validator;
+import com.finalprojultimate.model.validation.impl.ReceiptValidator;
+import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.model.entity.receipt.Payment;
 import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.entity.receipt.Status;
@@ -12,7 +12,6 @@ import com.finalprojultimate.model.service.impl.ReceiptServiceImpl;
 import com.finalprojultimate.model.service.util.Cart;
 import org.apache.log4j.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -24,6 +23,9 @@ import static com.finalprojultimate.util.Attribute.*;
 import static com.finalprojultimate.util.Page.CREATE_NEW_RECEIPT_PAGE;
 import static com.finalprojultimate.util.Page.INTERNAL_SERVER_ERROR_PAGE;
 import static com.finalprojultimate.util.Parameter.*;
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.SUCCESSFUL_CREATE_NEW_RECEIPT;
 import static com.finalprojultimate.util.Path.*;
 
 public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt> {
@@ -40,7 +42,7 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
 
     @Override
     protected String performExecute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         Receipt receipt = getDataFromRequest(request);
 
         if(!validator.isValid(receipt)){
@@ -52,7 +54,7 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
         receiptService.create(receipt, (Cart) request.getSession().getAttribute(CART));
 
         logger.info(RECEIPT_CREATE);
-        response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_CREATE_NEW_RECEIPT);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_CREATE_NEW_RECEIPT);
         return REDIRECTED;
     }
 
@@ -89,13 +91,11 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
         return paid.subtract(sum);
     }
 
-
-
     private void extractAndWriteErrorMessagesToRequest(HttpServletRequest request) {
         List<String> errorMessages = validator.getErrorMessages();
         List<String> errorValidationMessages =
                 validator.getErrorValidationMessages();
-        request.setAttribute(ERROR_MESSAGE, errorMessages);
-        request.setAttribute(ERROR_VALIDATION_MESSAGE, errorValidationMessages);
+        request.setAttribute(ERROR_MESSAGES, errorMessages);
+        request.setAttribute(ERROR_VALIDATION_MESSAGES, errorValidationMessages);
     }
 }

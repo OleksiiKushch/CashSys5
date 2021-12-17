@@ -1,9 +1,9 @@
 package com.finalprojultimate.controller.command.registration;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.impl.PasswordConfirmationValidator;
-import com.finalprojultimate.controller.validation.impl.RegistrationValidator;
-import com.finalprojultimate.controller.validation.Validator;
+import com.finalprojultimate.model.validation.impl.PasswordConfirmationValidator;
+import com.finalprojultimate.model.validation.impl.RegistrationValidator;
+import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.model.entity.user.Role;
 import com.finalprojultimate.model.entity.user.User;
 import com.finalprojultimate.model.service.UserService;
@@ -21,6 +21,9 @@ import java.util.Map.Entry;
 import static com.finalprojultimate.util.Attribute.*;
 import static com.finalprojultimate.util.Page.REGISTRATION_PAGE;
 import static com.finalprojultimate.util.Parameter.*;
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.SUCCESSFUL_REGISTRATION;
 import static com.finalprojultimate.util.Path.*;
 
 public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
@@ -53,7 +56,7 @@ public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
         userService.create(user);
 
         logger.info(String.format(USER_SIGNED_UP, user.getEmail()));
-        response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_REGISTRATION);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_REGISTRATION);
         return REDIRECTED;
     }
 
@@ -93,7 +96,7 @@ public class RegistrationSubmitCommand extends AbstractCommandWrapper<User> {
         List<String> errorMessages = validator.getErrorMessages();
         List<String> errorValidationMessages =
                 validator.getErrorValidationMessages();
-        request.setAttribute(ERROR_MESSAGE, errorMessages);
-        request.setAttribute(ERROR_VALIDATION_MESSAGE, errorValidationMessages);
+        request.setAttribute(ERROR_MESSAGES, errorMessages);
+        request.setAttribute(ERROR_VALIDATION_MESSAGES, errorValidationMessages);
     }
 }

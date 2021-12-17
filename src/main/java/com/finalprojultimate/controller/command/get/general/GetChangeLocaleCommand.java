@@ -9,6 +9,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.MAIN;
 import static com.finalprojultimate.util.Path.*;
 
 public class GetChangeLocaleCommand implements Command {
@@ -23,7 +26,7 @@ public class GetChangeLocaleCommand implements Command {
 
         logger.info(String.format(CHANGE_LOCAL, locale));
 
-        response.sendRedirect(CONTROLLER + "?command=" + MAIN);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + MAIN);
         return REDIRECTED;
     }
 }

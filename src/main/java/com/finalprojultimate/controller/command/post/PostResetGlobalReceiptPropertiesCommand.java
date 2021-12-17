@@ -10,6 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES;
 import static com.finalprojultimate.util.Path.*;
 
 public class PostResetGlobalReceiptPropertiesCommand implements Command {
@@ -22,7 +25,7 @@ public class PostResetGlobalReceiptPropertiesCommand implements Command {
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         receiptService.resetGlobalReceiptProperties();
         logger.info(RESET_GLOBAL_RECEIPT_PROPERTIES);
-        response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES);
         return REDIRECTED;
     }
 }

@@ -26,7 +26,7 @@ public class TagTotalSum extends TagSupport {
     public int doStartTag() throws JspException {
         BigDecimal result = price.multiply(amount);
         try {
-            pageContext.getOut().println(result.setScale(2, RoundingMode.DOWN).toString());
+            pageContext.getOut().println(result.setScale(2, RoundingMode.DOWN));
         } catch (IOException e) {
             e.printStackTrace();
         }

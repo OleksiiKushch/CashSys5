@@ -40,12 +40,12 @@ public abstract class AbstractCommandWrapper<E> implements Command {
     }
 
     private void processUnknownException(HttpServletRequest request, Exception e) {
-        request.setAttribute(Attribute.ERROR_MESSAGE, MessageKey.ERROR_UNKNOWN_EXCEPTION);
+        request.setAttribute(Attribute.ERROR_MESSAGES, MessageKey.ERROR_UNKNOWN_EXCEPTION);
         logger.error(e.getMessage(), e);
     }
 
     private void processApplicationError(HttpServletRequest request, ApplicationException e) {
-        request.setAttribute(Attribute.ERROR_MESSAGE, e.getMessage());
+        request.setAttribute(Attribute.ERROR_MESSAGES, e.getMessage());
         Logger.getLogger(e.getClassThrowsException())
                 .error(e.getLogMessage());
     }

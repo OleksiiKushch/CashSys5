@@ -29,7 +29,7 @@ public class TagAmount extends TagSupport {
             amount = amount.setScale(0, RoundingMode.DOWN);
         }
         try {
-            pageContext.getOut().println(amount.toString());
+            pageContext.getOut().println(amount);
         } catch (IOException e) {
             e.printStackTrace();
         }

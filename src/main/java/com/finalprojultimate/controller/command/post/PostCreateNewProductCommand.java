@@ -1,25 +1,27 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
-import com.finalprojultimate.controller.validation.impl.ProductValidator;
-import com.finalprojultimate.controller.validation.Validator;
+import com.finalprojultimate.model.validation.impl.ProductValidator;
+import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
 import com.finalprojultimate.model.service.ProductService;
 import com.finalprojultimate.model.service.impl.ProductServiceImpl;
 import org.apache.log4j.Logger;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 
-import static com.finalprojultimate.util.Attribute.ERROR_MESSAGE;
-import static com.finalprojultimate.util.Attribute.ERROR_VALIDATION_MESSAGE;
+import static com.finalprojultimate.util.Attribute.ERROR_MESSAGES;
+import static com.finalprojultimate.util.Attribute.ERROR_VALIDATION_MESSAGES;
 import static com.finalprojultimate.util.Page.CREATE_NEW_PRODUCT_PAGE;
 import static com.finalprojultimate.util.Parameter.*;
+import static com.finalprojultimate.util.Command.REDIRECTED;
+import static com.finalprojultimate.util.Command.CONTROLLER;
+import static com.finalprojultimate.util.Command.SUCCESSFUL_CREATE_NEW_PRODUCT;
 import static com.finalprojultimate.util.Path.*;
 
 public class PostCreateNewProductCommand extends AbstractCommandWrapper<Product> {
@@ -36,7 +38,7 @@ public class PostCreateNewProductCommand extends AbstractCommandWrapper<Product>
 
     @Override
     protected String performExecute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws IOException {
         Product product = getDataFromRequest(request);
 
         // writeSpecificDataToRequest(request, user);
@@ -49,14 +51,13 @@ public class PostCreateNewProductCommand extends AbstractCommandWrapper<Product>
         productService.create(product);
 
         logger.info(String.format(PRODUCT_SIGNED_UP, product.getId()));
-        response.sendRedirect(CONTROLLER + "?command=" + SUCCESSFUL_CREATE_NEW_PRODUCT);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_CREATE_NEW_PRODUCT);
         return REDIRECTED;
     }
 
     @Override
     protected Product getDataFromRequest(HttpServletRequest request) {
         String name = request.getParameter(PRODUCT_NAME);
-        logger.info("name: " + name);
         String price = request.getParameter(PRICE);
         String amount = request.getParameter(AMOUNT);
         String unit = request.getParameter(UNIT);
@@ -80,7 +81,7 @@ public class PostCreateNewProductCommand extends AbstractCommandWrapper<Product>
         List<String> errorMessages = validator.getErrorMessages();
         List<String> errorValidationMessages =
                 validator.getErrorValidationMessages();
-        request.setAttribute(ERROR_MESSAGE, errorMessages);
-        request.setAttribute(ERROR_VALIDATION_MESSAGE, errorValidationMessages);
+        request.setAttribute(ERROR_MESSAGES, errorMessages);
+        request.setAttribute(ERROR_VALIDATION_MESSAGES, errorValidationMessages);
     }
 }

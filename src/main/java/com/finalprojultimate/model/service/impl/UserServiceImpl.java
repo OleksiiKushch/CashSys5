@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
     public User login(LoginData loginData) {
         User result = userDAO.getUserByEmail(loginData.getEmail());
         BCryptEncryptor encryptor = new BCryptEncryptor();
-        if (!encryptor.checkPassword(loginData.getPassword(), result.getPassHash())) {
+        if (result == null || !encryptor.checkPassword(loginData.getPassword(), result.getPassHash())) {
             throw new ServiceException()
                     .addMessage(MessageKey.ERROR_INCORRECT_LOGIN_DATA)
                     .addLogMessage(String.format(LOGGER_NO_SUCH_LOGIN_OR_PASSWORD,loginData.getEmail()))

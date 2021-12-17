@@ -9,6 +9,7 @@ import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
 import com.finalprojultimate.model.service.ProductService;
 import com.finalprojultimate.model.service.util.ReportBestProductByCountReceipt;
+import com.finalprojultimate.util.Parameter;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -77,7 +78,6 @@ public class ProductServiceTest {
                 .build();
         testProductService.create(product);
         assertEquals(9, testProductService.getCount());
-        product.setId(9);
         testProductService.delete(product);
         assertEquals(8, testProductService.getCount());
     }
@@ -136,14 +136,14 @@ public class ProductServiceTest {
 
     @Test
     public void getForPaginationSortByParameter() {
-        List<Product> result = testProductService.getForPaginationSortByParameter("none",2, 3);
+        List<Product> result = testProductService.getForPaginationSortByParameter(Parameter.NONE,2, 3);
         assertEquals(
                 "[Product{id=3, name='pencil LUXON', price=0.80, amount=271.000, unit=Unit{id=1, name='pieces'}, barcode='4611366728476'}, " +
                         "Product{id=4, name='Pepsi Cola 1l', price=1.00, amount=110.000, unit=Unit{id=1, name='pieces'}, barcode='4634271223504'}, " +
                         "Product{id=5, name='Coca Cola 1.5l', price=1.40, amount=64.000, unit=Unit{id=1, name='pieces'}, barcode='3204992254639'}]",
                 result.toString());
 
-        result = testProductService.getForPaginationSortByParameter("name",2, 3);
+        result = testProductService.getForPaginationSortByParameter(Parameter.PRODUCT_NAME,2, 3);
         assertEquals(
                 "[Product{id=8, name='Fanta Jingle', price=1.10, amount=140.800, unit=Unit{id=3, name='litre'}, barcode='4411164778032'}, " +
                         "Product{id=7, name='ordinary sugar', price=1.10, amount=500.500, unit=Unit{id=2, name='kilogram'}, barcode='4657488712948'}, " +

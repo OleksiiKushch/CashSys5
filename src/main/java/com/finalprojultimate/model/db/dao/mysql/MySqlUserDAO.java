@@ -13,6 +13,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Set;
 
+import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.ReceiptQuery.DELETE_RECEIPT_BY_ID;
 import static com.finalprojultimate.model.db.dao.mysql.MySqlConstant.UserQuery.*;
 import static com.finalprojultimate.model.db.dao.util.LogMessage.*;
 import static com.finalprojultimate.util.MessageKey.*;
@@ -34,17 +35,18 @@ public class MySqlUserDAO implements UserDAO {
     }
 
     @Override
-    public void insert(User user) throws DaoException {
+    public int insert(User user) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(CREATE_USER,
                      Statement.RETURN_GENERATED_KEYS)) {
             mapUser(ps, user);
-            ps.executeUpdate();
+            int result = ps.executeUpdate();
             try (ResultSet rs = ps.getGeneratedKeys()) {
                 if (rs.next()) {
                     user.setId(rs.getInt(1));
                 }
             }
+            return result;
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw generateException(ERROR_INSERT_ROW_TO_DATABASE,
@@ -58,12 +60,12 @@ public class MySqlUserDAO implements UserDAO {
      * update product from DB, search by id user
      */
     @Override
-    public void update(User user) throws DaoException {
+    public int update(User user) throws DaoException {
         try (Connection con = getConnection();
              PreparedStatement ps = con.prepareStatement(UPDATE_USER)) {
             mapUser(ps, user);
             ps.setInt(7, user.getId());
-            ps.executeUpdate();
+            return ps.executeUpdate();
         } catch (SQLException e) {
             logger.error(e.getMessage(), e);
             throw generateException(ERROR_UPDATE_ROW_TO_DATABASE,
@@ -77,16 +79,8 @@ public class MySqlUserDAO implements UserDAO {
      * remove user from DB, search by id user
      */
     @Override
-    public void delete(User user) throws DaoException {
-        try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(DELETE_USER_BY_ID)) {
-            ps.setInt(1, user.getId());
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            logger.error(e.getMessage(), e);
-            throw generateException(ERROR_DELETE_ROW_FROM_DATABASE,
-                    DELETE_ROW_FROM_DATABASE_LOG_MSG, getClass());
-        }
+    public int delete(User user) throws DaoException {
+        return deleteByQuery(user, DELETE_USER_BY_ID);
     }
 
     @Override

@@ -1,6 +1,6 @@
 package com.finalprojultimate.util;
 
-public abstract class Parameter {
+public final class Parameter {
 
     private Parameter() {
         // hide
@@ -39,5 +39,8 @@ public abstract class Parameter {
     public static final String TAXATION_SYS = "taxationSys";
 
     // optional
-    public static final String NAME = "name";
+    public static final String NONE = "none";
+
+    public static final String BY_NAME = "byName";
+    public static final String BY_BARCODE = "byBarcode";
 }

@@ -1,16 +1,25 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="com.finalprojultimate.model.entity.user.Role" %>
+<%@ page import="com.finalprojultimate.util.Attribute" %>
+<%@ page import="com.finalprojultimate.util.Path" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+
 <html>
 <head>
     <title>CashSys.best.cashiers.month</title>
 
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
 </head>
+
+<c:set var="logged_user" value="${sessionScope[Attribute.LOGGED_USER]}"/>
+
 <body class="d-flex flex-column min-vh-100">
 
-<%@ include file="/WEB-INF/view/jsp/template/index_header.jsp" %>
+<%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="senior cashier" loggedUserRole="${sessionScope.logged_user.role.name}" />
+<security:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container">
 
@@ -49,7 +58,7 @@
         </table>
 
         <div class="p-2 mx-2">
-            <a href="${pageContext.request.contextPath}/FrontController?command=/generate_report"
+            <a href="${Path.GENERATE_REPORT}"
                type="submit" class="btn btn-primary float-right">
                 <fmt:message key="best_cashiers_by_count_receipts_for_the_last_month.come.back.to.report.generator.text"/>
             </a>

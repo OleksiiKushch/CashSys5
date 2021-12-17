@@ -1,58 +1,61 @@
 package com.finalprojultimate.util;
 
-public abstract class Path { // commands
+import static com.finalprojultimate.util.Attribute.*;
 
-    public static final String CONTROLLER = "FrontController";
+public final class Path {
+
+    private Path() {
+        // hide
+    }
+
+    public static final String DEFAULT_SIZE_REPORT_PAGE = "5";
+    public static final String DEFAULT_SIZE_CATALOG_PAGE = "8";
+    public static final String DEFAULT_START_PAGE_NUMBER = "1";
+
+    public static final String COMMAND = "command";
+    public static final String DELIMITER = ":";
+    public static final String QUESTION_MARK = "?";
+    public static final String EQUALS_MARK = "=";
+    public static final String AMPERSAND = "&";
+
     public static final String APP_CONTEXT = "/FinalProjUltimate";
-
-    public static final String REDIRECTED = "redirected";
+    public static final String CONTROLLER = "/FrontController";
 
     // general
-    public static final String LOGIN = "/login";
-    public static final String REGISTRATION = "/registration";
-    public static final String SUCCESSFUL_REGISTRATION = "/successful_registration";
-    public static final String MAIN = "/main";
-    public static final String LOGOUT = "/logout";
-    public static final String CHANGE_LOCAL = "/change_local";
-    public static final String MY_PROFILE = "/my_profile";
-
-    public static final String USER_INFO_LOGIN = "/user/login";
+    public static final String LOGIN = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.LOGIN;
+    public static final String REGISTRATION = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.REGISTRATION;
+    public static final String MAIN = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.MAIN;
+    public static final String MY_PROFILE = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.MY_PROFILE;
 
     // product
-    public static final String PRODUCT_CATALOG = "/product_catalog";
-    public static final String EDIT_PRODUCT = "/edit_product";
-    public static final String DELETE_PRODUCT = "/delete_product";
-    public static final String SUCCESSFUL_UPDATE_PRODUCT = "/successful_update_product";
-    public static final String SUCCESSFUL_DELETE_PRODUCT = "/successful_delete_product";
-    public static final String CREATE_NEW_PRODUCT = "/create_new_product";
-    public static final String SUCCESSFUL_CREATE_NEW_PRODUCT = "/successful_create_new_product";
-    public static final String FIND_PRODUCTS_BY_PARAMETER = "/find_products_by_parameter";
-    public static final String ADD_PRODUCT_TO_CART = "/add_product_to_cart";
-    public static final String EDIT_PRODUCT_AMOUNT_FROM_CART = "/edit_product_amount_from_cart";
-    public static final String DELETE_PRODUCT_FROM_CART = "/delete_product_from_cart";
-    public static final String CART_OF_PRODUCTS = "/cart_of_products";
+    public static final String PRODUCT_CATALOG = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.PRODUCT_CATALOG
+            + AMPERSAND + PAGE + EQUALS_MARK + DEFAULT_START_PAGE_NUMBER
+            + AMPERSAND + PAGE_SIZE + EQUALS_MARK + DEFAULT_SIZE_CATALOG_PAGE;
+    public static final String CREATE_NEW_PRODUCT = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.CREATE_NEW_PRODUCT;
+    public static final String CART_OF_PRODUCTS = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.CART_OF_PRODUCTS;
 
     // receipt
-    public static final String RECEIPT_CATALOG = "/receipt_catalog";
-    public static final String NEW_RECEIPT = "/new_receipt";
-    public static final String CREATE_NEW_RECEIPT = "/create_new_receipt";
-    public static final String SUCCESSFUL_CREATE_NEW_RECEIPT = "/successful_create_new_receipt";
-    public static final String SET_GLOBAL_RECEIPT_PROPERTIES = "/set_global_receipt_properties";
-    public static final String SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES = "/successful_set_global_receipt_properties";
-    public static final String RESET_GLOBAL_RECEIPT_PROPERTIES = "/reset_global_receipt_properties";
-    public static final String SUCCESSFUL_RESET_GLOBAL_RECEIPT_PROPERTIES
-            = "/successful_reset_global_receipt_properties";
-    public static final String SEE_RECEIPT_DETAILS = "/see_receipt_details";
-    public static final String CREATE_REJECT_RECEIPT = "/create_reject_receipt";
-    public static final String SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT = "/successful_create_new_reject_receipt";
+    public static final String RECEIPT_CATALOG = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.RECEIPT_CATALOG
+            + AMPERSAND + PAGE + EQUALS_MARK + DEFAULT_START_PAGE_NUMBER
+            + AMPERSAND + PAGE_SIZE + EQUALS_MARK + DEFAULT_SIZE_CATALOG_PAGE;
+    public static final String NEW_RECEIPT = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.NEW_RECEIPT;
+    public static final String CREATE_NEW_RECEIPT = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.CREATE_NEW_RECEIPT;
+    public static final String SHOW_CREATED_RECEIPT = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.SHOW_CREATED_RECEIPT;
+    public static final String SET_GLOBAL_RECEIPT_PROPERTIES = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.SET_GLOBAL_RECEIPT_PROPERTIES;
+    public static final String RESET_GLOBAL_RECEIPT_PROPERTIES = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.RESET_GLOBAL_RECEIPT_PROPERTIES;
+    public static final String CREATE_REJECT_RECEIPT = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.CREATE_REJECT_RECEIPT;;
 
     // user
-    public static final String USER_CATALOG = "/user_catalog";
+    public static final String USER_CATALOG = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.USER_CATALOG
+            + AMPERSAND + PAGE + EQUALS_MARK + DEFAULT_START_PAGE_NUMBER
+            + AMPERSAND + PAGE_SIZE + EQUALS_MARK + DEFAULT_SIZE_CATALOG_PAGE;
+
 
     // report
-    public static final String GENERATE_REPORT = "/generate_report";
-    public static final String BEST_CASHIERS_BY_COUNT_RECEIPTS_FOR_THE_MONTH
-            = "/best_cashiers_by_count_receipts_for_the_last_month";
-    public static final String BEST_PRODUCTS_BY_COUNT_RECEIPTS_FOR_THE_MONTH
-            = "/best_products_by_count_receipts_for_the_last_month";
+    public static final String GENERATE_REPORT = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + Command.GENERATE_REPORT;
+    public static final String BEST_CASHIERS_BY_COUNT_RECEIPTS_FOR_THE_MONTH = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK
+            + Command.BEST_CASHIERS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH + AMPERSAND + PAGE_SIZE + EQUALS_MARK + DEFAULT_SIZE_REPORT_PAGE;
+    public static final String BEST_PRODUCTS_BY_COUNT_RECEIPTS_FOR_THE_MONTH = APP_CONTEXT + CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK
+            + Command.BEST_PRODUCTS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH + AMPERSAND+ PAGE_SIZE + EQUALS_MARK + DEFAULT_SIZE_REPORT_PAGE;
+
 }
