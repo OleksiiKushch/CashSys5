@@ -11,6 +11,9 @@ public abstract class MessageKey {
 
     // ERROR MESSAGES
 
+    // general validation
+    public static final String ERROR_INCORRECT_OR_EMPTY_NUMBER_FIELD = "error.incorrect.or.empty.number.field";
+
     // user validation
     public static final String ERROR_EMPTY_EMAIL = "error.empty.email.field";
     public static final String ERROR_EMPTY_PASSWORD = "error.empty.password.field";
@@ -24,6 +27,7 @@ public abstract class MessageKey {
     public static final String ERROR_WRONG_MIDDLE_NAME = "error.wrong.middle.name.validation";
     public static final String ERROR_WRONG_LAST_NAME = "error.wrong.last.name.validation";
     public static final String ERROR_INCORRECT_LOGIN_DATA = "error.incorrect.email.or.password";
+    public static final String ERROR_ACCOUNT_ALREADY_EXISTS = "error.account.already.exists";
     public static final String ERROR_ILLEGAL_PASSWORD_DECRYPTED = "error.invalid.password.decrypted";
 
     public static final String ERROR_IS_NOT_SAME_CONFIRMATION_PASSWORD = "error.is.not.same.confirmation.password";
@@ -38,19 +42,25 @@ public abstract class MessageKey {
     public static final String ERROR_WRONG_PRICE = "error.wrong.price.validation";
     public static final String ERROR_SINGED_PRICE = "error.singed.price.validation";
     public static final String ERROR_WRONG_AMOUNT = "error.wrong.amount.validation";
-    public static final String ERROR_SINGED_AMOUNT = "error.singed.price.validation";
+    public static final String ERROR_SINGED_AMOUNT = "error.singed.amount.validation";
     public static final String ERROR_WRONG_BARCODE = "error.wrong.barcode.validation";
+    public static final String ERROR_PRODUCT_ALREADY_EXISTS = "error.product.already.exists";
+    public static final String ERROR_BARCODE_ALREADY_TAKEN = "error.barcode.already.taken";
+    public static final String ERROR_PRODUCT_CONTAINED_IN_RECEIPTS = "error.product.contained.in.receipts";
 
     // receipt validation
+    public static final String ERROR_EMPTY_RECEIPT_CHANGE = "error.empty.receipt.change.validation";
+    public static final String ERROR_EMPTY_PAYMENT = "error.empty.payment.validation";
     public static final String ERROR_WRONG_RECEIPT_CHANGE = "error.wrong.receipt.change.validation";
     public static final String ERROR_SINGED_RECEIPT_CHANGE = "error.singed.receipt.change.validation";
+    public static final String ERROR_CART_IS_EMPTY = "error.cart.is.empty.validation";
     public static final String ERROR_EMPTY_ORGANIZATION_TAX_ID_NUMBER = "error.empty.organization.tax.id.number.validation";
     public static final String ERROR_EMPTY_NAME_ORGANIZATION = "error.empty.name.organization.validation";
     public static final String ERROR_EMPTY_ADDRESS_TRADE_POINT = "error.empty.address.trade.point.validation";
     public static final String ERROR_EMPTY_VAT = "error.empty.vat.validation";
     public static final String ERROR_EMPTY_TAXATION_SYS = "error.empty.taxation.sys.validation";
     public static final String ERROR_WRONG_ORGANIZATION_TAX_ID_NUMBER = "error.wrong.organization.tax.id.number.validation";
-    public static final String ERROR_SINGED_ORGANIZATION_TAX_ID_NUMBER = "error.singed.organization.tax.id.number.validation";
+    public static final String ERROR_WRONG_SINGED_OR_ZERO_ORGANIZATION_TAX_ID_NUMBER = "error.wrong.singed.or.zero.organization.tax.id.number.validation";
     public static final String ERROR_WRONG_NAME_ORGANIZATION = "error.wrong.name.organization.validation";
     public static final String ERROR_WRONG_ADDRESS_TRADE_POINT = "error.wrong.address.trade.point.validation";
     public static final String ERROR_WRONG_VAT = "error.wrong.vat.validation";
@@ -63,6 +73,7 @@ public abstract class MessageKey {
     public static final String ERROR_INSERT_ROW_TO_DATABASE = "error.insert.row.to.database";
     public static final String ERROR_UPDATE_ROW_TO_DATABASE = "error.update.row.to.database";
     public static final String ERROR_DELETE_ROW_FROM_DATABASE = "error.delete.row.from.database";
+
     public static final String ERROR_GET_COUNT_ROWS_IN_DATABASE = "error.get.count.rows.in.database";
 
     // dao product
@@ -75,6 +86,7 @@ public abstract class MessageKey {
     public static final String ERROR_CREATE_RECEIPT_IN_DATABASE = "error.create.receipt.in.database";
     public static final String ERROR_CREATE_REJECT_RECEIPT_IN_DATABASE = "error.create.reject.receipt.in.database";
     public static final String ERROR_FIND_RECEIPTS_WITH_PAGINATION_FROM_DATABASE = "error.find.receipts.with.pagination.from.database";
+    public static final String ERROR_FIND_RECEIPTS_CONTAIN_PRODUCT_FROM_DATABASE = "error.find.receipts.contain.product.from.database";
     public static final String ERROR_GET_GLOBAL_RECEIPT_PROPERTIES_FROM_DATABASE = "error.get.global.receipt.properties.from.database";
     public static final String ERROR_SET_GLOBAL_RECEIPT_PROPERTIES_TO_DATABASE = "error.set.global.receipt.properties.to.database";
     public static final String ERROR_RESET_GLOBAL_RECEIPT_PROPERTIES_IN_DATABASE = "error.reset.global.receipt.properties.in.database";

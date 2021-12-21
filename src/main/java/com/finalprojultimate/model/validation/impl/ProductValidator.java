@@ -44,18 +44,26 @@ public class ProductValidator implements Validator<Product> {
     }
 
     public boolean isValid(Product product) {
-        if (product.getPrice() == null || product.getAmount() == null) {
-            return false;
-        }
-
         isNotEmptyProductName = !nullChecker.isEmpty(product.getName());
         isValidProductName = isValidProductName(product.getName());
-        isNotEmptyPrice = !nullChecker.isEmpty(product.getPrice().toString());
-        isValidPrice = isValidPrice(product.getPrice());
-        isUnsignedProductPrice = isUnsignedBigDecimal(product.getPrice());
-        isNotEmptyAmount = !nullChecker.isEmpty(product.getAmount().toString());
-        isValidAmount = isValidAmount(product.getAmount());
-        isUnsignedProductAmount = isUnsignedBigDecimal(product.getAmount());
+        if (product.getPrice() == null) {
+            isNotEmptyAmount = false;
+            isValidPrice = true;
+            isUnsignedProductPrice = true;
+        } else {
+            isNotEmptyPrice = !nullChecker.isEmpty(product.getPrice().toString());
+            isValidPrice = isValidPrice(product.getPrice());
+            isUnsignedProductPrice = isUnsignedBigDecimal(product.getPrice());
+        }
+        if (product.getAmount() == null) {
+            isNotEmptyAmount = false;
+            isValidAmount = true;
+            isUnsignedProductAmount = true;
+        } else {
+            isNotEmptyAmount = !nullChecker.isEmpty(product.getAmount().toString());
+            isValidAmount = isValidAmount(product.getAmount());
+            isUnsignedProductAmount = isUnsignedBigDecimal(product.getAmount());
+        }
         isNotEmptyUnit = product.getUnit() != null;
         isNotEmptyBarcode = !nullChecker.isEmpty(product.getBarcode());
         isValidBarcode = isValidBarcode(product.getBarcode());

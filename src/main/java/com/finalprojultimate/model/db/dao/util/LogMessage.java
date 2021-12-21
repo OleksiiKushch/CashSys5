@@ -27,6 +27,8 @@ public abstract class LogMessage {
     public static final String CREATE_REJECT_RECEIPT_IN_DATABASE_LOG_MSG = "Error while creating reject receipt";
     public static final String FIND_RECEIPTS_WITH_PAGINATION_FROM_DATABASE_LOG_MSG
             = "Error while select rows (receipts) from the receipt table with pagination";
+    public static final String FIND_RECEIPTS_CONTAIN_PRODUCT_FROM_DATABASE_LOG_MSG
+            = "Error while select rows (receipts) that contain product";
     public static final String GET_GLOBAL_RECEIPT_PROPERTIES_FROM_DATABASE_LOG_MSG
             = "Error while concrete row from the global receipt properties table";
     public static final String SET_GLOBAL_RECEIPT_PROPERTIES_TO_DATABASE_LOG_MSG

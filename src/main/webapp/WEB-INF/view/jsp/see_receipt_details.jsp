@@ -3,11 +3,11 @@
 <%@ page import="com.finalprojultimate.util.Attribute" %>
 <%@ page import="com.finalprojultimate.util.Parameter" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="totalSum" uri="http://com.finalprojultimate/model/tag/TagTotalSum" %>
-<%@ taglib prefix="amount" uri="http://com.finalprojultimate/model/tag/TagAmount" %>
-<%@ taglib prefix="formattedUserName" uri="http://com.finalprojultimate/model/tag/TagFormattedUserName" %>
-<%@ taglib prefix="formattedId" uri="http://com.finalprojultimate/model/tag/TagFormattedId" %>
-<%@ taglib prefix="totalReceiptSum" uri="http://com.finalprojultimate/model/tag/TagTotalReceiptSum" %>
+<%@ taglib prefix="formatAmount" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedAmount" %>
+<%@ taglib prefix="formatUserName" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedUserName" %>
+<%@ taglib prefix="formattedId" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedId" %>
+<%@ taglib prefix="totalSum" uri="http://com.finalprojultimate/model/view/tag/processing/TagTotalSum" %>
+<%@ taglib prefix="totalReceiptSum" uri="http://com.finalprojultimate/model/view/tag/supplying/TagTotalReceiptSum" %>
 
 <html>
 <head>
@@ -32,7 +32,7 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
+<roleSecurity:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container-fluid">
     <h1 class="mt-4"><fmt:message key="see_receipt_details.detail.id.text"/>
@@ -58,7 +58,7 @@
                     <td>${product.name}</td>
                     <td class="col-md-1"><totalSum:get price="${product.price}" amount="${product.amount}" /></td>
                     <td class="col-md-1">${product.price}</td>
-                    <td class="col-md-1"><amount:get amount="${product.amount}" unit="${product.unit}" />
+                    <td class="col-md-1"><formatAmount:get amount="${product.amount}" unit="${product.unit}" />
                         <fmt:message key="${product.unit.message}"/></td>
                     <td class="col-md-1">${product.barcode}</td>
                     <td class="col-md-3">
@@ -120,7 +120,7 @@
                     <div class="row p-2 mx-2">
                         <p><fmt:message key="see_receipt_details.cashier.text"/> &nbsp</p>
                         <h6>(<fmt:message key="see_receipt_details.id.text"/>: ${receipt.userId})
-                            <formattedUserName:get userId="${receipt.userId}" /></h6>
+                            <formatUserName:get userId="${receipt.userId}" /></h6>
                     </div>
                     <div class="row p-2 mx-2">
                         <p><fmt:message key="see_receipt_details.type.payment.text"/> &nbsp</p>

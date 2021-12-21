@@ -1,7 +1,7 @@
 package com.finalprojultimate.controller;
 
+import com.finalprojultimate.controller.command.Command;
 import com.finalprojultimate.controller.command.CommandHolder;
-import com.finalprojultimate.util.Command;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -9,6 +9,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
+import static com.finalprojultimate.util.Command.REDIRECTED;
 import static com.finalprojultimate.util.Path.COMMAND;
 import static com.finalprojultimate.util.Path.DELIMITER;
 
@@ -42,16 +43,15 @@ public class FrontController extends HttpServlet {
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        com.finalprojultimate.controller.command.Command command = getCommandFromRequest(request);
+        Command command = getCommandFromRequest(request);
         String viewPage = command.execute(request, response);
-        logger.info(viewPage);
         if(!isRedirected(viewPage)) {
             request.getRequestDispatcher(viewPage)
                     .forward(request, response);
         }
     }
 
-    private com.finalprojultimate.controller.command.Command getCommandFromRequest(HttpServletRequest request) {
+    private Command getCommandFromRequest(HttpServletRequest request) {
         String key = getKeyForCommand(request);
         return commands.getCommandByKey(key);
     }
@@ -63,6 +63,6 @@ public class FrontController extends HttpServlet {
     }
 
     private boolean isRedirected(String viewPage){
-        return viewPage.equals(Command.REDIRECTED);
+        return viewPage.equals(REDIRECTED);
     }
 }

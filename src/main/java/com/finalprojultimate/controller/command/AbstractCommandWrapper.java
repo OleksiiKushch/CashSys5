@@ -1,6 +1,8 @@
 package com.finalprojultimate.controller.command;
 
+import com.finalprojultimate.controller.writer.RequestAttributeWriter;
 import com.finalprojultimate.exception.ApplicationException;
+import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.util.Attribute;
 import com.finalprojultimate.util.MessageKey;
 import org.apache.log4j.Logger;
@@ -9,6 +11,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.finalprojultimate.util.Attribute.ERROR_MESSAGES;
+import static com.finalprojultimate.util.Attribute.ERROR_VALIDATION_MESSAGES;
 
 public abstract class AbstractCommandWrapper<E> implements Command {
     private static final Logger logger = Logger.getLogger(AbstractCommandWrapper.class);
@@ -46,8 +54,19 @@ public abstract class AbstractCommandWrapper<E> implements Command {
 
     private void processApplicationError(HttpServletRequest request, ApplicationException e) {
         request.setAttribute(Attribute.ERROR_MESSAGES, e.getMessage());
-        Logger.getLogger(e.getClassThrowsException())
-                .error(e.getLogMessage());
+        Logger.getLogger(e.getClassThrowsException()).error(e.getLogMessage());
+    }
+
+    protected void extractAndWriteErrorMessagesFromValidator(RequestAttributeWriter attributeWriter, Validator<?> validator) {
+        List<String> errorMessages = validator.getErrorMessages();
+        List<String> errorValidationMessages = validator.getErrorValidationMessages();
+        attributeWriter.writeToRequest(ERROR_MESSAGES, errorMessages);
+        attributeWriter.writeToRequest(ERROR_VALIDATION_MESSAGES, errorValidationMessages);
+    }
+
+    protected void extractAndWriteErrorMessages(RequestAttributeWriter attributeWriter, String ... messages) {
+        List<String> errorMessages = new ArrayList<>(Arrays.asList(messages));
+        attributeWriter.writeToRequest(ERROR_MESSAGES, errorMessages);
     }
 
 

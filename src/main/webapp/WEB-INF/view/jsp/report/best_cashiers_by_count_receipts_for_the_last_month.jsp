@@ -19,7 +19,7 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
+<roleSecurity:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container">
 

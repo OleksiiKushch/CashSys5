@@ -16,7 +16,8 @@ import static com.finalprojultimate.util.Path.*;
 public class GetNewReceiptCommand implements Command {
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         request.getSession().removeAttribute(CART);
         response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + CREATE_NEW_RECEIPT);
         return REDIRECTED;

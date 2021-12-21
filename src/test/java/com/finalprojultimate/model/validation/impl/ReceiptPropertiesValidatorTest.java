@@ -91,7 +91,7 @@ public class ReceiptPropertiesValidatorTest {
         assertFalse(result);
         assertEquals(
                 "[error.wrong.vat.validation, error.singed.vat.validation, error.wrong.organization.tax.id.number.validation, " +
-                        "error.singed.organization.tax.id.number.validation, error.singed.vat.validation]",
+                        "error.wrong.singed.or.zero.organization.tax.id.number.validation, error.singed.vat.validation]",
                 receiptPropertiesValidator.getErrorValidationMessages().toString());
     }
 }

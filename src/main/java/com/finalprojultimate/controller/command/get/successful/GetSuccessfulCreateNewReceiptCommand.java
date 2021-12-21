@@ -8,9 +8,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static com.finalprojultimate.util.Parameter.PRODUCT_ID;
+
 public class GetSuccessfulCreateNewReceiptCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         return Page.SUCCESSFUL_CREATE_NEW_RECEIPT_PAGE;
     }
 }

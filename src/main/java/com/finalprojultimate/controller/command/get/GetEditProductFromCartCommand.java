@@ -23,7 +23,8 @@ public class GetEditProductFromCartCommand implements Command {
     private static final String PRODUCT_EDIT_FROM_CART = "Product with id: %d was successfully update (amount) to cart!";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String productId = request.getParameter(PRODUCT_ID);
         Integer id = Integer.valueOf(productId);
 

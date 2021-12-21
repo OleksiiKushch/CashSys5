@@ -21,7 +21,8 @@ public class GetDeleteProductFromCartCommand implements Command {
     private static final String PRODUCT_DELETE_FROM_CART = "Product with id: %d was successfully deleted from cart!";
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String productId = request.getParameter(PRODUCT_ID);
         Integer id = Integer.valueOf(productId);
 

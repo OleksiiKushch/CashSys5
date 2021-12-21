@@ -79,7 +79,7 @@
 
 </div>
 
-<div class="container mt-2">
+<div class="container mt-2 mb-5">
     <div class="card">
         <div class="card-body">
             <%@ include file="/WEB-INF/view/jsp/template/error_messages.jsp" %>

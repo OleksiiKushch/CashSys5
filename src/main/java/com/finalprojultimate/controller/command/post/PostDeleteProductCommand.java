@@ -1,8 +1,10 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
+import com.finalprojultimate.controller.writer.RequestAttributeWriter;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.service.ProductService;
+import com.finalprojultimate.model.service.exception.ServiceException;
 import com.finalprojultimate.model.service.impl.ProductServiceImpl;
 import org.apache.log4j.Logger;
 
@@ -21,20 +23,23 @@ public class PostDeleteProductCommand extends AbstractCommandWrapper<Product> {
     private static final Logger logger = Logger.getLogger(PostDeleteProductCommand.class);
     private static final String PRODUCT_DELETE = "Product with id: %d delete successfully!";
 
-    private final ProductService productService = ProductServiceImpl.getInstance();
-
     public PostDeleteProductCommand() {
         super(INTERNAL_SERVER_ERROR_PAGE);
-    } // TODO ?
+    }
 
     @Override
-    protected String performExecute(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
+    protected String performExecute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        RequestAttributeWriter attributeWriter = new RequestAttributeWriter(request);
+
         Product product = getDataFromRequest(request);
 
-        // writeSpecificDataToRequest(request, user);
-
-        productService.delete(product);
+        ProductService productService = ProductServiceImpl.getInstance();
+        try {
+            productService.delete(product);
+        } catch (ServiceException e) {
+            extractAndWriteErrorMessages(attributeWriter, e.getMessage());
+            return INTERNAL_SERVER_ERROR_PAGE;
+        }
 
         logger.info(String.format(PRODUCT_DELETE, product.getId()));
         response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_DELETE_PRODUCT);
@@ -52,6 +57,4 @@ public class PostDeleteProductCommand extends AbstractCommandWrapper<Product> {
 
     @Override
     protected void writeSpecificDataToRequest(HttpServletRequest request, Product data) {}
-
-//    private void extractAndWriteErrorMessagesToRequest(HttpServletRequest request) {}
 }

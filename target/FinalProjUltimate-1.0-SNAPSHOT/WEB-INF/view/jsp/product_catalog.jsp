@@ -1,9 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%@ page import="java.math.BigDecimal" %>
 <%@ page import="com.finalprojultimate.model.entity.user.Role" %>
 <%@ page import="com.finalprojultimate.util.Attribute" %>
 <%@ page import="com.finalprojultimate.util.Parameter" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="amount" uri="http://com.finalprojultimate/model/tag/TagAmount" %>
+<%@ taglib prefix="formatAmount" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedAmount" %>
+<%@ taglib prefix="formatBarcodeLen" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedBarcodeLength" %>
+<%@ taglib prefix="formatProductNameLen" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedProductNameLength" %>
 
 <html>
 <head>
@@ -22,7 +25,7 @@
 <c:set var="logged_user" value="${sessionScope[Attribute.LOGGED_USER]}"/>
 <c:set var="page_count" value="${requestScope[Attribute.PAGE_COUNT]}"/>
 <c:set var="page_size" value="${requestScope[Attribute.PAGE_SIZE]}"/>
-<c:set var="page" value="${requestScope[Attribute.PAGE]}"/>min_possible_page
+<c:set var="page" value="${requestScope[Attribute.PAGE]}"/>
 <c:set var="min_possible_page" value="${requestScope[Attribute.MIN_POSSIBLE_PAGE]}"/>
 <c:set var="max_possible_page" value="${requestScope[Attribute.MAX_POSSIBLE_PAGE]}"/>
 
@@ -30,7 +33,7 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="${Role.COMMODITY_EXPERT.name}" loggedUserRole="${logged_user.role.name}" />
+<roleSecurity:check role="${Role.COMMODITY_EXPERT.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container-fluid">
     <h1 class="mt-4"><fmt:message key="product_catalog.product.catalog.text"/></h1>
@@ -152,13 +155,13 @@
         </thead>
         <tbody>
             <c:forEach var="product" items="${requestScope.paginate_products}">
-                <tr>
+                <tr class="<c:if test="${product.amount.compareTo(BigDecimal.ZERO) == 0}">table-warning</c:if>">
                     <th class="col-md-1" scope="row">${product.id}</th>
-                    <td>${product.name}</td>
+                    <td><formatProductNameLen:get productName="${product.name}" length="80" /></td>
                     <td class="col-md-1">${product.price}</td>
-                    <td class="col-md-2"><amount:get amount="${product.amount}" unit="${product.unit}" />
+                    <td class="col-md-2"><formatAmount:get amount="${product.amount}" unit="${product.unit}" />
                         <fmt:message key="${product.unit.message}"/></td>
-                    <td class="col-md-1">${product.barcode}</td>
+                    <td class="col-md-1"><formatBarcodeLen:get barcode="${product.barcode}" /></td>
                     <td class="col-md-1">
                         <a href="${pageContext.request.contextPath}/FrontController?command=/edit_product&productId=${product.id}">
                             <fmt:message key="product_catalog.edit.text"/></a>

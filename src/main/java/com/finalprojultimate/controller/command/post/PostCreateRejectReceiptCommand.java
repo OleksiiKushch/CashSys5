@@ -1,5 +1,6 @@
 package com.finalprojultimate.controller.command.post;
 
+import com.finalprojultimate.controller.command.AbstractCommandWrapper;
 import com.finalprojultimate.controller.command.Command;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.receipt.Receipt;
@@ -19,27 +20,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.finalprojultimate.util.Attribute.LOGGED_USER;
+import static com.finalprojultimate.util.Page.INTERNAL_SERVER_ERROR_PAGE;
 import static com.finalprojultimate.util.Parameter.*;
 import static com.finalprojultimate.util.Command.REDIRECTED;
 import static com.finalprojultimate.util.Command.CONTROLLER;
 import static com.finalprojultimate.util.Command.SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT;
 import static com.finalprojultimate.util.Path.*;
 
-public class PostCreateRejectReceiptCommand implements Command {
+public class PostCreateRejectReceiptCommand extends AbstractCommandWrapper<Receipt> {
     private static final Logger logger = Logger.getLogger(PostCreateRejectReceiptCommand.class);
     private static final String REJECT_RECEIPT_CREATE = "New reject receipt create successfully!";
 
-    private final ReceiptService receiptService = ReceiptServiceImpl.getInstance();
-    private final ProductService productService = ProductServiceImpl.getInstance();
+    public PostCreateRejectReceiptCommand() {
+        super(INTERNAL_SERVER_ERROR_PAGE);
+    }
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String performExecute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         String [] rejectProductIds = request.getParameterValues(REJECT_RECEIPT_ID);
 
-        // validation
+        // TODO: validation
 
-
+        ProductService productService = ProductServiceImpl.getInstance();
         List<Product> products = new ArrayList<>();
         for (String id : rejectProductIds) {
             products.add(productService.getById(Integer.parseInt(id)));
@@ -57,6 +60,7 @@ public class PostCreateRejectReceiptCommand implements Command {
 
         String rootReceiptId = request.getParameter(RECEIPT_ID);
 
+        ReceiptService receiptService = ReceiptServiceImpl.getInstance();
         // transaction
         receiptService.createReject(Integer.parseInt(rootReceiptId), newReceipt, products, amounts);
 
@@ -64,4 +68,12 @@ public class PostCreateRejectReceiptCommand implements Command {
         response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT);
         return REDIRECTED;
     }
+
+    @Override
+    protected Receipt getDataFromRequest(HttpServletRequest request) {
+        return null;
+    }
+
+    @Override
+    protected void writeSpecificDataToRequest(HttpServletRequest request, Receipt data) {}
 }

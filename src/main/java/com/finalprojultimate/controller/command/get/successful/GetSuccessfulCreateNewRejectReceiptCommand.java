@@ -10,7 +10,8 @@ import java.io.IOException;
 
 public class GetSuccessfulCreateNewRejectReceiptCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         return Page.SUCCESSFUL_CREATE_NEW_REJECT_RECEIPT_PAGE;
     }
 }

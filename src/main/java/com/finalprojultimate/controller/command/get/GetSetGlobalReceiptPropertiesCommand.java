@@ -17,10 +17,10 @@ import static com.finalprojultimate.util.Page.SET_GLOBAL_RECEIPT_PROPERTIES_PAGE
 public class GetSetGlobalReceiptPropertiesCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetSetGlobalReceiptPropertiesCommand.class);
 
-    private final ReceiptService receiptService = ReceiptServiceImpl.getInstance();
-
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        ReceiptService receiptService = ReceiptServiceImpl.getInstance();
         ReceiptDetails receiptDetails = receiptService.getGlobalReceiptProperties();
         request.setAttribute(GLOBAL_RECEIPT_PROPERTIES, receiptDetails);
         return SET_GLOBAL_RECEIPT_PROPERTIES_PAGE;

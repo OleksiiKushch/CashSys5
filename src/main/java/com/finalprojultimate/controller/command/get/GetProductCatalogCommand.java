@@ -18,12 +18,11 @@ import java.util.List;
 public class GetProductCatalogCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetProductCatalogCommand.class);
 
-    private final ProductService productService = ProductServiceImpl.getInstance();
-
-    private static final int shift = 0;
+    private static final int SHIFT = 0;
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String paramPage = request.getParameter(Attribute.PAGE);
         String paramPageSize = request.getParameter(Attribute.PAGE_SIZE);
 
@@ -38,6 +37,7 @@ public class GetProductCatalogCommand implements Command {
             session.setAttribute(Attribute.PRODUCT_SORT_PARAM, sortParam);
         }
 
+        ProductService productService = ProductServiceImpl.getInstance();
         List<Product> paginateProducts;
         if (sortParam == null) {
             paginateProducts = productService.getForPagination(pageSize * (page - 1), pageSize);
@@ -47,9 +47,9 @@ public class GetProductCatalogCommand implements Command {
 
         int size = productService.getCount();
 
-        int minPagePossible = Math.max(page - shift, 1);
+        int minPagePossible = Math.max(page - SHIFT, 1);
         int pageCount = (int) Math.ceil((double) size / (double) pageSize);
-        int maxPagePossible = Math.min(page + shift, pageCount);
+        int maxPagePossible = Math.min(page + SHIFT, pageCount);
 
         request.setAttribute(Attribute.PAGINATE_PRODUCTS, paginateProducts);
         request.setAttribute(Attribute.PAGE_COUNT, pageCount);

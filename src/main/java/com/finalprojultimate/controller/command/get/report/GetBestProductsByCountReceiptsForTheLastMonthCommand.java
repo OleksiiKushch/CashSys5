@@ -18,12 +18,14 @@ import static com.finalprojultimate.util.Attribute.*;
 
 public class GetBestProductsByCountReceiptsForTheLastMonthCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetBestProductsByCountReceiptsForTheLastMonthCommand.class);
-
-    private final ProductService productService = ProductServiceImpl.getInstance();
+    private static final String GENERATE_REPORT_BEST_PRODUCTS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH =
+            "Generate report (best products by count receipts for the last month) successfully!";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String paramLimit = request.getParameter(PAGE_SIZE);
+
+        ProductService productService = ProductServiceImpl.getInstance();
 
         List<ReportBestProductByCountReceipt> bestProductsByCountReceipt =
                 productService.getBestProductsByCountReceiptForTheLastMonth(Integer.parseInt(paramLimit));
@@ -38,6 +40,7 @@ public class GetBestProductsByCountReceiptsForTheLastMonthCommand implements Com
         request.setAttribute(PRODUCTS, products);
         request.setAttribute(REPORT_BEST_PRODUCTS_BY_COUNT_RECEIPT, bestProductsByCountReceipt);
 
+        logger.info(GENERATE_REPORT_BEST_PRODUCTS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH);
         return Page.BEST_PRODUCTS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH;
     }
 }

@@ -1,6 +1,8 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
+import com.finalprojultimate.controller.writer.RequestAttributeWriter;
+import com.finalprojultimate.model.service.exception.ServiceException;
 import com.finalprojultimate.model.validation.impl.ProductValidator;
 import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.model.entity.product.Product;
@@ -14,10 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
-import static com.finalprojultimate.util.Attribute.ERROR_MESSAGES;
-import static com.finalprojultimate.util.Attribute.ERROR_VALIDATION_MESSAGES;
+import static com.finalprojultimate.util.Attribute.*;
+import static com.finalprojultimate.util.MessageKey.ERROR_INCORRECT_OR_EMPTY_NUMBER_FIELD;
+import static com.finalprojultimate.util.Page.CREATE_NEW_PRODUCT_PAGE;
 import static com.finalprojultimate.util.Page.EDIT_PRODUCT_PAGE;
 import static com.finalprojultimate.util.Parameter.*;
 import static com.finalprojultimate.util.Command.REDIRECTED;
@@ -29,27 +33,37 @@ public class PostEditProductCommand extends AbstractCommandWrapper<Product> {
     private static final Logger logger = Logger.getLogger(PostEditProductCommand.class);
     private static final String PRODUCT_UPDATE = "Product with id: %d update successfully!";
 
-    private final ProductService productService = ProductServiceImpl.getInstance();
-
-    private final Validator<Product> validator = new ProductValidator();
-
     public PostEditProductCommand() {
         super(EDIT_PRODUCT_PAGE);
     }
 
     @Override
-    protected String performExecute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        Product product = getDataFromRequest(request);
+    protected String performExecute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        RequestAttributeWriter attributeWriter = new RequestAttributeWriter(request);
 
-        // writeSpecificDataToRequest(request, user);
-
-        if(!validator.isValid(product)){
-            extractAndWriteErrorMessagesToRequest(request);
+        Product product;
+        try {
+            product = getDataFromRequest(request);
+        } catch (NumberFormatException e) {
+            attributeWriter.writeToRequest(ERROR_MESSAGES, ERROR_INCORRECT_OR_EMPTY_NUMBER_FIELD);
             return EDIT_PRODUCT_PAGE;
         }
 
-        productService.update(product);
+        writeSpecificDataToRequest(request, product);
+
+        Validator<Product> validator = new ProductValidator();
+        if(!validator.isValid(product)){
+            extractAndWriteErrorMessagesFromValidator(attributeWriter, validator);
+            return EDIT_PRODUCT_PAGE;
+        }
+
+        ProductService productService = ProductServiceImpl.getInstance();
+        try {
+            productService.update(product);
+        } catch (ServiceException e) {
+            extractAndWriteErrorMessages(attributeWriter, e.getMessage());
+            return EDIT_PRODUCT_PAGE;
+        }
 
         logger.info(String.format(PRODUCT_UPDATE, product.getId()));
         response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_UPDATE_PRODUCT);
@@ -58,31 +72,19 @@ public class PostEditProductCommand extends AbstractCommandWrapper<Product> {
 
     @Override
     protected Product getDataFromRequest(HttpServletRequest request) {
-        String id = request.getParameter(PRODUCT_ID);
-        String name = request.getParameter(PRODUCT_NAME);
-        String price = request.getParameter(PRICE);
-        String amount = request.getParameter(AMOUNT);
-        String unit = request.getParameter(UNIT);
-        String barcode = request.getParameter(BARCODE);
+        List<String> parameters = Product.getListStrFormatParameters();
+        List<String> listStrFormatAttributes = new ArrayList<>();
+        for (String parameter : parameters) {
+            listStrFormatAttributes.add(request.getParameter(parameter));
+        }
+        Product result = Product.mapProduct(listStrFormatAttributes);
+        result.setId((Integer) request.getSession().getAttribute(PRODUCT_ID));
 
-        return new Product.Builder()
-                .withId(Integer.parseInt(id))
-                .withName(name)
-                .withPrice(new BigDecimal(price))
-                .withAmount(new BigDecimal(amount))
-                .withUnit(Unit.getByName(unit))
-                .withBarcode(barcode)
-                .build();
+        return result;
     }
 
     @Override
-    protected void writeSpecificDataToRequest(HttpServletRequest request, Product data) {}
-
-    private void extractAndWriteErrorMessagesToRequest(HttpServletRequest request) {
-        List<String> errorMessages = validator.getErrorMessages();
-        List<String> errorValidationMessages =
-                validator.getErrorValidationMessages();
-        request.setAttribute(ERROR_MESSAGES, errorMessages);
-        request.setAttribute(ERROR_VALIDATION_MESSAGES, errorValidationMessages);
+    protected void writeSpecificDataToRequest(HttpServletRequest request, Product product) {
+        request.setAttribute(PRODUCT_DATA, product);
     }
 }

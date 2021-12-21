@@ -10,7 +10,7 @@ public abstract class RegexPattern {
 
     // first/middle/last name
     public static final String SHORT_NAME_REGEX = "[\\s\\S]{0,45}";
-    public static final String PASSWORD_REGEX = "[\\s\\S]{4,16}";
+    public static final String PASSWORD_REGEX = "[\\S]{4,16}";
     // name organization, taxation system
     public static final String MEDIUM_NAME_REGEX = "[\\s\\S]{0,128}";
     // product name
@@ -20,9 +20,9 @@ public abstract class RegexPattern {
     // amount
     public static final String DECIMAL_WITH_THREE_DIGITS_AFTER_POINT_REGEX = "-?\\d+\\.?\\d{0,3}[0]*";
     // organization tax id number
-    public static final String BIG_INT_REGEX = "[\\d]{0,19}";
+    public static final String BIG_INT_REGEX = "[\\d]{0,18}";
     // barcode
-    public static final String BARCODE_REGEX = "[\\S]{0,128}"; // TODO modifier this
+    public static final String BARCODE_REGEX = "[\\S]{4,128}"; // TODO modifier this
 
     public static final Pattern SHORT_NAME_PATTERN = Pattern.compile(SHORT_NAME_REGEX);
     public static final Pattern PASSWORD_PATTERN = Pattern.compile(PASSWORD_REGEX);

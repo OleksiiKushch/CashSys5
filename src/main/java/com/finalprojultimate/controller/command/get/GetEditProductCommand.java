@@ -21,9 +21,19 @@ public class GetEditProductCommand implements Command {
     private final ProductService productService = ProductServiceImpl.getInstance();
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String productId = request.getParameter(PRODUCT_ID);
-        Product product = productService.getById(Integer.parseInt(productId));
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        String strProductId = request.getParameter(PRODUCT_ID);
+        Integer productId;
+        if (!strProductId.isEmpty()) {
+            productId = Integer.parseInt(strProductId);
+        } else {
+            productId = (Integer) request.getSession().getAttribute(PRODUCT_ID);
+        }
+
+        ProductService productService = ProductServiceImpl.getInstance();
+        Product product = productService.getById(productId);
+        request.getSession().setAttribute(PRODUCT_ID, productId);
         request.setAttribute(PRODUCT, product);
         return EDIT_PRODUCT_PAGE;
     }

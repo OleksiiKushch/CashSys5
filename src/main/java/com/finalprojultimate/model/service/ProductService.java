@@ -1,6 +1,7 @@
 package com.finalprojultimate.model.service;
 
 import com.finalprojultimate.model.entity.product.Product;
+import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.service.util.ReportBestProductByCountReceipt;
 
 import java.util.List;

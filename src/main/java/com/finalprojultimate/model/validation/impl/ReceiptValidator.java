@@ -1,5 +1,6 @@
 package com.finalprojultimate.model.validation.impl;
 
+import com.finalprojultimate.model.validation.NullChecker;
 import com.finalprojultimate.model.validation.StringExtractorBasedOnBool;
 import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.model.entity.receipt.Receipt;
@@ -16,23 +17,38 @@ public class ReceiptValidator implements Validator<Receipt> {
     private static final Logger logger = Logger.getLogger(ReceiptValidator.class);
 
     private final StringExtractorBasedOnBool extractor = (isPositive, msg) -> isPositive ? msg : null;
+    private final NullChecker<String> nullChecker = (input) -> input == null || input.isEmpty();
 
+    private boolean isNotEmptyReceiptChange;
     private boolean isValidReceiptChange;
     private boolean isUnsignedReceiptChange;
+    private boolean isNotEmptyPayment;
 
+    private final List<Boolean> checks;
+    private final List<String> messages;
     private final List<Boolean> checksValidation;
     private final List<String> messagesValidation;
 
     public ReceiptValidator() {
+        checks = new ArrayList<>();
+        messages = new ArrayList<>();
         checksValidation = new ArrayList<>();
         messagesValidation = new ArrayList<>();
     }
 
     @Override
     public boolean isValid(Receipt receipt) {
-        isValidReceiptChange = isValidReceiptChange(receipt.getChange());
-        isUnsignedReceiptChange = isUnsignedBigDecimal(receipt.getChange());
-        return isValidReceiptChange && isUnsignedReceiptChange;
+        if (receipt.getChange() == null) {
+            isNotEmptyReceiptChange = false;
+            isValidReceiptChange = true;
+            isUnsignedReceiptChange = true;
+        } else {
+            isNotEmptyReceiptChange = !nullChecker.isEmpty(receipt.getChange().toString());
+            isValidReceiptChange = isValidReceiptChange(receipt.getChange());
+            isUnsignedReceiptChange = isUnsignedBigDecimal(receipt.getChange());
+        }
+        isNotEmptyPayment = receipt.getPayment() != null;
+        return isNotEmptyReceiptChange && isValidReceiptChange && isUnsignedReceiptChange && isNotEmptyPayment;
     }
 
     private boolean isValidReceiptChange(BigDecimal change) {
@@ -41,7 +57,20 @@ public class ReceiptValidator implements Validator<Receipt> {
 
     @Override
     public List<String> getErrorMessages() {
-        return null;
+        setChecks();
+        setMessages();
+
+        return getErrorMessages(extractor, checks, messages);
+    }
+
+    private void setChecks() {
+        checks.add(isNotEmptyReceiptChange);
+        checks.add(isNotEmptyPayment);
+    }
+
+    private void setMessages() {
+        messages.add(ERROR_EMPTY_RECEIPT_CHANGE);
+        messages.add(ERROR_EMPTY_PAYMENT);
     }
 
     @Override

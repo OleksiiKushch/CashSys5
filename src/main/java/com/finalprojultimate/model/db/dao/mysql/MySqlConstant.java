@@ -65,7 +65,7 @@ public abstract class MySqlConstant {
     static class ProductQuery {
         public static final String CREATE_PRODUCT = "INSERT INTO product (id, `name`, price, amount, barcode, unit_id) " +
                 "VALUES (DEFAULT, ?, ?, ?, ?, ?)";
-        public static final String UPDATE_PRODUCT = "UPDATE product " +
+        public static final String UPDATE_PRODUCT_BY_ID = "UPDATE product " +
                 "SET `name` = ?, price = ?, amount = ?, barcode = ?, unit_id = ? " +
                 "WHERE id = ?";
         public static final String DELETE_PRODUCT_BY_ID = "DELETE FROM product WHERE id = ?";
@@ -94,7 +94,7 @@ public abstract class MySqlConstant {
     static class UserQuery {
         public static final String CREATE_USER = "INSERT INTO `user` (id, email, first_name, middle_name, last_name, passhash, role_id) " +
                 "VALUES (DEFAULT, ?, ?, ?, ?, ?, ?)";
-        public static final String UPDATE_USER = "UPDATE `user` " +
+        public static final String UPDATE_USER_BY_ID = "UPDATE `user` " +
                 "SET email = ?, first_name = ?, middle_name = ?, last_name = ?, passhash = ?, role_id = ? " +
                 "WHERE id = ?";
         public static final String DELETE_USER_BY_ID = "DELETE FROM `user` WHERE id = ?";
@@ -118,7 +118,7 @@ public abstract class MySqlConstant {
     static class ReceiptQuery {
         public static final String CREATE_RECEIPT = "INSERT INTO receipt (id, date_time, `change`, payment_id, user_id, status_id) " +
                 "VALUES (DEFAULT, now(), ?, ?, ?, ?)";
-        public static final String UPDATE_RECEIPT = "UPDATE receipt " +
+        public static final String UPDATE_RECEIPT_BY_ID = "UPDATE receipt " +
                 "SET `change` = ?, payment_id = ?, user_id = ?, status_id = ? " +
                 "WHERE id = ?";
         public static final String DELETE_RECEIPT_BY_ID = "DELETE FROM receipt WHERE id = ?";
@@ -127,6 +127,10 @@ public abstract class MySqlConstant {
         public static final String FIND_RECEIPTS_SORT_BY_NONE = "SELECT * FROM receipt LIMIT ? OFFSET ?";
         public static final String FIND_RECEIPTS_SORT_BY_DATE_TIME = "SELECT * FROM receipt ORDER BY date_time DESC LIMIT ? OFFSET ?";
         public static final String GET_COUNT_OF_RECEIPTS = "SELECT COUNT(*) FROM receipt";
+        public static final String FIND_RECEIPTS_CONTAIN_PRODUCT = "SELECT receipt.id, receipt.date_time, receipt.`change`, " +
+                "receipt.payment_id, receipt.user_id, receipt.user_id, receipt.status_id FROM receipt " +
+                "JOIN receipt_has_product on receipt.id = receipt_has_product.receipt_id " +
+                "WHERE product_id = ?";
         public static final String INSERT_RECEIPT_HAS_PRODUCT = "INSERT INTO receipt_has_product (receipt_id, product_id, price, amount) " +
                 "VALUES (?, ?, ?, ?)";
         public static final String GET_GLOBAL_RECEIPT_PROPERTIES = "SELECT * FROM global_receipt_properties";

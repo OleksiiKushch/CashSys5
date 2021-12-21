@@ -12,7 +12,7 @@
 <%@ page import="com.finalprojultimate.util.Command" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="security" uri="http://com.finalprojultimate/model/tag/TagSecurity" %>
+<%@ taglib prefix="roleSecurity" uri="http://com.finalprojultimate/model/view/tag/processing/TagRoleSecurity" %>
 
 <%-- set the locale --%>
 <fmt:setLocale value="${sessionScope[Attribute.LOCALE]}"/>

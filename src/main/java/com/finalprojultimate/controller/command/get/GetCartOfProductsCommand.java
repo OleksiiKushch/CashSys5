@@ -20,7 +20,8 @@ public class GetCartOfProductsCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetCartOfProductsCommand.class);
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         Cart cart = (Cart) request.getSession().getAttribute(CART);
         Collection<Product> products = cart.getContainer().values();
 

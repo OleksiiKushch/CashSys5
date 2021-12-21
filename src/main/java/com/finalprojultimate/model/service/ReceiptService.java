@@ -15,6 +15,7 @@ public interface ReceiptService {
     Receipt createReject(int rootReceiptId, Receipt receipt, List<Product> products, List<BigDecimal> amounts);
     List<Receipt> getForPagination(int offset, int limit);
     List<Receipt> getForPaginationSortByParameter(String sortParameter, int offset, int limit);
+    List<Receipt> findReceiptsContainProduct(Product product);
     int getCount();
     ReceiptDetails getGlobalReceiptProperties();
     void setGlobalReceiptProperties(ReceiptDetails receiptProperties);

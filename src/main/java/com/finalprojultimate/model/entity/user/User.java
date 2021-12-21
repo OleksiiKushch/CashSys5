@@ -3,6 +3,12 @@ package com.finalprojultimate.model.entity.user;
 import com.finalprojultimate.model.entity.Entity;
 import org.apache.commons.validator.routines.EmailValidator;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.finalprojultimate.util.Parameter.*;
+
 public class User extends Entity {
     private static final long serialVersionUID = 5222693753031074609L;
 
@@ -74,6 +80,22 @@ public class User extends Entity {
 
     public String getFormattedName() {
         return lastName + " " + firstName.charAt(0) + "." + middleName.charAt(0) + ".";
+    }
+
+    public static List<String> getListStrFormatParameters() {
+        return new ArrayList<>(Arrays.asList(EMAIL, FIRST_NAME, MIDDLE_NAME, LAST_NAME, PASSWORD, ROLE));
+    }
+
+    public static User mapUser(List<String> listStrFormatAttributes) {
+        User result = new User();
+        int i = -1;
+        result.setEmail(listStrFormatAttributes.get(++i));
+        result.setFirstName(listStrFormatAttributes.get(++i));
+        result.setMiddleName(listStrFormatAttributes.get(++i));
+        result.setLastName(listStrFormatAttributes.get(++i));
+        result.setPassHash(listStrFormatAttributes.get(++i));
+        result.setRole(Role.getByName(listStrFormatAttributes.get(++i)));
+        return result;
     }
 
     @Override

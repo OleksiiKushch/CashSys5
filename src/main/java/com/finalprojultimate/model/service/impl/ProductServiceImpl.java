@@ -5,8 +5,12 @@ import com.finalprojultimate.model.db.dao.connection.PoolConnectionBuilder;
 import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.util.DAOConstants;
 import com.finalprojultimate.model.entity.product.Product;
+import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.service.ProductService;
+import com.finalprojultimate.model.service.ReceiptService;
+import com.finalprojultimate.model.service.exception.ServiceException;
 import com.finalprojultimate.model.service.util.ReportBestProductByCountReceipt;
+import com.finalprojultimate.util.MessageKey;
 import org.apache.log4j.Logger;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,6 +21,13 @@ import static com.finalprojultimate.util.Parameter.*;
 
 public class ProductServiceImpl implements ProductService {
     private static final Logger logger = Logger.getLogger(ProductServiceImpl.class);
+
+    private static final String LOGGER_PRODUCT_WITH_THIS_BARCODE_ALREADY_EXISTS =
+            "Creating product failed : product with this barcode already exists in the system" +
+                    " - BARCODE : %s";
+    private static final String LOGGER_PRODUCT_CONTAINED_IN_RECEIPTS =
+            "Deleting product failed : this product is contained in some receipts in the system" +
+                    " - PRODUCT ID : %d";
 
     private final ProductDAO productDAO;
 
@@ -48,7 +59,14 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void create(Product product) {
-        productDAO.insert(product);
+        if (productDAO.findProductsByBarcode(product.getBarcode()).isEmpty()) {
+            productDAO.insert(product);
+        } else {
+            throw new ServiceException()
+                    .addMessage(MessageKey.ERROR_PRODUCT_ALREADY_EXISTS)
+                    .addLogMessage(String.format(LOGGER_PRODUCT_WITH_THIS_BARCODE_ALREADY_EXISTS, product.getBarcode()))
+                    .setClassThrowsException(ProductServiceImpl.class);
+        }
     }
 
     @Override
@@ -58,12 +76,29 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void update(Product product) {
-        productDAO.update(product);
+        String oldBarcode = productDAO.getById(product.getId()).getBarcode();
+        if (oldBarcode.equals(product.getBarcode()) ||
+                productDAO.findProductsByBarcode(product.getBarcode()).isEmpty()) {
+            productDAO.update(product);
+        } else {
+            throw new ServiceException()
+                    .addMessage(MessageKey.ERROR_BARCODE_ALREADY_TAKEN)
+                    .addLogMessage(String.format(LOGGER_PRODUCT_WITH_THIS_BARCODE_ALREADY_EXISTS, product.getBarcode()))
+                    .setClassThrowsException(ProductServiceImpl.class);
+        }
     }
 
     @Override
     public void delete(Product product) {
-        productDAO.delete(product);
+        ReceiptService receiptService = ReceiptServiceImpl.getInstance();
+        if (receiptService.findReceiptsContainProduct(product).size() == 0) {
+            productDAO.delete(product);
+        } else {
+            throw new ServiceException()
+                    .addMessage(MessageKey.ERROR_PRODUCT_CONTAINED_IN_RECEIPTS)
+                    .addLogMessage(String.format(LOGGER_PRODUCT_CONTAINED_IN_RECEIPTS, product.getId()))
+                    .setClassThrowsException(ProductServiceImpl.class);
+        }
     }
 
     @Override

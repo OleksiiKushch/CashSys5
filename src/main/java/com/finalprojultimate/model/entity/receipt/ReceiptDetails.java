@@ -1,7 +1,15 @@
 package com.finalprojultimate.model.entity.receipt;
 
+import com.finalprojultimate.model.entity.product.Product;
+import com.finalprojultimate.model.entity.product.Unit;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static com.finalprojultimate.util.Parameter.*;
 
 public class ReceiptDetails implements Serializable {
     private static final long serialVersionUID = -36002671907753256L;
@@ -72,6 +80,27 @@ public class ReceiptDetails implements Serializable {
 
     public void setTaxationSys(String taxationSys) {
         this.taxationSys = taxationSys;
+    }
+
+    public static List<String> getListStrFormatParametersGlobalReceiptProperties() {
+        return new ArrayList<>(Arrays.asList(ORGANIZATION_TAX_ID_NUMBER, NAME_ORGANIZATION,
+                ADDRESS_TRADE_POINT, VAT, TAXATION_SYS));
+    }
+
+    public static ReceiptDetails mapGlobalReceiptProperties(List<String> listStrFormatAttributes) {
+        ReceiptDetails result = new ReceiptDetails();
+        int i = -1;
+        ++i;
+        if (!listStrFormatAttributes.get(i).isEmpty() && !(listStrFormatAttributes.get(i).length() > 18)) { // organization tax id number
+            result.setOrganizationTaxIdNumber(Long.parseLong(listStrFormatAttributes.get(i)));
+        }
+        result.setNameOrganization(listStrFormatAttributes.get(++i));
+        result.setAddressTradePoint(listStrFormatAttributes.get(++i));
+        if (!listStrFormatAttributes.get(++i).isEmpty()) { // vat
+            result.setVat(new BigDecimal(listStrFormatAttributes.get(i)));
+        }
+        result.setTaxationSys(listStrFormatAttributes.get(++i));
+        return result;
     }
 
     @Override

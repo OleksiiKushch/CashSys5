@@ -10,7 +10,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class PoolConnectionBuilder implements ConnectionBuilder {
-
     private static final Logger logger = Logger.getLogger(PoolConnectionBuilder.class);
 
     private static DataSource dataSource;

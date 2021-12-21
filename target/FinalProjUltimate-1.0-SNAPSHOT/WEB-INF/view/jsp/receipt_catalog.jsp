@@ -3,8 +3,8 @@
 <%@ page import="com.finalprojultimate.util.Attribute" %>
 <%@ page import="com.finalprojultimate.util.Parameter" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="formattedUserName" uri="http://com.finalprojultimate/model/tag/TagFormattedUserName" %>
-<%@ taglib prefix="totalReceiptSum" uri="http://com.finalprojultimate/model/tag/TagTotalReceiptSum" %>
+<%@ taglib prefix="formatUserName" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedUserName" %>
+<%@ taglib prefix="totalReceiptSum" uri="http://com.finalprojultimate/model/view/tag/supplying/TagTotalReceiptSum" %>
 
 <html>
 <head>
@@ -23,7 +23,7 @@
 <c:set var="logged_user" value="${sessionScope[Attribute.LOGGED_USER]}"/>
 <c:set var="page_count" value="${requestScope[Attribute.PAGE_COUNT]}"/>
 <c:set var="page_size" value="${requestScope[Attribute.PAGE_SIZE]}"/>
-<c:set var="page" value="${requestScope[Attribute.PAGE]}"/>min_possible_page
+<c:set var="page" value="${requestScope[Attribute.PAGE]}"/>
 <c:set var="min_possible_page" value="${requestScope[Attribute.MIN_POSSIBLE_PAGE]}"/>
 <c:set var="max_possible_page" value="${requestScope[Attribute.MAX_POSSIBLE_PAGE]}"/>
 
@@ -31,7 +31,7 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
+<roleSecurity:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container-fluid">
     <h1 class="mt-4"><fmt:message key="receipt_catalog.receipt.catalog.text"/></h1>
@@ -154,7 +154,7 @@
         <c:forEach var="receipt" items="${requestScope.paginate_receipts}">
             <tr>
                 <th class="col-md-1" scope="row">${receipt.id}</th>
-                <td>(${receipt.userId}) <formattedUserName:get userId="${receipt.userId}" /></td>
+                <td>(${receipt.userId}) <formatUserName:get userId="${receipt.userId}" /></td>
                 <td class="col-md-2">${receipt.dateTime}</td>
                 <td class="col-md-1"><totalReceiptSum:get receiptId="${receipt.id}" /></td>
                 <td class="col-md-1">${receipt.change}</td>

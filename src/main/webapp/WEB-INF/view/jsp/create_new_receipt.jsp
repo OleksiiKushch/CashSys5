@@ -4,8 +4,10 @@
 <%@ page import="com.finalprojultimate.util.Parameter" %>
 <%@ page import="com.finalprojultimate.util.Path" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="amount" uri="http://com.finalprojultimate/model/tag/TagAmount" %>
-<%@ taglib prefix="price" uri="http://com.finalprojultimate/model/tag/TagPrice" %>
+<%@ taglib prefix="formatAmount" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedAmount" %>
+<%@ taglib prefix="formatPrice" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedPrice" %>
+<%@ taglib prefix="formatBarcodeLen" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedBarcodeLength" %>
+<%@ taglib prefix="formatProductNameLen" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedProductNameLength" %>
 
 <html>
 <head>
@@ -15,6 +17,8 @@
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/style/css/custom/scrollable.table.css">
 
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+            integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
@@ -30,7 +34,7 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="${Role.CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
+<roleSecurity:check role="${Role.CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container">
 
@@ -87,11 +91,11 @@
                     <c:forEach var="product" items="${requestScope.products_found}">
                         <tr>
                             <th class="col-md-1" scope="row">${product.id}</th>
-                            <td class="col-md-3">${product.name}</td>
+                            <td class="col-md-3"><formatProductNameLen:get productName="${product.name}" length="40" /></td>
                             <td class="col-md-1">${product.price}</td>
-                            <td class="col-md-2"><amount:get amount="${product.amount}" unit="${product.unit}" />
+                            <td class="col-md-2"><formatAmount:get amount="${product.amount}" unit="${product.unit}" />
                                 <fmt:message key="${product.unit.message}"/></td>
-                            <td class="col-md-2">${product.barcode}</td>
+                            <td class="col-md-2"><formatBarcodeLen:get barcode="${product.barcode}" /></td>
                             <td class="col-md-3">
                                 <form class="was-validated mb-0" method="get" action="${Path.APP_CONTEXT}${Path.CONTROLLER}">
                                     <input name="${Path.COMMAND}" value="${Command.ADD_PRODUCT_TO_CART}" type="hidden">
@@ -116,7 +120,7 @@
 
         <div class="card-footer">
             <h4><fmt:message key="create_new_receipt.sum.text"/>
-                <price:get price="${cart.sum}" /></h4>
+                <formatPrice:get price="${cart.sum}" /></h4>
         </div>
     </div>
 
@@ -158,6 +162,15 @@
             </div>
         </div>
         <div class="p-2 mx-2">
+
+            <div class="container mt-2 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <%@ include file="/WEB-INF/view/jsp/template/error_messages.jsp" %>
+                    </div>
+                </div>
+            </div>
+
             <button type="submit" class="mb-5 btn btn-primary btn-lg float-right"
                     :disabled="${cart.container.isEmpty()} || paid - ${cart.sum} < 0">
                 <fmt:message key="create_new_receipt.create.text"/>

@@ -19,7 +19,7 @@ public class ReceiptPropertiesValidator implements Validator<ReceiptDetails> {
 
     private boolean isNotEmptyOrganizationTaxIdNumber;
     private boolean isValidOrganizationTaxIdNumber;
-    private boolean isUnsignedOrganizationTaxIdNumber;
+    private boolean isUnsignedAndIsNotZeroOrganizationTaxIdNumber;
     private boolean isNotEmptyNameOrganization;
     private boolean isValidNameOrganization;
     private boolean isNotEmptyAddressTradePoint;
@@ -50,18 +50,26 @@ public class ReceiptPropertiesValidator implements Validator<ReceiptDetails> {
                 .isEmpty(String.valueOf(receiptProperties.getOrganizationTaxIdNumber()));
         isValidOrganizationTaxIdNumber =
                 isValidOrganizationTaxIdNumber(String.valueOf(receiptProperties.getOrganizationTaxIdNumber()));
-        isUnsignedOrganizationTaxIdNumber = isUnsignedLong(receiptProperties.getOrganizationTaxIdNumber());
+        isUnsignedAndIsNotZeroOrganizationTaxIdNumber =
+                isUnsignedAndIsNotZeroOrganizationTaxIdNumber(receiptProperties.getOrganizationTaxIdNumber());
         isNotEmptyNameOrganization = !nullChecker.isEmpty(receiptProperties.getNameOrganization());
         isValidNameOrganization = isValidNameOrganization(receiptProperties.getNameOrganization());
         isNotEmptyAddressTradePoint = !nullChecker.isEmpty(receiptProperties.getAddressTradePoint());
         isValidAddressTradePoint = isValidAddressTradePoint(receiptProperties.getAddressTradePoint());
-        isNotEmptyVat = !nullChecker.isEmpty(receiptProperties.getVat().toString());
-        isValidVat = isValidVat(receiptProperties.getVat());
-        isUnsignedVat = isUnsignedBigDecimal(receiptProperties.getVat());
+        if (receiptProperties.getVat() == null) {
+            isNotEmptyVat = false;
+            isValidVat = true;
+            isUnsignedVat = true;
+        } else {
+            isNotEmptyVat = !nullChecker.isEmpty(receiptProperties.getVat().toString());
+            isValidVat = isValidVat(receiptProperties.getVat());
+            isUnsignedVat = isUnsignedBigDecimal(receiptProperties.getVat());
+        }
         isNotEmptyTaxationSys = !nullChecker.isEmpty(receiptProperties.getTaxationSys());
         isValidTaxationSys = isValidTaxationSys(receiptProperties.getTaxationSys());
 
-        return isNotEmptyOrganizationTaxIdNumber && isValidOrganizationTaxIdNumber && isUnsignedOrganizationTaxIdNumber &&
+        return isNotEmptyOrganizationTaxIdNumber && isValidOrganizationTaxIdNumber &&
+                isUnsignedAndIsNotZeroOrganizationTaxIdNumber &&
                 isNotEmptyNameOrganization && isValidNameOrganization &&
                 isNotEmptyAddressTradePoint && isValidAddressTradePoint &&
                 isNotEmptyVat && isValidVat && isUnsignedVat &&
@@ -88,8 +96,8 @@ public class ReceiptPropertiesValidator implements Validator<ReceiptDetails> {
         return MEDIUM_NAME_PATTERN.matcher(taxationSys).matches();
     }
 
-    private boolean isUnsignedLong(long value) {
-        return value >= 0;
+    private boolean isUnsignedAndIsNotZeroOrganizationTaxIdNumber(long value) {
+        return value > 0;
     }
 
     @Override
@@ -125,7 +133,7 @@ public class ReceiptPropertiesValidator implements Validator<ReceiptDetails> {
 
     private void setChecksValidation() {
         checksValidation.add(isValidOrganizationTaxIdNumber);
-        checksValidation.add(isUnsignedOrganizationTaxIdNumber);
+        checksValidation.add(isUnsignedAndIsNotZeroOrganizationTaxIdNumber);
         checksValidation.add(isValidNameOrganization);
         checksValidation.add(isValidAddressTradePoint);
         checksValidation.add(isValidVat);
@@ -134,7 +142,7 @@ public class ReceiptPropertiesValidator implements Validator<ReceiptDetails> {
     }
     private void setMessagesValidation() {
         messagesValidation.add(ERROR_WRONG_ORGANIZATION_TAX_ID_NUMBER);
-        messagesValidation.add(ERROR_SINGED_ORGANIZATION_TAX_ID_NUMBER);
+        messagesValidation.add(ERROR_WRONG_SINGED_OR_ZERO_ORGANIZATION_TAX_ID_NUMBER);
         messagesValidation.add(ERROR_WRONG_NAME_ORGANIZATION);
         messagesValidation.add(ERROR_WRONG_ADDRESS_TRADE_POINT);
         messagesValidation.add(ERROR_WRONG_VAT);

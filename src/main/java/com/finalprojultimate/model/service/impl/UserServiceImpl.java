@@ -23,8 +23,11 @@ public class UserServiceImpl implements UserService {
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     private static final String LOGGER_NO_SUCH_LOGIN_OR_PASSWORD =
-            "Login failed : no such login or password in the database" +
-                    " - LOGIN : %s";
+            "Login failed : no such e-mail or password in the database" +
+                    " - E-MAIL : %s";
+    private static final String LOGGER_ACCOUNT_WITH_THIS_EMAIL_ALREADY_EXISTS =
+            "Registration failed : account with this e-mail already exists in the system" +
+                    " - E-MAIL : %s";
 
     private final UserDAO userDAO;
 
@@ -56,16 +59,24 @@ public class UserServiceImpl implements UserService {
         if (result == null || !encryptor.checkPassword(loginData.getPassword(), result.getPassHash())) {
             throw new ServiceException()
                     .addMessage(MessageKey.ERROR_INCORRECT_LOGIN_DATA)
-                    .addLogMessage(String.format(LOGGER_NO_SUCH_LOGIN_OR_PASSWORD,loginData.getEmail()))
+                    .addLogMessage(String.format(LOGGER_NO_SUCH_LOGIN_OR_PASSWORD, loginData.getEmail()))
                     .setClassThrowsException(UserServiceImpl.class);
         }
         return result;
     }
 
+    // registration
     @Override
     public void create(User user) {
-        user.setPassHash(encryptUserPassword(user.getPassHash()));
-        userDAO.insert(user);
+        if (userDAO.getUserByEmail(user.getEmail()) == null) {
+            user.setPassHash(encryptUserPassword(user.getPassHash()));
+            userDAO.insert(user);
+        } else {
+            throw new ServiceException()
+                    .addMessage(MessageKey.ERROR_ACCOUNT_ALREADY_EXISTS)
+                    .addLogMessage(String.format(LOGGER_ACCOUNT_WITH_THIS_EMAIL_ALREADY_EXISTS, user.getEmail()))
+                    .setClassThrowsException(UserServiceImpl.class);
+        }
     }
 
     @Override

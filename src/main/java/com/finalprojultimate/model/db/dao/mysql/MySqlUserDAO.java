@@ -62,7 +62,7 @@ public class MySqlUserDAO implements UserDAO {
     @Override
     public int update(User user) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(UPDATE_USER)) {
+             PreparedStatement ps = con.prepareStatement(UPDATE_USER_BY_ID)) {
             mapUser(ps, user);
             ps.setInt(7, user.getId());
             return ps.executeUpdate();

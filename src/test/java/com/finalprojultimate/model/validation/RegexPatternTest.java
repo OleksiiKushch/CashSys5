@@ -16,7 +16,7 @@ public class RegexPatternTest {
                 .matches());
 
         assertTrue(PASSWORD_PATTERN.matcher("1q2w").matches());
-        assertTrue(PASSWORD_PATTERN.matcher("1q 2w").matches());
+        assertFalse(PASSWORD_PATTERN.matcher("1q 2w").matches());
         assertFalse(PASSWORD_PATTERN.matcher("123").matches());
         assertFalse(PASSWORD_PATTERN.matcher("123123123123123123123123").matches());
 
@@ -59,7 +59,7 @@ public class RegexPatternTest {
         assertFalse(DECIMAL_WITH_THREE_DIGITS_AFTER_POINT_PATTERN.matcher("--12.2").matches());
 
         assertTrue(BIG_INT_PATTERN.matcher("123").matches());
-        assertTrue(BIG_INT_PATTERN.matcher("1231231231231231231").matches());
+        assertTrue(BIG_INT_PATTERN.matcher("123123123123123123").matches());
         assertFalse(BIG_INT_PATTERN.matcher("12312312312312312312").matches());
 
         assertTrue(BARCODE_PATTERN.matcher("1231231231231").matches());

@@ -54,7 +54,7 @@
                 <div class="col mb-3">
                     <label for="inputRole" class="form-label"><fmt:message key="my_profile.role.text"/></label>
                     <input type="text" class="form-control" id="inputRole" name="${Parameter.ROLE}"
-                           value="${logged_user.role.getName()}" disabled>
+                           value="<fmt:message key="${logged_user.role.message}"/>" disabled>
                 </div>
 
 

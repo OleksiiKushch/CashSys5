@@ -21,13 +21,13 @@ import static com.finalprojultimate.util.Parameter.RECEIPT_ID;
 public class GetSeeReceiptDetailsCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetSeeReceiptDetailsCommand.class);
 
-    private final ReceiptService receiptService = ReceiptServiceImpl.getInstance();
-
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String receiptId = request.getParameter(RECEIPT_ID);
         int id = Integer.parseInt(receiptId);
 
+        ReceiptService receiptService = ReceiptServiceImpl.getInstance();
         List<Product> products = receiptService.getProductsByReceiptId(id);
         Receipt receipt = receiptService.getById(id);
         ReceiptDetails receiptDetails = receiptService.getReceiptDetails(id);

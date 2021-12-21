@@ -18,7 +18,7 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="${Role.COMMODITY_EXPERT.name}" loggedUserRole="${logged_user.role.name}" />
+<roleSecurity:check role="${Role.COMMODITY_EXPERT.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container">
     <div class="jumbotron mt-3">

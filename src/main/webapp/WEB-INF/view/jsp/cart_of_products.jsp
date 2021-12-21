@@ -5,9 +5,10 @@
 <%@ page import="com.finalprojultimate.util.Path" %>
 <%@ page import="com.finalprojultimate.util.Command" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="totalSum" uri="http://com.finalprojultimate/model/tag/TagTotalSum" %>
-<%@ taglib prefix="amount" uri="http://com.finalprojultimate/model/tag/TagAmount" %>
-<%@ taglib prefix="price" uri="http://com.finalprojultimate/model/tag/TagPrice" %>
+<%@ taglib prefix="totalSum" uri="http://com.finalprojultimate/model/view/tag/processing/TagTotalSum" %>
+<%@ taglib prefix="formatAmount" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedAmount" %>
+<%@ taglib prefix="formatPrice" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedPrice" %>
+<%@ taglib prefix="formatProductNameLen" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedProductNameLength" %>
 
 <html>
 <head>
@@ -31,7 +32,7 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="${Role.CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
+<roleSecurity:check role="${Role.CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container-fluid">
     <h1 class="mt-4"><fmt:message key="cart_of_products.list.of.added.products.text"/></h1>
@@ -52,10 +53,10 @@
         <c:forEach var="product" items="${requestScope.products}">
             <tr>
                 <th class="col-md-1" scope="row">${product.id}</th>
-                <td>${product.name}</td>
+                <td><formatProductNameLen:get productName="${product.name}" length="80" /></td>
                 <td class="col-md-1"><totalSum:get price="${product.price}" amount="${product.amount}" /></td>
                 <td class="col-md-1">${product.price}</td>
-                <td class="col-md-2"><amount:get amount="${product.amount}" unit="${product.unit}" />
+                <td class="col-md-2"><formatAmount:get amount="${product.amount}" unit="${product.unit}" />
                     <fmt:message key="${product.unit.message}"/></td>
                 <td class="col-md-1">${product.barcode}</td>
                 <td class="col-md-1">
@@ -70,7 +71,7 @@
         </tbody>
     </table>
     <div class="p-2 mx-2">
-        <h4 class="float-left"><fmt:message key="cart_of_products.sum.with.colon.text"/> <price:get price="${cart.sum}" /></h4>
+        <h4 class="float-left"><fmt:message key="cart_of_products.sum.with.colon.text"/> <formatPrice:get price="${cart.sum}" /></h4>
         <a href="${Path.CREATE_NEW_RECEIPT}" type="submit" class="mb-5 btn btn-primary float-right">
             <fmt:message key="cart_of_products.come.back.to.receipt.creation.form.text"/>
         </a>

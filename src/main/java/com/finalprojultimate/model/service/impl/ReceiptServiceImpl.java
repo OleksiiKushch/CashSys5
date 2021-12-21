@@ -92,6 +92,11 @@ public class ReceiptServiceImpl implements ReceiptService {
     }
 
     @Override
+    public List<Receipt> findReceiptsContainProduct(Product product) {
+        return receiptDAO.findReceiptsContainProduct(product);
+    }
+
+    @Override
     public int getCount() {
         return receiptDAO.getCountOfReceipts();
     }

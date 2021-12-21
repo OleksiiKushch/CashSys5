@@ -1,6 +1,9 @@
 package com.finalprojultimate.controller.command.post;
 
 import com.finalprojultimate.controller.command.AbstractCommandWrapper;
+import com.finalprojultimate.controller.writer.RequestAttributeWriter;
+import com.finalprojultimate.model.service.exception.ServiceException;
+import com.finalprojultimate.model.service.impl.UserServiceImpl;
 import com.finalprojultimate.model.validation.impl.ReceiptValidator;
 import com.finalprojultimate.model.validation.Validator;
 import com.finalprojultimate.model.entity.receipt.Payment;
@@ -10,6 +13,7 @@ import com.finalprojultimate.model.entity.user.User;
 import com.finalprojultimate.model.service.ReceiptService;
 import com.finalprojultimate.model.service.impl.ReceiptServiceImpl;
 import com.finalprojultimate.model.service.util.Cart;
+import com.finalprojultimate.util.MessageKey;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,8 +24,8 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static com.finalprojultimate.util.Attribute.*;
-import static com.finalprojultimate.util.Page.CREATE_NEW_RECEIPT_PAGE;
-import static com.finalprojultimate.util.Page.INTERNAL_SERVER_ERROR_PAGE;
+import static com.finalprojultimate.util.MessageKey.ERROR_INCORRECT_OR_EMPTY_NUMBER_FIELD;
+import static com.finalprojultimate.util.Page.*;
 import static com.finalprojultimate.util.Parameter.*;
 import static com.finalprojultimate.util.Command.REDIRECTED;
 import static com.finalprojultimate.util.Command.CONTROLLER;
@@ -31,25 +35,35 @@ import static com.finalprojultimate.util.Path.*;
 public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt> {
     private static final Logger logger = Logger.getLogger(PostCreateNewReceiptCommand.class);
     private static final String RECEIPT_CREATE = "New receipt create successfully!";
-
-    private final ReceiptService receiptService = ReceiptServiceImpl.getInstance();
-
-    private final Validator<Receipt> validator = new ReceiptValidator();
+    private static final String LOGGER_RECEIPT_CANNOT_BE_EMPTY
+            = "Creating new receipt failed : receipt cannot be empty (do not contain products)";
 
     public PostCreateNewReceiptCommand() {
         super(INTERNAL_SERVER_ERROR_PAGE);
-    } // TODO ?
+    }
 
     @Override
-    protected String performExecute(HttpServletRequest request, HttpServletResponse response)
-            throws IOException {
-        Receipt receipt = getDataFromRequest(request);
+    protected String performExecute(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        RequestAttributeWriter attributeWriter = new RequestAttributeWriter(request);
 
-        if(!validator.isValid(receipt)){
-            extractAndWriteErrorMessagesToRequest(request);
+        Receipt receipt;
+        try {
+            receipt = getDataFromRequest(request);
+        } catch (ServiceException e) {
+            extractAndWriteErrorMessages(attributeWriter, e.getMessage());
+            return CREATE_NEW_RECEIPT_PAGE;
+        } catch (NumberFormatException e) {
+            attributeWriter.writeToRequest(ERROR_MESSAGES, ERROR_INCORRECT_OR_EMPTY_NUMBER_FIELD);
             return CREATE_NEW_RECEIPT_PAGE;
         }
 
+        Validator<Receipt> validator = new ReceiptValidator();
+        if(!validator.isValid(receipt)){
+            extractAndWriteErrorMessagesFromValidator(attributeWriter, validator);
+            return CREATE_NEW_RECEIPT_PAGE;
+        }
+
+        ReceiptService receiptService = ReceiptServiceImpl.getInstance();
         // transaction
         receiptService.create(receipt, (Cart) request.getSession().getAttribute(CART));
 
@@ -65,6 +79,12 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
     protected Receipt getDataFromRequest(HttpServletRequest request) {
         HttpSession session = request.getSession();
         Cart cart = (Cart) session.getAttribute(CART);
+        if (cart.getContainer().isEmpty()) {
+            throw new ServiceException()
+                    .addMessage(MessageKey.ERROR_CART_IS_EMPTY)
+                    .addLogMessage(LOGGER_RECEIPT_CANNOT_BE_EMPTY)
+                    .setClassThrowsException(PostCreateNewReceiptCommand.class);
+        }
         BigDecimal sum = cart.getSum();
 
         String strPaid = request.getParameter(PAID);
@@ -89,13 +109,5 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
 
     private BigDecimal getChange(BigDecimal paid, BigDecimal sum) {
         return paid.subtract(sum);
-    }
-
-    private void extractAndWriteErrorMessagesToRequest(HttpServletRequest request) {
-        List<String> errorMessages = validator.getErrorMessages();
-        List<String> errorValidationMessages =
-                validator.getErrorValidationMessages();
-        request.setAttribute(ERROR_MESSAGES, errorMessages);
-        request.setAttribute(ERROR_VALIDATION_MESSAGES, errorValidationMessages);
     }
 }

@@ -3,9 +3,10 @@
 <%@ page import="com.finalprojultimate.util.Attribute" %>
 <%@ page import="com.finalprojultimate.util.Path" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ taglib prefix="amount" uri="http://com.finalprojultimate/model/tag/TagAmount" %>
-<%@ taglib prefix="price" uri="http://com.finalprojultimate/model/tag/TagPrice" %>
-
+<%@ taglib prefix="formatAmount" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedAmount" %>
+<%@ taglib prefix="formatPrice" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedPrice" %>
+<%@ taglib prefix="formatBarcodeLen" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedBarcodeLength" %>
+<%@ taglib prefix="formatProductNameLen" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedProductNameLength" %>
 
 <html>
 <head>
@@ -22,7 +23,7 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
+<roleSecurity:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container">
 
@@ -44,13 +45,13 @@
             <c:forEach var="product" items="${requestScope.products}" varStatus="status">
                 <tr>
                     <th class="col-md-1" scope="row">${product.id}</th>
-                    <td class="col-md-4">${product.name}</td>
-                    <td class="col-md-2">${product.barcode}</td>
+                    <td class="col-md-4"><formatProductNameLen:get productName="${product.name}" length="40" /></td>
+                    <td class="col-md-2"><formatBarcodeLen:get barcode="${product.barcode}" /></td>
                     <td class="col-md-2">
-                        <amount:get amount="${requestScope.report_best_products_by_count_receipt[status.index].totalAmount}"
+                        <formatAmount:get amount="${requestScope.report_best_products_by_count_receipt[status.index].totalAmount}"
                                     unit="${product.unit}" />&nbsp<fmt:message key="${product.unit.message}"/></td>
                     <td class="col-md-2">
-                        <price:get price="${requestScope.report_best_products_by_count_receipt[status.index].totalSum}" /></td>
+                        <formatPrice:get price="${requestScope.report_best_products_by_count_receipt[status.index].totalSum}" /></td>
                     <td class="col-md-1">${requestScope.report_best_products_by_count_receipt[status.index].countReceipts}</td>
                 </tr>
             </c:forEach>

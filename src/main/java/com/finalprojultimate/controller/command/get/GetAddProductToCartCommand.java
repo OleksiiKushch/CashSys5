@@ -27,11 +27,10 @@ public class GetAddProductToCartCommand implements Command {
     private static final String PRODUCT_ADD_TO_CART =
             "Product with id: %d was successfully added to the cart in amount ";
 
-    private final ProductService productService = ProductServiceImpl.getInstance();
-
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        ProductService productService = ProductServiceImpl.getInstance();
 
         String id = request.getParameter(PRODUCT_ID);
         Product product = productService.getById(Integer.parseInt(id));
@@ -47,7 +46,6 @@ public class GetAddProductToCartCommand implements Command {
 
         logger.info(String.format(PRODUCT_ADD_TO_CART + product.getAmount() + " " +
                         product.getUnit().getName(), product.getId()));
-
         response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + CREATE_NEW_RECEIPT);
         return REDIRECTED;
     }

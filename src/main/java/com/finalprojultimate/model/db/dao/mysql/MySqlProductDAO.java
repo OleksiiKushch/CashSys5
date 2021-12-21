@@ -5,6 +5,7 @@ import com.finalprojultimate.model.db.dao.entitydao.ProductDAO;
 import com.finalprojultimate.model.db.dao.exception.DaoException;
 import com.finalprojultimate.model.entity.product.Product;
 import com.finalprojultimate.model.entity.product.Unit;
+import com.finalprojultimate.model.entity.receipt.Receipt;
 import com.finalprojultimate.model.service.util.ReportBestProductByCountReceipt;
 import org.apache.log4j.Logger;
 
@@ -57,12 +58,12 @@ public class MySqlProductDAO implements ProductDAO {
     /**
      *
      * @param product concrete product
-     * update product from DB, search by barcode product
+     * update product from DB, search by id product
      */
     @Override
     public int update(Product product) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(UPDATE_PRODUCT)) {
+             PreparedStatement ps = con.prepareStatement(UPDATE_PRODUCT_BY_ID)) {
             mapProduct(ps, product);
             ps.setInt(6, product.getId());
             return ps.executeUpdate();

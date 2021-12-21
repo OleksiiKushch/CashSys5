@@ -17,6 +17,7 @@ public interface ReceiptDAO extends EntityDAO<Receipt> {
     List<Receipt> findReceiptsWithPaginationSortByNone(int offset, int limit) throws DaoException;
     List<Receipt> findReceiptsWithPaginationSortByDateTime(int offset, int limit) throws DaoException;
     int getCountOfReceipts() throws DaoException;
+    List<Receipt> findReceiptsContainProduct(Product product) throws DaoException;
     ReceiptDetails getGlobalReceiptProperties();
     void setGlobalReceiptProperties(ReceiptDetails receiptProperties);
     void resetGlobalReceiptProperties();

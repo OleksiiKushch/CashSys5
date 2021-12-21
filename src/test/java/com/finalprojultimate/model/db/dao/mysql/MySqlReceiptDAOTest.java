@@ -164,6 +164,14 @@ public class MySqlReceiptDAOTest {
     }
 
     @Test
+    public void findReceiptsContainProduct() {
+        Product testProduct = new Product.Builder()
+                .withId(1).build();
+        List<Receipt> result = receiptDAO.findReceiptsContainProduct(testProduct);
+        assertEquals(4, result.size());
+    }
+
+    @Test
     public void findProductsWithPaginationSortByNone() {
         List<Receipt> result = receiptDAO.findReceiptsWithPaginationSortByNone(2, 2);
         assertEquals("0.00", result.get(0).getChange().toString());

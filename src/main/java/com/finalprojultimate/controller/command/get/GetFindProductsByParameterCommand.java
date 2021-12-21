@@ -20,10 +20,9 @@ import static com.finalprojultimate.util.Parameter.BY_NAME;
 public class GetFindProductsByParameterCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetFindProductsByParameterCommand.class);
 
-    private final ProductService productService = ProductServiceImpl.getInstance();
-
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String parameterSearching = request.getParameter(Attribute.PARAMETER_SEARCHING);
         String patternSearching = request.getParameter(Attribute.PATTERN_SEARCHING);
 
@@ -31,6 +30,7 @@ public class GetFindProductsByParameterCommand implements Command {
 
         List<Product> products = null;
 
+        ProductService productService = ProductServiceImpl.getInstance();
         if (parameterSearching.equals(BY_BARCODE)) {
             products = productService.findProductsByBarcode(patternSearching);
         } else if (parameterSearching.equals(BY_NAME)) {

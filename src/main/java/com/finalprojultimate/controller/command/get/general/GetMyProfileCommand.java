@@ -11,7 +11,8 @@ import static com.finalprojultimate.util.Page.MY_PROFILE_PAGE;
 
 public class GetMyProfileCommand implements Command {
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         return MY_PROFILE_PAGE;
     }
 }

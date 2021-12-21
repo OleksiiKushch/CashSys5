@@ -17,12 +17,14 @@ import static com.finalprojultimate.util.Attribute.*;
 
 public class GetBestCashiersByCountReceiptsForTheLastMonthCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetBestCashiersByCountReceiptsForTheLastMonthCommand.class);
-
-    private final UserService userService = UserServiceImpl.getInstance();
+    private static final String GENERATE_REPORT_BEST_CASHIERS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH =
+            "Generate report (best cashiers by count receipts for the last month) successfully!";
 
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String paramLimit = request.getParameter(PAGE_SIZE);
+
+        UserService userService = UserServiceImpl.getInstance();
 
         LinkedHashMap<Integer, Integer> bestCashiersByCountReceipt =
                 userService.getBestCashiersByCountReceiptForTheLastMonth(Integer.parseInt(paramLimit));
@@ -35,6 +37,7 @@ public class GetBestCashiersByCountReceiptsForTheLastMonthCommand implements Com
         request.setAttribute(USERS, cashiers);
         request.setAttribute(AMOUNT, amountReceipts);
 
+        logger.info(GENERATE_REPORT_BEST_CASHIERS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH);
         return Page.BEST_CASHIERS_BY_COUNT_RECEIPTS_FOR_THE_LAST_MONTH;
     }
 }

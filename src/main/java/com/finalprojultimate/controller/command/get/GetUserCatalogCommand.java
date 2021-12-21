@@ -18,12 +18,11 @@ import java.util.List;
 public class GetUserCatalogCommand implements Command {
     private static final Logger logger = Logger.getLogger(GetUserCatalogCommand.class);
 
-    private final UserService userService = UserServiceImpl.getInstance();
-
-    private static final int shift = 0;
+    private static final int SHIFT = 0;
 
     @Override
-    public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public String execute(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
         String paramPage = request.getParameter(Attribute.PAGE);
         String paramPageSize = request.getParameter(Attribute.PAGE_SIZE);
 
@@ -38,6 +37,7 @@ public class GetUserCatalogCommand implements Command {
             session.setAttribute(Attribute.USER_SORT_PARAM, sortParam);
         }
 
+        UserService userService = UserServiceImpl.getInstance();
         List<User> paginateUsers;
         if (sortParam == null) {
             paginateUsers = userService.getForPagination(pageSize * (page - 1), pageSize);
@@ -47,9 +47,9 @@ public class GetUserCatalogCommand implements Command {
 
         int size = userService.getCount();
 
-        int minPagePossible = Math.max(page - shift, 1);
+        int minPagePossible = Math.max(page - SHIFT, 1);
         int pageCount = (int) Math.ceil((double) size / (double) pageSize);
-        int maxPagePossible = Math.min(page + shift, pageCount);
+        int maxPagePossible = Math.min(page + SHIFT, pageCount);
 
         request.setAttribute(Attribute.PAGINATE_USERS, paginateUsers);
         request.setAttribute(Attribute.PAGE_COUNT, pageCount);

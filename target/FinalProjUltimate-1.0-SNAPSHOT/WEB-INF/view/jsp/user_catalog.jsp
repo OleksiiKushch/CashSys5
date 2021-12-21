@@ -16,7 +16,7 @@
 <c:set var="logged_user" value="${sessionScope[Attribute.LOGGED_USER]}"/>
 <c:set var="page_count" value="${requestScope[Attribute.PAGE_COUNT]}"/>
 <c:set var="page_size" value="${requestScope[Attribute.PAGE_SIZE]}"/>
-<c:set var="page" value="${requestScope[Attribute.PAGE]}"/>min_possible_page
+<c:set var="page" value="${requestScope[Attribute.PAGE]}"/>
 <c:set var="min_possible_page" value="${requestScope[Attribute.MIN_POSSIBLE_PAGE]}"/>
 <c:set var="max_possible_page" value="${requestScope[Attribute.MAX_POSSIBLE_PAGE]}"/>
 

@@ -63,7 +63,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     @Override
     public int update(Receipt receipt) throws DaoException {
         try (Connection con = getConnection();
-             PreparedStatement ps = con.prepareStatement(UPDATE_RECEIPT)) {
+             PreparedStatement ps = con.prepareStatement(UPDATE_RECEIPT_BY_ID)) {
             mapReceipt(ps, receipt);
             ps.setInt(5, receipt.getId());
             return ps.executeUpdate();
@@ -247,6 +247,31 @@ public class MySqlReceiptDAO implements ReceiptDAO {
     @Override
     public int getCountOfReceipts() throws DaoException {
         return getCountByQuery(GET_COUNT_OF_RECEIPTS);
+    }
+
+    /**
+     *
+     * @param product input parameter by which the result is searched (search by id product)
+     * @return List of receipt that contain input product
+     * @throws DaoException specific dao exception
+     */
+    @Override
+    public List<Receipt> findReceiptsContainProduct(Product product) throws DaoException {
+        List<Receipt> result = new ArrayList<>();
+        try (Connection con = getConnection();
+             PreparedStatement ps = con.prepareStatement(FIND_RECEIPTS_CONTAIN_PRODUCT)) {
+            ps.setInt(1, product.getId());
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    result.add(mapReceipt(rs));
+                }
+            }
+        } catch (SQLException e) {
+            logger.error(e.getMessage(), e);
+            throw generateException(ERROR_FIND_RECEIPTS_CONTAIN_PRODUCT_FROM_DATABASE,
+                    FIND_RECEIPTS_CONTAIN_PRODUCT_FROM_DATABASE_LOG_MSG, getClass());
+        }
+        return result;
     }
 
     @Override
@@ -543,7 +568,7 @@ public class MySqlReceiptDAO implements ReceiptDAO {
                 if (amountInStock.compareTo(product.getAmount()) >= 0) {
                     updateAmountProductOnStock(con, product, amountInStock);
                 } else {
-                    throw new SQLException();
+                    throw new SQLException(); // TODO: good explanation of the error
                 }
             }
         }

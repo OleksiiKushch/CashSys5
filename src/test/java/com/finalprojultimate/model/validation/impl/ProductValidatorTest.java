@@ -90,7 +90,7 @@ public class ProductValidatorTest {
         boolean result = productValidator.isValid(product);
         assertFalse(result);
 
-        assertEquals("[error.singed.price.validation]",
+        assertEquals("[error.singed.amount.validation]",
                 productValidator.getErrorValidationMessages().toString());
     }
 }

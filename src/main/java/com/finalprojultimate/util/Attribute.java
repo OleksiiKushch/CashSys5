@@ -10,6 +10,9 @@ public final class Attribute {
     public static final String PAGE = "page";
     public static final String LOCALE = "locale";
 
+    // registration
+    public static final String REGISTRATION_DATA = "registration_data";
+
     // login
     public static final String LOGIN_DATA = "login_data";
     public static final String LOGGED_USER = "logged_user";
@@ -43,6 +46,8 @@ public final class Attribute {
 
     public static final String USERS = "users";
     public static final String PRODUCTS = "products";
+    public static final String PRODUCT_DATA = "product_data";
+    public static final String GLOBAL_RECEIPT_PROPERTIES_DATA = "global_receipt_properties_data";
 
     public static final String AMOUNT = "amount";
     public static final String REPORT_BEST_PRODUCTS_BY_COUNT_RECEIPT = "report_best_products_by_count_receipt";
