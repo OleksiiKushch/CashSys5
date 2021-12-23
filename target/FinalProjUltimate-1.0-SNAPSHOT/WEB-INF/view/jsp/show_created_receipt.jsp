@@ -37,7 +37,7 @@
             <p class="card-text"><fmt:message key="show_created_receipt.cashier.text"/> <formatUserName:get userId="${receipt.userId}" /></p>
             <br>
             <c:forEach var="product" items="${requestScope.products}">
-                <p><formatProductNameLen:get productName="${product.name}" length="30" /> x<formatAmount:get amount="${product.amount}" unit="${product.unit}" /> = <totalSum:get price="${product.price}" amount="${product.amount}" /></p>
+                <p><formatProductNameLen:get productName="${product.name}" length="30" /> (x<formatAmount:get amount="${product.amount}" unit="${product.unit}" />) = <totalSum:get price="${product.price}" amount="${product.amount}" /></p>
             </c:forEach>
             <p class="card-text"><fmt:message key="show_created_receipt.vat.text"/> ${receipt_details.vat}%</p><br>
             <p class="card-text"><fmt:message key="${receipt.payment.message}"/> = ${(receipt_service.getSumReceiptById(receipt.id)
