@@ -39,6 +39,7 @@ public class GetProductCatalogCommand implements Command {
 
         ProductService productService = ProductServiceImpl.getInstance();
         List<Product> paginateProducts;
+
         if (sortParam == null) {
             paginateProducts = productService.getForPagination(pageSize * (page - 1), pageSize);
         } else {

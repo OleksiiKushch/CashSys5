@@ -24,7 +24,7 @@
 
 <%@ include file="/WEB-INF/view/jsp/template/header.jsp" %>
 
-<security:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
+<roleSecurity:check role="${Role.SENIOR_CASHIER.name}" loggedUserRole="${logged_user.role.name}" />
 
 <div class="container-fluid">
     <h1 class="mt-4"><fmt:message key="user_catalog.user.catalog.text"/></h1>

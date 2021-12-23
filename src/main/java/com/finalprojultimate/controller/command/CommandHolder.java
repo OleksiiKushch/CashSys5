@@ -59,6 +59,7 @@ public class CommandHolder {
         commands.put(GET + NEW_RECEIPT, new GetNewReceiptCommand());
         commands.put(GET + CREATE_NEW_RECEIPT, new GetCreateNewReceiptCommand());
         commands.put(GET + SUCCESSFUL_CREATE_NEW_RECEIPT, new GetSuccessfulCreateNewReceiptCommand());
+        commands.put(GET + SHOW_CREATED_RECEIPT, new GetShowCreatedReceiptCommand());
         commands.put(GET + SET_GLOBAL_RECEIPT_PROPERTIES, new GetSetGlobalReceiptPropertiesCommand());
         commands.put(GET + SUCCESSFUL_SET_GLOBAL_RECEIPT_PROPERTIES,
                 new GetSuccessfulSetGlobalReceiptPropertiesCommand());

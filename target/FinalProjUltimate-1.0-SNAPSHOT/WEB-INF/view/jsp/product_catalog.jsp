@@ -46,8 +46,7 @@
                     <input name="${Path.COMMAND}" value="${Command.PRODUCT_CATALOG}" type="hidden">
                     <input name="${Attribute.PAGE}" value="${Path.DEFAULT_START_PAGE_NUMBER}" type="hidden">
                     <input name="${Attribute.PAGE_SIZE}" value="${Path.DEFAULT_SIZE_CATALOG_PAGE}" type="hidden">
-                    <label for="selectSortParameter" class="form-label">
-                        <fmt:message key="product_catalog.sort.by.text"/></label>
+                    <label for="selectSortParameter" class="form-label"><fmt:message key="product_catalog.sort.by.text"/></label>
                     <select id="selectSortParameter" name="${Attribute.PRODUCT_SORT_PARAM}">
                         <option value="${Parameter.NONE}" selected><fmt:message key="product_catalog.sort.by.none.text"/></option>
                         <option value="${Parameter.PRODUCT_NAME}"><fmt:message key="product_catalog.sort.by.name.text"/></option>

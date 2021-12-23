@@ -8,6 +8,7 @@
 <%@ taglib prefix="formattedId" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedId" %>
 <%@ taglib prefix="totalSum" uri="http://com.finalprojultimate/model/view/tag/processing/TagTotalSum" %>
 <%@ taglib prefix="totalReceiptSum" uri="http://com.finalprojultimate/model/view/tag/supplying/TagTotalReceiptSum" %>
+<%@ taglib prefix="formatProductNameLen" uri="http://com.finalprojultimate/model/view/tag/formatting/TagFormattedProductNameLength" %>
 
 <html>
 <head>
@@ -55,7 +56,7 @@
             <c:forEach var="product" items="${requestScope.products}">
                 <tr>
                     <th class="col-md-1" scope="row">${product.id}</th>
-                    <td>${product.name}</td>
+                    <td><formatProductNameLen:get productName="${product.name}" length="80" /></td>
                     <td class="col-md-1"><totalSum:get price="${product.price}" amount="${product.amount}" /></td>
                     <td class="col-md-1">${product.price}</td>
                     <td class="col-md-1"><formatAmount:get amount="${product.amount}" unit="${product.unit}" />

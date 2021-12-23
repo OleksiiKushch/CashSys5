@@ -13,6 +13,7 @@
 </head>
 
 <c:set var="logged_user" value="${sessionScope[Attribute.LOGGED_USER]}"/>
+<c:set var="receiptId" value="${requestScope[Attribute.RECEIPT_ID]}"/>
 
 <body class="d-flex flex-column min-vh-100">
 
@@ -26,7 +27,8 @@
         <p class="lead"><fmt:message key="successful_create_new_receipt.receipt.successfully.help.text"/></p>
         <a class="btn btn-lg btn-primary" href="${Path.NEW_RECEIPT}"
            role="button"><fmt:message key="successful_create_new_receipt.create.new.receipt.text"/></a>
-        <a class="btn btn-lg btn-primary mx-3" href="${Path.SHOW_CREATED_RECEIPT}"
+        <a class="btn btn-lg btn-primary mx-3"
+           href="<%= request.getContextPath() %>/FrontController?command=/show_created_receipt&receiptId=${receiptId}"
            role="button"><fmt:message key="successful_create_new_receipt.show.created.receipt.text"/></a>
     </div>
 </div>

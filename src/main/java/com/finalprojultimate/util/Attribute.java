@@ -41,6 +41,8 @@ public final class Attribute {
     // general entity
     public static final String PRODUCT = "product";
     public static final String RECEIPT = "receipt";
+    public static final String RECEIPT_ID = "receipt_id";
+    public static final String RECEIPT_SERVICE = "receipt_service";
     public static final String RECEIPT_DETAILS = "receipt_details";
     public static final String GLOBAL_RECEIPT_PROPERTIES = "global_receipt_properties";
 

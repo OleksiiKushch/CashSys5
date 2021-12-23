@@ -14,6 +14,7 @@ import com.finalprojultimate.model.service.ReceiptService;
 import com.finalprojultimate.model.service.impl.ReceiptServiceImpl;
 import com.finalprojultimate.model.service.util.Cart;
 import com.finalprojultimate.util.MessageKey;
+import com.finalprojultimate.util.Parameter;
 import org.apache.log4j.Logger;
 
 import javax.servlet.http.HttpServletRequest;
@@ -65,10 +66,11 @@ public class PostCreateNewReceiptCommand extends AbstractCommandWrapper<Receipt>
 
         ReceiptService receiptService = ReceiptServiceImpl.getInstance();
         // transaction
-        receiptService.create(receipt, (Cart) request.getSession().getAttribute(CART));
+        Receipt resultReceipt = receiptService.create(receipt, (Cart) request.getSession().getAttribute(CART));
 
         logger.info(RECEIPT_CREATE);
-        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_CREATE_NEW_RECEIPT);
+        response.sendRedirect(CONTROLLER + QUESTION_MARK + COMMAND + EQUALS_MARK + SUCCESSFUL_CREATE_NEW_RECEIPT
+                + AMPERSAND + Parameter.RECEIPT_ID + EQUALS_MARK + resultReceipt.getId());
         return REDIRECTED;
     }
 
