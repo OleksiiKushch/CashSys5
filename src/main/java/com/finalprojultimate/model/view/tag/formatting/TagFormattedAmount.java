@@ -26,6 +26,8 @@ public class TagFormattedAmount extends TagSupport {
     public int doStartTag() {
         if (unit == Unit.PIECES) {
             amount = amount.setScale(0, RoundingMode.DOWN);
+        } else {
+            amount = amount.setScale(3, RoundingMode.DOWN);
         }
         try {
             pageContext.getOut().println(amount);

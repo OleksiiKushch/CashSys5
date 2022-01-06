@@ -23,9 +23,9 @@ public class TagTotalSum extends TagSupport {
 
     @Override
     public int doStartTag() {
-        BigDecimal result = price.multiply(amount);
+        BigDecimal result = price.multiply(amount).setScale(2, RoundingMode.DOWN);
         try {
-            pageContext.getOut().println(result.setScale(2, RoundingMode.DOWN));
+            pageContext.getOut().println(result);
         } catch (IOException e) {
             e.printStackTrace();
         }

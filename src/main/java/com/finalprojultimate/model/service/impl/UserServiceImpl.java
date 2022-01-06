@@ -19,6 +19,7 @@ import java.util.Set;
 
 import static com.finalprojultimate.util.Parameter.EMAIL;
 
+
 public class UserServiceImpl implements UserService {
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 

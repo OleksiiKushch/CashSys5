@@ -18,6 +18,7 @@
         <log4j.version>1.2.17</log4j.version>
         <mockito.version>1.10.19</mockito.version>
         <mysql.version>8.0.27</mysql.version>
+
     </properties>
 
     <dependencies>
@@ -41,37 +42,52 @@
         </dependency>
 
         <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <!-- for test -->
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-api-mockito</artifactId>
+            <version>1.7.0</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.powermock</groupId>
+            <artifactId>powermock-module-junit4</artifactId>
+            <version>1.7.0</version>
+            <scope>test</scope>
+        </dependency>
 
+        <!-- for logging -->
         <dependency>
             <groupId>log4j</groupId>
             <artifactId>log4j</artifactId>
             <version>${log4j.version}</version>
         </dependency>
 
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-
+        <!-- for validation -->
         <dependency>
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>1.7</version>
         </dependency>
 
+        <!-- for hashing passwords -->
         <dependency>
             <groupId>de.svenkubiak</groupId>
             <artifactId>jBCrypt</artifactId>
@@ -81,19 +97,21 @@
     </dependencies>
 
     <build>
+        <finalName>FinalProjUltimate</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
                 <version>3.3.1</version>
 
-                <configuration> <!-- ? -->
-                    <archive>
-                        <manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>
-                    </archive>
-                </configuration>
-
+<!--                <configuration> &lt;!&ndash; ? &ndash;&gt;-->
+<!--                    <archive>-->
+<!--                        <manifestFile>src/main/webapp/META-INF/MANIFEST.MF</manifestFile>-->
+<!--                    </archive>-->
+<!--                </configuration>-->
             </plugin>
+
         </plugins>
     </build>
+
 </project>

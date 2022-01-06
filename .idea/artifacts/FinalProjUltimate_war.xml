@@ -9,7 +9,7 @@
         <unpackNestedArchives>false</unpackNestedArchives>
       </options>
     </properties>
-    <root id="archive" name="FinalProjUltimate-1.0-SNAPSHOT.war">
+    <root id="archive" name="FinalProjUltimate.war">
       <element id="artifact" artifact-name="FinalProjUltimate:war exploded" />
     </root>
   </artifact>

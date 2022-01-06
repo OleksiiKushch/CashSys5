@@ -29,15 +29,15 @@
         <session-timeout>35</session-timeout>
     </session-config>
 
-<!--    <error-page>-->
-<!--        <error-code>404</error-code>-->
-<!--        <location>/WEB-INF/view/jsp/error/page_not_found.jsp</location>-->
-<!--    </error-page>-->
+    <error-page>
+        <error-code>404</error-code>
+        <location>/WEB-INF/view/jsp/error/page_not_found.jsp</location>
+    </error-page>
 
-<!--    <error-page>-->
-<!--        <error-code>500</error-code>-->
-<!--        <location>/WEB-INF/view/jsp/error/internal_server_error.jsp</location>-->
-<!--    </error-page>-->
+    <error-page>
+        <error-code>500</error-code>
+        <location>/WEB-INF/view/jsp/error/internal_server_error.jsp</location>
+    </error-page>
 
     <resource-ref>
         <description>DB Connection</description>

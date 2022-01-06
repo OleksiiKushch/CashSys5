@@ -1,6 +1,6 @@
 <component name="ArtifactManager">
   <artifact type="exploded-war" name="FinalProjUltimate:war exploded">
-    <output-path>$PROJECT_DIR$/target/FinalProjUltimate-1.0-SNAPSHOT</output-path>
+    <output-path>$PROJECT_DIR$/target/FinalProjUltimate</output-path>
     <properties id="maven-jee-properties">
       <options>
         <exploded>true</exploded>
@@ -16,9 +16,9 @@
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: jstl:jstl:1.2" />
-          <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
           <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.27" />
           <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.11.4" />
+          <element id="library" level="project" name="Maven: log4j:log4j:1.2.17" />
           <element id="library" level="project" name="Maven: commons-validator:commons-validator:1.7" />
           <element id="library" level="project" name="Maven: commons-beanutils:commons-beanutils:1.9.4" />
           <element id="library" level="project" name="Maven: commons-digester:commons-digester:2.1" />
@@ -28,7 +28,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/target/FinalProjUltimate-1.0-SNAPSHOT/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/target/FinalProjUltimate/META-INF/MANIFEST.MF" />
       </element>
       <element id="javaee-facet-resources" facet="FinalProjUltimate/web/Web" />
     </root>
