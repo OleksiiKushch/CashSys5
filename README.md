@@ -1,23 +1,14 @@
 # CashSys5
 
-Данная информационная система обеспечивает простой и удобный учет средств при совершении расчетных операций. 
-Предусматривается предметная область "Супермаркет", где основными единицами данных фигурируют продукты. 
-В дальнейшем некоторая совокупность продуктов формирует заказ или другими словами чек.
+This information system provides simple and convenient accounting of funds during transactional operations. It includes a specific domain called "Supermarket," where the main units of data are products. In the future, a combination of products forms an order or, in other words, a receipt.
 
-Данная информационная система предусматривает три роли, а именно: кассир, старший кассир и товаровед.
+This information system encompasses three roles: cashier, senior cashier, and goods manager.
 
-Кассир отвечает за главный бизнес процесс: создание чека (его формирование и дальнейшее закрытие). 
-Процесс начинается с создания кассиром заказа, в который впоследствии будут прилагаться товары. 
-Далее кассир пополняет заказ, указывая товары в необходимом количестве, 
-при необходимости кассир может изменить количество того или иного товара в заказе или вовсе удалить этот товар из него. 
-Чтобы получить чек, кассир выполняет операцию закрытия (подтверждения) заказа, который в дальнейшем, при успешности операции становится действительным.
+The cashier is responsible for the main business process: creating a receipt (its formation and subsequent closure). The process begins with the cashier creating an order to which products will be added later. The cashier then adds products to the order, specifying the desired quantities. If necessary, the cashier can modify the quantity of a particular product in the order or remove it entirely. To obtain a receipt, the cashier performs a closing (confirmation) operation on the order, which, upon successful completion, becomes valid.
 
-Старший Кассир может просматривать каталог чеков, с возможностью отменять чеки (отменить все продукты в конкретном чеке), 
-в случае необходимости, или отменить конкретный товар из чека. Еще старший кассир может просматривать каталог сотрудников (пользователей системы). 
-Также старший кассир может сделать (сгенерировать) некоторые отчеты, а именно: лучшие кассиры или продукты. 
-Также старший кассир устанавливает, редактирует или при необходимости сбрасывает глобальные свойства чека.
+The senior cashier can view the catalog of receipts and has the ability to cancel receipts by canceling all the products in a specific receipt or by canceling a specific product from a receipt if needed. The senior cashier can also access the catalog of employees (system users). Additionally, the senior cashier can generate certain reports, such as top-performing cashiers or popular products. The senior cashier is also responsible for setting, editing, or resetting global properties of a receipt.
 
-Товаровед может создавать новые товары в системе, редактировать их, например: указывать количество на складе, или вовсе удалять.
+The goods manager can create new products in the system, edit them, and perform actions such as specifying the quantity available in stock or deleting products altogether.
 
 
-
+Demo video on YouTube: https://www.youtube.com/watch?v=s2wnTKnNMOs
