@@ -13,6 +13,7 @@ The project involves the development of components for a point-of-sale informati
 - Backend: Java EE, Java Servlet API (Jakarta Servlet), Apache Tomcat;
 - Frontend: JavaScript, jQuery, Vue.js, JSP, JSTL, CSS, Bootstrap;
 - Persistence: JDBC, SQL, MySQL;
+- Other: Apache Maven, git, 
 
 ### Database
 [MySQL Community Server 8.4.0 LTS](https://dev.mysql.com/downloads/mysql/)
@@ -23,7 +24,8 @@ Link to ER-Diagram: [here](src/main/resources/db/ER-Diagram.PNG)
 ### Tools used during development
 - IntelliJ IDEA Community (main development environment);
 - MySQL Workbench 8.0 CE (MySQL DBMS for managing database);
-- Web browsers (Google Chrome, Mozilla Firefox, ...) (for testing).
+- Web browsers (Google Chrome, Mozilla Firefox, ...) (for testing);
+- GitHub (for version control).
 
 ## Product (system)
 
