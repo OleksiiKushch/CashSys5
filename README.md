@@ -5,11 +5,11 @@
 The project involves the development of components for a point-of-sale information system (cash service). The primary business process consists of creating orders with subsequent receipt formation. Additionally, this platform provides extra features, such as a multi-role security system, product inventory handling, order management with cancellation options, generation of various reports, receipt property management, and so on.
 
 ## Key technologies
-Core: Java;
-Testing: Junit, Mockito, PowerMockito;
-Backend: Java EE, Java Servlet API (Jakarta Servlet), Apache Tomcat;
-Frontend: JavaScript, jQuery, Vue.js, JSP, JSTL, CSS, Bootstrap;
-Persistence: JDBC, MySQL;
+- Core: Java;
+- Testing: Junit, Mockito, PowerMockito;
+- Backend: Java EE, Java Servlet API (Jakarta Servlet), Apache Tomcat;
+- Frontend: JavaScript, jQuery, Vue.js, JSP, JSTL, CSS, Bootstrap;
+- Persistence: JDBC, MySQL;
 
 
 # Product (system)
