@@ -3,7 +3,6 @@
 ## Project
 
 ### Description
-
 The project involves the development of components for a point-of-sale information system (payment and cash service). The primary business process consists of creating orders with subsequent receipt formation. Additionally, this platform provides extra features, such as a multi-role security system, product inventory handling, order management with cancellation options, generation of various reports, receipt property management, and so on.
 
 ### Key technologies
@@ -13,6 +12,8 @@ The project involves the development of components for a point-of-sale informati
 - Frontend: JavaScript, jQuery, Vue.js, JSP, JSTL, CSS, Bootstrap;
 - Persistence: JDBC, MySQL;
 
+### Additional information
+Link to ERR-Diagram: [here](src/main/resources/db/ERR-Diagram.PNG)
 
 ## Product (system)
 
@@ -32,5 +33,4 @@ The goods manager can create new products in the system, edit them, and perform 
 
 
 ## Demo
-
 Video on YouTube: https://www.youtube.com/watch?v=s2wnTKnNMOs
