@@ -13,7 +13,7 @@ The project involves the development of components for a point-of-sale informati
 - Persistence: JDBC, MySQL;
 
 ### Additional information
-Link to ERR-Diagram: [here](src/main/resources/db/ERR-Diagram.PNG)
+Link to ER-Diagram: [here](src/main/resources/db/ER-Diagram.PNG)
 
 ## Product (system)
 
