@@ -3,17 +3,27 @@
 ## Project
 
 ### Description
+A web system built on servlets.
+
 The project involves the development of components for a point-of-sale information system (payment and cash service). The primary business process consists of creating orders with subsequent receipt formation. Additionally, this platform provides extra features, such as a multi-role security system, product inventory handling, order management with cancellation options, generation of various reports, receipt property management, and so on.
 
 ### Key technologies
-- Core: Java;
+- Core: Java 8 (SE);
 - Testing: Junit, Mockito, PowerMockito;
 - Backend: Java EE, Java Servlet API (Jakarta Servlet), Apache Tomcat;
 - Frontend: JavaScript, jQuery, Vue.js, JSP, JSTL, CSS, Bootstrap;
-- Persistence: JDBC, MySQL;
+- Persistence: JDBC, SQL, MySQL;
+
+### Database
+[MySQL Community Server 8.4.0 LTS](https://dev.mysql.com/downloads/mysql/)
 
 ### Additional information
 Link to ER-Diagram: [here](src/main/resources/db/ER-Diagram.PNG)
+
+### Tools used during development
+- IntelliJ IDEA Community (main development environment);
+- MySQL Workbench 8.0 CE (MySQL DBMS for managing database);
+- Web browsers (Google Chrome, Mozilla Firefox, ...) (for testing).
 
 ## Product (system)
 
@@ -33,4 +43,4 @@ The goods manager can create new products in the system, edit them, and perform 
 
 
 ## Demo
-Video on YouTube: https://www.youtube.com/watch?v=s2wnTKnNMOs
+Video on YouTube: [here](https://www.youtube.com/watch?v=s2wnTKnNMOs)
